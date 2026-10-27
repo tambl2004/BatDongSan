@@ -8,15 +8,33 @@ import { ListingView } from './views/user/ListingView';
 import { PropertyDetailView } from './views/user/PropertyDetailView';
 import { FavoritesView } from './views/user/FavoritesView';
 import { AdminDashboardView } from './views/admin/AdminDashboardView';
+import { BlogView } from './views/user/blog/BlogView';
 
 import { Property, PropertyFilterParams, ListingType } from './types/property';
 import { fetchProperties } from './services/api';
+import { parseCurrentRoute, navigate, CurrentRoute } from './router/router';
 
 export const App: React.FC = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+
+  // Router state
+  const [route, setRoute] = useState<CurrentRoute>(() => parseCurrentRoute());
+
+  // Listen to browser navigation and router events
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setRoute(parseCurrentRoute());
+    };
+    window.addEventListener('popstate', handleRouteChange);
+    window.addEventListener('app-route-change', handleRouteChange);
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+      window.removeEventListener('app-route-change', handleRouteChange);
+    };
+  }, []);
 
   // Favorites
   const [favorites, setFavorites] = useState<string[]>(() => {
@@ -27,11 +45,6 @@ export const App: React.FC = () => {
       return [];
     }
   });
-  const [showFavoritesOnly, setShowFavoritesOnly] = useState<boolean>(false);
-
-  // View state: 'home' | 'sale' | 'rent'
-  const [activeTab, setActiveTab] = useState<'home' | 'sale' | 'rent'>('home');
-  const [isAdminView, setIsAdminView] = useState<boolean>(false);
 
   const [filters, setFilters] = useState<PropertyFilterParams>({
     sort: 'newest'
@@ -48,11 +61,13 @@ export const App: React.FC = () => {
     );
   };
 
+  const activeListingType = route.view === 'sale' ? 'sale' : route.view === 'rent' ? 'rent' : undefined;
+
   const loadProperties = useCallback(async () => {
     setLoading(true);
     const queryParams: PropertyFilterParams = { ...filters };
-    if (activeTab === 'sale' || activeTab === 'rent') {
-      queryParams.listingType = activeTab;
+    if (activeListingType) {
+      queryParams.listingType = activeListingType;
     }
 
     const res = await fetchProperties(queryParams);
@@ -247,8 +262,8 @@ export const App: React.FC = () => {
       ];
 
       let filtered = [...fallbackList];
-      if (activeTab === 'sale' || activeTab === 'rent') {
-        filtered = filtered.filter(p => p.listingType === activeTab);
+      if (activeListingType) {
+        filtered = filtered.filter(p => p.listingType === activeListingType);
       }
       if (filters.city) {
         filtered = filtered.filter(p => p.city.toLowerCase().includes(filters.city!.toLowerCase()));
@@ -264,11 +279,30 @@ export const App: React.FC = () => {
       setTotalCount(filtered.length);
     }
     setLoading(false);
-  }, [filters, activeTab]);
+  }, [filters, activeListingType]);
 
   useEffect(() => {
     loadProperties();
   }, [loadProperties]);
+
+  // Dynamic title based on route
+  useEffect(() => {
+    if (route.view === 'blog') {
+      document.title = 'Blog & Cẩm Nang Bất Động Sản | batdongsan.vn';
+    } else if (route.view === 'blog-detail') {
+      document.title = 'Chi Tiết Bài Viết | Blog batdongsan.vn';
+    } else if (route.view === 'sale') {
+      document.title = 'Nhà Đất Bán Chính Chủ | batdongsan.vn';
+    } else if (route.view === 'rent') {
+      document.title = 'Nhà Đất Cho Thuê | batdongsan.vn';
+    } else if (route.view === 'admin') {
+      document.title = 'Cổng Quản Trị Hệ Thống | batdongsan.vn';
+    } else if (route.view === 'favorites') {
+      document.title = 'Bất Động Sản Đã Lưu | batdongsan.vn';
+    } else {
+      document.title = 'batdongsan.vn | Sàn Giao Dịch Bất Động Sản Cao Cấp';
+    }
+  }, [route.view]);
 
   const handleHeroSearch = (searchFilters: {
     search: string;
@@ -276,109 +310,113 @@ export const App: React.FC = () => {
     propertyType: string;
     listingType: ListingType;
   }) => {
-    setIsAdminView(false);
-    setSelectedProperty(null);
-    setShowFavoritesOnly(false);
-    setActiveTab(searchFilters.listingType);
     setFilters(prev => ({
       ...prev,
       search: searchFilters.search || undefined,
       city: searchFilters.city || undefined,
       propertyType: (searchFilters.propertyType as any) || undefined
     }));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate(searchFilters.listingType === 'rent' ? '/nha-dat-cho-thue' : '/nha-dat-ban');
   };
 
   const handleNavigateToListing = (tab: 'sale' | 'rent', city?: string) => {
-    setIsAdminView(false);
-    setSelectedProperty(null);
-    setShowFavoritesOnly(false);
-    setActiveTab(tab);
     if (city) {
       setFilters(prev => ({ ...prev, city }));
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate(tab === 'rent' ? '/nha-dat-cho-thue' : '/nha-dat-ban');
   };
 
   const handleSelectProperty = (property: Property) => {
     setSelectedProperty(property);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleBackToList = () => {
-    setSelectedProperty(null);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate('/chi-tiet-bds?id=' + property.id);
   };
 
   const favoriteProperties = properties.filter(p => favorites.includes(p.id));
+
+  // Determine active tab for navbar highlighting
+  const activeNavbarTab: 'home' | 'sale' | 'rent' | 'blog' =
+    route.view === 'blog' || route.view === 'blog-detail' ? 'blog' :
+    route.view === 'sale' ? 'sale' :
+    route.view === 'rent' ? 'rent' : 'home';
+
+  const isAdminView = route.view === 'admin';
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#ffffff' }}>
       {/* Top Navbar */}
       <Navbar
         favoriteCount={favorites.length}
-        onOpenFavorites={() => {
-          setIsAdminView(false);
-          setSelectedProperty(null);
-          setShowFavoritesOnly(true);
-        }}
-        activeTab={activeTab}
+        onOpenFavorites={() => navigate('/yeu-thich')}
+        activeTab={activeNavbarTab}
         setActiveTab={(tab) => {
-          setIsAdminView(false);
-          setSelectedProperty(null);
-          setShowFavoritesOnly(false);
-          setActiveTab(tab);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          if (tab === 'home') navigate('/');
+          else if (tab === 'sale') navigate('/nha-dat-ban');
+          else if (tab === 'rent') navigate('/nha-dat-cho-thue');
+          else if (tab === 'blog') navigate('/blog');
         }}
         isAdminView={isAdminView}
         onToggleAdminView={() => {
-          setSelectedProperty(null);
-          setShowFavoritesOnly(false);
-          setIsAdminView(prev => !prev);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          if (isAdminView) navigate('/');
+          else navigate('/admin');
         }}
       />
 
-      {/* Main View Switcher */}
-      {isAdminView ? (
-        /* ADMIN PORTAL: Admin Dashboard View */
+      {/* Main View Switcher driven by Router URL */}
+      {route.view === 'admin' ? (
+        /* ADMIN PORTAL: Admin Dashboard View (/admin) */
         <AdminDashboardView
           properties={properties}
-          onBackToUserView={() => setIsAdminView(false)}
-          onSelectProperty={(p) => {
-            setIsAdminView(false);
-            handleSelectProperty(p);
-          }}
-        />
-      ) : selectedProperty ? (
-        /* USER PORTAL: Dedicated Property Detail View */
-        <PropertyDetailView
-          property={selectedProperty}
-          allProperties={properties}
-          isFavorite={favorites.includes(selectedProperty.id)}
-          onToggleFavorite={toggleFavorite}
-          onBack={handleBackToList}
+          onBackToUserView={() => navigate('/')}
           onSelectProperty={handleSelectProperty}
         />
-      ) : showFavoritesOnly ? (
-        /* USER PORTAL: Favorites View */
+      ) : route.view === 'property-detail' ? (
+        /* USER PORTAL: Dedicated Property Detail View (/chi-tiet-bds?id=...) */
+        <PropertyDetailView
+          property={
+            properties.find(p => p.id === route.propertyId) ||
+            selectedProperty ||
+            properties[0]
+          }
+          allProperties={properties}
+          isFavorite={favorites.includes(route.propertyId || selectedProperty?.id || '')}
+          onToggleFavorite={toggleFavorite}
+          onBack={() => {
+            if (window.history.length > 1) {
+              window.history.back();
+            } else {
+              navigate('/');
+            }
+          }}
+          onSelectProperty={handleSelectProperty}
+        />
+      ) : route.view === 'favorites' ? (
+        /* USER PORTAL: Favorites View (/yeu-thich) */
         <FavoritesView
           favoriteProperties={favoriteProperties}
           favorites={favorites}
           onToggleFavorite={toggleFavorite}
           onSelectProperty={handleSelectProperty}
-          onBackToHome={() => setShowFavoritesOnly(false)}
+          onBackToHome={() => navigate('/')}
         />
-      ) : activeTab === 'home' ? (
-        /* USER PORTAL: Home Portal View */
-        <HomeView
-          onSearch={handleHeroSearch}
-          onNavigateToListing={handleNavigateToListing}
+      ) : route.view === 'blog-detail' ? (
+        /* USER PORTAL: Blog Detail View (/blog-detail) */
+        <BlogView
+          properties={properties}
+          isDetailView={true}
+          selectedPostId={route.postId}
+          onSelectProperty={handleSelectProperty}
         />
-      ) : (
-        /* USER PORTAL: Listing View (Nhà đất bán / Nhà đất cho thuê) */
+      ) : route.view === 'blog' ? (
+        /* USER PORTAL: Blog List View (/blog) */
+        <BlogView
+          properties={properties}
+          isDetailView={false}
+          onSelectProperty={handleSelectProperty}
+        />
+      ) : route.view === 'sale' || route.view === 'rent' ? (
+        /* USER PORTAL: Listing View (/nha-dat-ban, /nha-dat-cho-thue) */
         <ListingView
-          listingType={activeTab}
+          listingType={route.view}
           properties={properties}
           loading={loading}
           totalCount={totalCount}
@@ -389,10 +427,16 @@ export const App: React.FC = () => {
           onToggleFavorite={toggleFavorite}
           onSelectProperty={handleSelectProperty}
         />
+      ) : (
+        /* USER PORTAL: Home Portal View (/) */
+        <HomeView
+          onSearch={handleHeroSearch}
+          onNavigateToListing={handleNavigateToListing}
+        />
       )}
 
-      {/* Reorganized Clean Footer (Without horizontal lines) */}
-      <Footer />
+      {/* Reorganized Clean Footer */}
+      <Footer onNavigateToBlog={() => navigate('/blog')} />
     </div>
   );
 };

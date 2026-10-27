@@ -1,7 +1,11 @@
 import React from 'react';
 import { Building2, Phone, Mail, MapPin, ShieldCheck, CheckCircle2, Headphones } from 'lucide-react';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onNavigateToBlog?: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onNavigateToBlog }) => {
   return (
     <footer style={{
       backgroundColor: '#f8fafc',
@@ -50,16 +54,52 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Popular Areas */}
+          {/* Blog & Resources */}
           <div>
             <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '0.85rem' }}>
-              Khu vực tiêu điểm
+              Cẩm nang & Blog BĐS
             </h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.85rem' }}>
-              <li>Bán căn hộ TP. Hồ Chí Minh</li>
-              <li>Bán biệt thự liền kề Hà Nội</li>
-              <li>Bất động sản nghỉ dưỡng Đà Nẵng</li>
-              <li>Đất nền phân lô Cần Thơ</li>
+              <li>
+                <button
+                  onClick={onNavigateToBlog}
+                  style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', textAlign: 'left', transition: 'color 0.15s ease' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--green-primary)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                >
+                  Tin tức & Diễn biến thị trường
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={onNavigateToBlog}
+                  style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', textAlign: 'left', transition: 'color 0.15s ease' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--green-primary)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                >
+                  Review & Đánh giá dự án
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={onNavigateToBlog}
+                  style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', textAlign: 'left', transition: 'color 0.15s ease' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--green-primary)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                >
+                  Tư vấn tài chính & Vay mua nhà
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={onNavigateToBlog}
+                  style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', textAlign: 'left', transition: 'color 0.15s ease' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--green-primary)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                >
+                  Phong thủy & Mẹo thiết kế nhà
+                </button>
+              </li>
             </ul>
           </div>
 

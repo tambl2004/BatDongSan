@@ -4,8 +4,8 @@ import { Heart, PhoneCall, Building2 } from 'lucide-react';
 interface NavbarProps {
   favoriteCount: number;
   onOpenFavorites: () => void;
-  activeTab: 'home' | 'sale' | 'rent';
-  setActiveTab: (tab: 'home' | 'sale' | 'rent') => void;
+  activeTab: 'home' | 'sale' | 'rent' | 'blog';
+  setActiveTab: (tab: 'home' | 'sale' | 'rent' | 'blog') => void;
   isAdminView?: boolean;
   onToggleAdminView?: () => void;
 }
@@ -65,7 +65,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           {[
             { id: 'home', label: 'Trang chủ' },
             { id: 'sale', label: 'Nhà đất bán' },
-            { id: 'rent', label: 'Nhà đất cho thuê' }
+            { id: 'rent', label: 'Nhà đất cho thuê' },
+            { id: 'blog', label: 'Blog' }
           ].map((item) => {
             const isActive = activeTab === item.id && !isAdminView;
             return (
