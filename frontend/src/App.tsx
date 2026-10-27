@@ -1,0 +1,398 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { Navbar } from './components/Navbar';
+import { Footer } from './components/Footer';
+
+// Views - Separated into user and admin
+import { HomeView } from './views/user/HomeView';
+import { ListingView } from './views/user/ListingView';
+import { PropertyDetailView } from './views/user/PropertyDetailView';
+import { FavoritesView } from './views/user/FavoritesView';
+import { AdminDashboardView } from './views/admin/AdminDashboardView';
+
+import { Property, PropertyFilterParams, ListingType } from './types/property';
+import { fetchProperties } from './services/api';
+
+export const App: React.FC = () => {
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+
+  // Favorites
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('bds_favorites');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState<boolean>(false);
+
+  // View state: 'home' | 'sale' | 'rent'
+  const [activeTab, setActiveTab] = useState<'home' | 'sale' | 'rent'>('home');
+  const [isAdminView, setIsAdminView] = useState<boolean>(false);
+
+  const [filters, setFilters] = useState<PropertyFilterParams>({
+    sort: 'newest'
+  });
+
+  // Save favorites to localStorage
+  useEffect(() => {
+    localStorage.setItem('bds_favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
+  const toggleFavorite = (id: string) => {
+    setFavorites(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
+
+  const loadProperties = useCallback(async () => {
+    setLoading(true);
+    const queryParams: PropertyFilterParams = { ...filters };
+    if (activeTab === 'sale' || activeTab === 'rent') {
+      queryParams.listingType = activeTab;
+    }
+
+    const res = await fetchProperties(queryParams);
+    if (res.data && res.data.length > 0) {
+      setProperties(res.data);
+      setTotalCount(res.total);
+    } else {
+      // Fallback local dataset matching backend
+      const fallbackList: Property[] = [
+        {
+          id: 'bds-001',
+          title: 'Căn hộ Penthouse Masteri Thảo Điền view trọn sông Sài Gòn & Landmark 81',
+          description: 'Căn hộ Penthouse thông tầng cao cấp bậc nhất tại Masteri Thảo Điền (Tháp T5). Thiết kế phong cách Địa Trung Hải sang trọng với trần cao 6.2m, phòng khách kính tràn panorama 270 độ chiêm ngưỡng trọn vẹn vẻ đẹp sông Sài Gòn và pháo hoa Landmark 81. Bàn giao đầy đủ nội thất nhập khẩu thương hiệu Poliform & B&B Italia, hệ thống bếp đảo đá Marble tự nhiên, rạp chiếu phim mini gia đình, hồ bơi riêng sky pool trên sân thượng và thang máy bảo mật thẻ từ riêng lên thẳng căn hộ.',
+          price: 18500000000,
+          priceFormatted: '18.5 tỷ',
+          pricePerM2: '66.07 triệu/m²',
+          area: 280,
+          bedrooms: 4,
+          bathrooms: 4,
+          floors: 2,
+          frontWidth: 16.5,
+          roadWidth: 'Xa lộ Hà Nội 12 làn xe + Đường nội khu 16m',
+          furnitureStatus: 'Full nội thất cao cấp nhập khẩu Ý (Poliform & Minotti)',
+          balconyDirection: 'Đông Nam ngắm hoàng hôn sông Sài Gòn',
+          planningStatus: 'Đất ở đô thị (ODT) quy hoạch ổn định lâu dài, không dính quy hoạch lộ giới',
+          legalStatus: 'Sổ hồng lâu dài chính chủ, sẵn sàng công chứng sang tên ngay trong ngày',
+          propertyType: 'apartment',
+          listingType: 'sale',
+          status: 'available',
+          address: '159 Xa lộ Hà Nội, Phường Thảo Điền',
+          ward: 'Thảo Điền',
+          district: 'Thành phố Thủ Đức',
+          city: 'Hồ Chí Minh',
+          coordinates: { lat: 10.8037, lng: 106.7381 },
+          images: [
+            'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80'
+          ],
+          features: [
+            'Sổ hồng sở hữu lâu dài',
+            'Hồ bơi Sky Pool riêng',
+            'Nội thất Poliform nhập khẩu Ý',
+            '2 Suất đậu ô tô định danh tầng hầm',
+            'Thang máy thẻ từ bảo mật lên tận cửa',
+            'Hệ thống Smarthome Crestron chuẩn Mỹ',
+            'Phòng xông hơi đá muối Himalaya'
+          ],
+          nearbyAmenities: [
+            { name: 'Ga Metro số 1 Bến Thành - Suối Tiên (Ga An Phú)', distance: '300m', type: 'transport' },
+            { name: 'Trường Quốc tế Anh BIS & Trường Quốc tế Mỹ TAS', distance: '500m', type: 'education' },
+            { name: 'Trung tâm thương mại Vincom Mega Mall Thảo Điền', distance: '350m', type: 'shopping' },
+            { name: 'Bệnh viện Quốc tế Thảo Điền & Family Medical Practice', distance: '800m', type: 'hospital' },
+            { name: 'Công viên bờ sông Thảo Điền & Bến du thuyền', distance: '600m', type: 'park' }
+          ],
+          agent: {
+            name: 'Nguyễn Văn Tuấn',
+            phone: '0908 123 456',
+            email: 'tuan.nguyen@bds-premium.vn',
+            avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=256&q=80',
+            role: 'Chuyên gia BĐS Cao Cấp Thủ Đức'
+          },
+          featured: true,
+          yearBuilt: 2021,
+          direction: 'Đông Nam',
+          legalDocument: 'Sổ hồng lâu dài chính chủ',
+          createdAt: '2026-03-15T09:00:00Z'
+        },
+        {
+          id: 'bds-002',
+          title: 'Biệt thự đơn lập Vinhomes Riverside Hoa Sữa đẳng cấp ven hồ sinh thái',
+          description: 'Biệt thự đơn lập kiến trúc tân cổ điển hoàng gia Pháp tại tiểu khu Hoa Sữa - Vinhomes Riverside Long Biên. Vị trí ven sông nhân tạo với mặt nước hồ sinh thái 12.4ha rộng mở sau nhà, cầu tàu cano riêng cập bến. Kết cấu 3.5 tầng có hầm rượu vang và garage 3 ô tô, nội thất gỗ óc chó tự nhiên nhập khẩu Bắc Mỹ, trần nhà dát vàng lá 18K tinh xảo. Khu compound khép kín với an ninh bảo vệ tuần tra 3 lớp 24/7.',
+          price: 45000000000,
+          priceFormatted: '45 tỷ',
+          pricePerM2: '107.14 triệu/m²',
+          area: 420,
+          bedrooms: 5,
+          bathrooms: 6,
+          floors: 4,
+          frontWidth: 18.0,
+          roadWidth: 'Đường trục chính nội khu 14m vỉa hè 3.5m',
+          furnitureStatus: 'Full nội thất gỗ óc chó Bắc Mỹ & Thiết bị Miele Đức',
+          balconyDirection: 'Nam nhìn trực diện mặt hồ sinh thái',
+          planningStatus: 'Đất ở sinh thái lâu dài thuộc quy hoạch đại đô thị Vinhomes Riverside',
+          legalStatus: 'Sổ đỏ chính chủ, đất vuông vắn không lỗi phong thủy',
+          propertyType: 'villa',
+          listingType: 'sale',
+          status: 'available',
+          address: 'Đường Hoa Sữa, Khu đô thị Vinhomes Riverside',
+          ward: 'Phúc Lợi',
+          district: 'Quận Long Biên',
+          city: 'Hà Nội',
+          coordinates: { lat: 21.0456, lng: 105.9087 },
+          images: [
+            'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80'
+          ],
+          features: [
+            'Sân vườn ven hồ sinh thái 12.4ha',
+            'Hầm rượu vang & Rạp chiếu phim gia đình 4K',
+            'Garage đỗ 3 ô tô trong nhà',
+            'An ninh khép kín 3 lớp 24/7',
+            'Hệ thống điều hòa trung tâm Daikin VRV',
+            'Bến cano cập mạn sân sau'
+          ],
+          nearbyAmenities: [
+            { name: 'Trung tâm ẩm thực & Hội nghị quốc tế Almaz', distance: '400m', type: 'shopping' },
+            { name: 'Trường Liên cấp Quốc tế Vinschool & BIS Hà Nội', distance: '600m', type: 'education' },
+            { name: 'Bệnh viện Đa khoa Quốc tế Vinmec Times City', distance: '4km', type: 'hospital' },
+            { name: 'Sân Golf Long Biên 27 lỗ chuẩn PGA', distance: '1.8km', type: 'park' },
+            { name: 'Cầu Vĩnh Tuy 2 & Nút giao Cổ Linh', distance: '1.5km', type: 'transport' }
+          ],
+          agent: {
+            name: 'Trần Thị Thu Hà',
+            phone: '0912 345 678',
+            email: 'ha.tran@bds-luxury.vn',
+            avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80',
+            role: 'Giám đốc Kinh doanh BĐS Triệu Đô Hà Nội'
+          },
+          featured: true,
+          yearBuilt: 2022,
+          direction: 'Nam',
+          legalDocument: 'Sổ đỏ chính chủ cất két',
+          createdAt: '2026-03-20T14:30:00Z'
+        },
+        {
+          id: 'bds-003',
+          title: 'Căn hộ 2PN hiện đại Lumiere Riverside An Phú view trọn công viên Metro',
+          description: 'Căn hộ tầng cao tháp Tây Lumiere Riverside - kiệt tác xanh giữa lòng Thảo Điền do Masterise Homes phát triển. Thiết kế thông minh tối ưu từng mét vuông ánh sáng tự nhiên, ban công đón gió Đông Nam mát mẻ quanh năm. Bàn giao đầy đủ nội thất cao cấp thương hiệu Kohler, Bosch, sàn gỗ tự nhiên và kính hộp cách âm 3 lớp Low-E chạm sàn. Vị trí vàng nằm ngay mặt tiền Xa lộ Hà Nội, kết nối trực tiếp nhà ga số 7 của tuyến Metro Bến Thành - Suối Tiên.',
+          price: 28000000,
+          priceFormatted: '28 triệu/tháng',
+          pricePerM2: '358.97 nghìn/m²/tháng',
+          area: 78,
+          bedrooms: 2,
+          bathrooms: 2,
+          floors: 1,
+          roadWidth: 'Xa lộ Hà Nội 12 làn xe',
+          furnitureStatus: 'Full nội thất mới 100% nhập khẩu Tây Ban Nha',
+          balconyDirection: 'Đông Nam view sông & Landmark 81',
+          planningStatus: 'Đất ở đô thị quy hoạch ổn định hoàn chỉnh',
+          legalStatus: 'Hợp đồng cho thuê công chứng dài hạn (1 - 3 năm)',
+          propertyType: 'apartment',
+          listingType: 'rent',
+          status: 'available',
+          address: '259 Xa lộ Hà Nội, Phường An Phú',
+          ward: 'An Phú',
+          district: 'Thành phố Thủ Đức',
+          city: 'Hồ Chí Minh',
+          coordinates: { lat: 10.8015, lng: 106.7412 },
+          images: [
+            'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1540518614846-7ede433c4ef7?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=1200&q=80'
+          ],
+          features: [
+            'Full nội thất cao cấp mới 100% chưa qua sử dụng',
+            'Hồ bơi vô cực trên cao & Bể sục thủy lực',
+            'Hành lang có điều hòa & Cửa khóa thông minh Yale',
+            'Sát vách trạm Metro số 1 Bến Thành - Suối Tiên',
+            'Phòng Gym & Yoga trang bị Technogym'
+          ],
+          nearbyAmenities: [
+            { name: 'Ga Metro An Phú (Tuyến số 1)', distance: '100m', type: 'transport' },
+            { name: 'Estella Place & Vincom Mega Mall', distance: '400m', type: 'shopping' },
+            { name: 'Bệnh viện Quốc tế Mỹ AIH', distance: '1.2km', type: 'hospital' },
+            { name: 'Trường Quốc tế Úc AIS An Phú', distance: '800m', type: 'education' },
+            { name: 'Công viên trung tâm Thảo Điền', distance: '500m', type: 'park' }
+          ],
+          agent: {
+            name: 'Lê Hoàng Nam',
+            phone: '0988 765 432',
+            email: 'nam.le@bds-vietnam.vn',
+            avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80',
+            role: 'Tư vấn Cho thuê BĐS Cao Cấp'
+          },
+          featured: true,
+          yearBuilt: 2023,
+          direction: 'Đông',
+          legalDocument: 'Hợp đồng dài hạn chính chủ',
+          createdAt: '2026-03-22T08:15:00Z'
+        }
+      ];
+
+      let filtered = [...fallbackList];
+      if (activeTab === 'sale' || activeTab === 'rent') {
+        filtered = filtered.filter(p => p.listingType === activeTab);
+      }
+      if (filters.city) {
+        filtered = filtered.filter(p => p.city.toLowerCase().includes(filters.city!.toLowerCase()));
+      }
+      if (filters.propertyType) {
+        filtered = filtered.filter(p => p.propertyType === filters.propertyType);
+      }
+      if (filters.search) {
+        const q = filters.search.toLowerCase();
+        filtered = filtered.filter(p => p.title.toLowerCase().includes(q) || p.address.toLowerCase().includes(q));
+      }
+      setProperties(filtered);
+      setTotalCount(filtered.length);
+    }
+    setLoading(false);
+  }, [filters, activeTab]);
+
+  useEffect(() => {
+    loadProperties();
+  }, [loadProperties]);
+
+  const handleHeroSearch = (searchFilters: {
+    search: string;
+    city: string;
+    propertyType: string;
+    listingType: ListingType;
+  }) => {
+    setIsAdminView(false);
+    setSelectedProperty(null);
+    setShowFavoritesOnly(false);
+    setActiveTab(searchFilters.listingType);
+    setFilters(prev => ({
+      ...prev,
+      search: searchFilters.search || undefined,
+      city: searchFilters.city || undefined,
+      propertyType: (searchFilters.propertyType as any) || undefined
+    }));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigateToListing = (tab: 'sale' | 'rent', city?: string) => {
+    setIsAdminView(false);
+    setSelectedProperty(null);
+    setShowFavoritesOnly(false);
+    setActiveTab(tab);
+    if (city) {
+      setFilters(prev => ({ ...prev, city }));
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSelectProperty = (property: Property) => {
+    setSelectedProperty(property);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleBackToList = () => {
+    setSelectedProperty(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const favoriteProperties = properties.filter(p => favorites.includes(p.id));
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#ffffff' }}>
+      {/* Top Navbar */}
+      <Navbar
+        favoriteCount={favorites.length}
+        onOpenFavorites={() => {
+          setIsAdminView(false);
+          setSelectedProperty(null);
+          setShowFavoritesOnly(true);
+        }}
+        activeTab={activeTab}
+        setActiveTab={(tab) => {
+          setIsAdminView(false);
+          setSelectedProperty(null);
+          setShowFavoritesOnly(false);
+          setActiveTab(tab);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        isAdminView={isAdminView}
+        onToggleAdminView={() => {
+          setSelectedProperty(null);
+          setShowFavoritesOnly(false);
+          setIsAdminView(prev => !prev);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      />
+
+      {/* Main View Switcher */}
+      {isAdminView ? (
+        /* ADMIN PORTAL: Admin Dashboard View */
+        <AdminDashboardView
+          properties={properties}
+          onBackToUserView={() => setIsAdminView(false)}
+          onSelectProperty={(p) => {
+            setIsAdminView(false);
+            handleSelectProperty(p);
+          }}
+        />
+      ) : selectedProperty ? (
+        /* USER PORTAL: Dedicated Property Detail View */
+        <PropertyDetailView
+          property={selectedProperty}
+          allProperties={properties}
+          isFavorite={favorites.includes(selectedProperty.id)}
+          onToggleFavorite={toggleFavorite}
+          onBack={handleBackToList}
+          onSelectProperty={handleSelectProperty}
+        />
+      ) : showFavoritesOnly ? (
+        /* USER PORTAL: Favorites View */
+        <FavoritesView
+          favoriteProperties={favoriteProperties}
+          favorites={favorites}
+          onToggleFavorite={toggleFavorite}
+          onSelectProperty={handleSelectProperty}
+          onBackToHome={() => setShowFavoritesOnly(false)}
+        />
+      ) : activeTab === 'home' ? (
+        /* USER PORTAL: Home Portal View */
+        <HomeView
+          onSearch={handleHeroSearch}
+          onNavigateToListing={handleNavigateToListing}
+        />
+      ) : (
+        /* USER PORTAL: Listing View (Nhà đất bán / Nhà đất cho thuê) */
+        <ListingView
+          listingType={activeTab}
+          properties={properties}
+          loading={loading}
+          totalCount={totalCount}
+          filters={filters}
+          favorites={favorites}
+          onChangeFilters={(newFilters) => setFilters(prev => ({ ...prev, ...newFilters }))}
+          onResetFilters={() => setFilters({ sort: 'newest' })}
+          onToggleFavorite={toggleFavorite}
+          onSelectProperty={handleSelectProperty}
+        />
+      )}
+
+      {/* Reorganized Clean Footer (Without horizontal lines) */}
+      <Footer />
+    </div>
+  );
+};
