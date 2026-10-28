@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import propertyRoutes from './property.routes';
 import inquiryRoutes from './inquiry.routes';
+import authRoutes from './auth.routes';
 
 const router = Router();
 
+router.use('/auth', authRoutes);
 router.use('/properties', propertyRoutes);
 router.use('/inquiries', inquiryRoutes);
 

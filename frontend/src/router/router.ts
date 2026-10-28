@@ -6,13 +6,17 @@ export type RouteView =
   | 'blog-detail'
   | 'property-detail'
   | 'favorites'
-  | 'admin';
+  | 'admin'
+  | 'login'
+  | 'register'
+  | 'forgot-password';
 
 export interface CurrentRoute {
   pathname: string;
   view: RouteView;
   postId?: string;
   propertyId?: string;
+  redirect?: string;
 }
 
 export const parseCurrentRoute = (): CurrentRoute => {
@@ -20,6 +24,7 @@ export const parseCurrentRoute = (): CurrentRoute => {
   const hash = window.location.hash.replace('#', '').toLowerCase();
   const searchParams = new URLSearchParams(window.location.search);
   const id = searchParams.get('id') || undefined;
+  const redirect = searchParams.get('redirect') || undefined;
 
   // Gracefully upgrade legacy hash URLs (e.g. #blog -> /blog, #blog-detail -> /blog-detail)
   if (hash === 'blog') {
@@ -29,6 +34,18 @@ export const parseCurrentRoute = (): CurrentRoute => {
   if (hash === 'blog-detail') {
     window.history.replaceState(null, '', '/blog-detail');
     return { pathname: '/blog-detail', view: 'blog-detail' };
+  }
+
+  if (pathname === '/login') {
+    return { pathname: '/login', view: 'login', redirect };
+  }
+
+  if (pathname === '/register') {
+    return { pathname: '/register', view: 'register', redirect };
+  }
+
+  if (pathname === '/forgot-password') {
+    return { pathname: '/forgot-password', view: 'forgot-password', redirect };
   }
 
   if (pathname === '/blog-detail' || pathname.startsWith('/blog/')) {

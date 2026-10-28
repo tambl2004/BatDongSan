@@ -2,19 +2,25 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 
-// Views - Separated into user and admin
+// Views - Separated into user, admin and auth
 import { HomeView } from './views/user/HomeView';
 import { ListingView } from './views/user/ListingView';
 import { PropertyDetailView } from './views/user/PropertyDetailView';
 import { FavoritesView } from './views/user/FavoritesView';
 import { AdminDashboardView } from './views/admin/AdminDashboardView';
 import { BlogView } from './views/user/blog/BlogView';
+import { LoginView } from './views/auth/login';
+import { RegisterView } from './views/auth/register';
+import { ForgotPasswordView } from './views/auth/forgot-password';
 
 import { Property, PropertyFilterParams, ListingType } from './types/property';
 import { fetchProperties } from './services/api';
 import { parseCurrentRoute, navigate, CurrentRoute } from './router/router';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { ShieldAlert, ArrowLeft, LogIn } from 'lucide-react';
 
-export const App: React.FC = () => {
+const AppContent: React.FC = () => {
+  const { user, isAuthenticated, isAdmin } = useAuth();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -287,7 +293,13 @@ export const App: React.FC = () => {
 
   // Dynamic title based on route
   useEffect(() => {
-    if (route.view === 'blog') {
+    if (route.view === 'login') {
+      document.title = 'Đăng Nhập Tài Khoản | batdongsan.vn';
+    } else if (route.view === 'register') {
+      document.title = 'Đăng Ký Tài Khoản Mới | batdongsan.vn';
+    } else if (route.view === 'forgot-password') {
+      document.title = 'Khôi Phục Mật Khẩu | batdongsan.vn';
+    } else if (route.view === 'blog') {
       document.title = 'Blog & Cẩm Nang Bất Động Sản | batdongsan.vn';
     } else if (route.view === 'blog-detail') {
       document.title = 'Chi Tiết Bài Viết | Blog batdongsan.vn';
@@ -341,6 +353,19 @@ export const App: React.FC = () => {
 
   const isAdminView = route.view === 'admin';
 
+  // Dedicated Auth Views (/login, /register, /forgot-password)
+  if (route.view === 'login') {
+    return <LoginView redirectPath={route.redirect} />;
+  }
+
+  if (route.view === 'register') {
+    return <RegisterView redirectPath={route.redirect} />;
+  }
+
+  if (route.view === 'forgot-password') {
+    return <ForgotPasswordView />;
+  }
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#ffffff' }}>
       {/* Top Navbar */}
@@ -359,16 +384,63 @@ export const App: React.FC = () => {
           if (isAdminView) navigate('/');
           else navigate('/admin');
         }}
+        onOpenCreateListing={() => {
+          if (!isAuthenticated) {
+            navigate('/login?redirect=/dang-tin');
+          } else {
+            alert(`Cổng đăng tin chính chủ đã mở sẵn cho tài khoản: ${user?.fullName}`);
+          }
+        }}
       />
 
       {/* Main View Switcher driven by Router URL */}
       {route.view === 'admin' ? (
-        /* ADMIN PORTAL: Admin Dashboard View (/admin) */
-        <AdminDashboardView
-          properties={properties}
-          onBackToUserView={() => navigate('/')}
-          onSelectProperty={handleSelectProperty}
-        />
+        /* ADMIN PORTAL: Admin Dashboard View (/admin) - Role Protected */
+        isAdmin ? (
+          <AdminDashboardView
+            properties={properties}
+            onBackToUserView={() => navigate('/')}
+            onSelectProperty={handleSelectProperty}
+          />
+        ) : (
+          <div className="container" style={{ padding: '5rem 1.5rem', textAlign: 'center' }}>
+            <div style={{
+              maxWidth: '520px',
+              margin: '0 auto',
+              backgroundColor: '#ffffff',
+              border: '1px solid var(--border)',
+              borderRadius: 'var(--radius-lg)',
+              padding: '2.5rem',
+              boxShadow: 'var(--shadow-md)'
+            }}>
+              <ShieldAlert size={48} color="#ef4444" style={{ margin: '0 auto 1rem' }} />
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '0.5rem', color: 'var(--text-main)' }}>
+                Yêu Cầu Quyền Quản Trị Viên
+              </h2>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                Khu vực quản trị chỉ dành riêng cho tài khoản Quản trị viên hệ thống (<strong>admin@gmail.com</strong>). Bạn cần đăng nhập bằng tài khoản Admin để truy cập.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <button
+                  onClick={() => navigate('/login?redirect=/admin')}
+                  className="btn-primary"
+                  style={{ width: '100%', padding: '0.75rem' }}
+                >
+                  <LogIn size={16} />
+                  <span>Đăng nhập tài khoản Admin</span>
+                </button>
+                <button
+                  onClick={() => navigate('/')}
+                  className="btn-secondary"
+                  style={{ width: '100%', padding: '0.75rem' }}
+                >
+                  <ArrowLeft size={16} />
+                  <span>Quay về trang chủ</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )
       ) : route.view === 'property-detail' ? (
         /* USER PORTAL: Dedicated Property Detail View (/chi-tiet-bds?id=...) */
         <PropertyDetailView
@@ -438,5 +510,13 @@ export const App: React.FC = () => {
       {/* Reorganized Clean Footer */}
       <Footer onNavigateToBlog={() => navigate('/blog')} />
     </div>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 };
