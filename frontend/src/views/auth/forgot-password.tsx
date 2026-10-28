@@ -35,7 +35,7 @@ export const ForgotPasswordView: React.FC = () => {
       const res = await requestPasswordReset(email.trim());
       if (res.success) {
         setIsSubmitted(true);
-        setSuccessMsg(res.message);
+        setSuccessMsg(res.message || 'Yêu cầu khôi phục mật khẩu đã được gửi.');
       } else {
         setErrorMsg(res.message || 'Không thể tìm thấy tài khoản với email này.');
       }

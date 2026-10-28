@@ -1,12 +1,12 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import apiRoutes from './routes';
-import { errorHandler } from './middleware/errorHandler';
+import { errorMiddleware } from './middlewares/error.middleware';
 
 export function createApp(): Application {
   const app = express();
 
-  // Middleware
+  // Middleware CORS & Body Parser
   app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -28,12 +28,13 @@ export function createApp(): Application {
   app.use((_req, res) => {
     res.status(404).json({
       success: false,
+      status: 'fail',
       message: 'Đường dẫn API không tồn tại'
     });
   });
 
-  // Error handling
-  app.use(errorHandler);
+  // Global Error Handler
+  app.use(errorMiddleware);
 
   return app;
 }
