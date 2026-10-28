@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Heart, PhoneCall, Building2, LogOut, Shield, PlusCircle, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { navigate } from '../router/router';
+import { notify } from '../utils/toast';
 
 interface NavbarProps {
   favoriteCount: number;
@@ -39,7 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const handlePostListingClick = () => {
     if (!isAuthenticated) {
-      alert('Bạn cần đăng nhập tài khoản để thực hiện đăng tin bất động sản.');
+      notify.warning('Bạn cần đăng nhập tài khoản để thực hiện đăng tin bất động sản.');
       navigate('/login?redirect=/dang-tin');
       return;
     }
@@ -47,7 +48,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     if (onOpenCreateListing) {
       onOpenCreateListing();
     } else {
-      alert(`Xin chào ${user?.fullName}, cổng đăng tin chính chủ đã mở sẵn cho tài khoản của bạn.`);
+      notify.info(`Xin chào ${user?.fullName}, cổng đăng tin chính chủ đã mở sẵn cho tài khoản của bạn.`);
     }
   };
 
@@ -325,6 +326,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     onClick={() => {
                       setShowUserMenu(false);
                       logout();
+                      notify.info('Đã đăng xuất tài khoản an toàn');
                       navigate('/');
                     }}
                     style={{

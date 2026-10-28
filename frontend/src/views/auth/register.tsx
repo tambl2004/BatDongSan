@@ -17,6 +17,8 @@ import {
   ShieldCheck
 } from 'lucide-react';
 
+import { notify } from '../../utils/toast';
+
 interface RegisterViewProps {
   redirectPath?: string;
 }
@@ -47,21 +49,25 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }
     setSuccessMsg(null);
 
     if (!fullName.trim()) {
+      notify.warning('Vui lòng nhập họ và tên của bạn');
       setErrorMsg('Vui lòng nhập họ và tên của bạn');
       return;
     }
 
     if (password.length < 6) {
+      notify.warning('Mật khẩu phải chứa ít nhất 6 ký tự');
       setErrorMsg('Mật khẩu phải chứa ít nhất 6 ký tự');
       return;
     }
 
     if (password !== confirmPassword) {
+      notify.warning('Mật khẩu xác nhận không trùng khớp');
       setErrorMsg('Mật khẩu xác nhận không trùng khớp');
       return;
     }
 
     if (!agreeTerms) {
+      notify.warning('Vui lòng đồng ý với Điều khoản dịch vụ và Chính sách bảo mật');
       setErrorMsg('Vui lòng đồng ý với Điều khoản dịch vụ và Chính sách bảo mật');
       return;
     }
@@ -78,14 +84,17 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }
       });
 
       if (res.success) {
+        notify.success(res.message || 'Đăng ký tài khoản thành công! Bạn có thể bắt đầu đăng tin ngay.');
         setSuccessMsg(res.message);
         setTimeout(() => {
           navigate(redirectPath || '/');
         }, 800);
       } else {
+        notify.error(res.message || 'Đăng ký không thành công');
         setErrorMsg(res.message);
       }
     } catch (err: any) {
+      notify.error(err.message || 'Đã có lỗi xảy ra trong quá trình đăng ký');
       setErrorMsg(err.message || 'Đã có lỗi xảy ra trong quá trình đăng ký');
     } finally {
       setLoading(false);
@@ -98,14 +107,17 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }
     try {
       const res = await socialLogin(provider);
       if (res.success) {
+        notify.success(res.message || `Đăng nhập qua ${provider} thành công!`);
         setSuccessMsg(res.message);
         setTimeout(() => {
           navigate(redirectPath || '/');
         }, 600);
       } else {
+        notify.error(res.message || 'Lỗi đăng nhập mạng xã hội');
         setErrorMsg(res.message);
       }
     } catch (err: any) {
+      notify.error(err.message || 'Lỗi đăng nhập mạng xã hội');
       setErrorMsg(err.message || 'Lỗi đăng nhập mạng xã hội');
     } finally {
       setLoading(false);

@@ -1,6 +1,6 @@
-export type UserRole = 'admin' | 'user';
+export type UserRole = 'admin' | 'user' | 'agent';
 
-export type UserStatus = 'active' | 'inactive' | 'banned';
+export type UserStatus = 'active' | 'inactive' | 'banned' | 'suspended';
 
 export interface User {
   id: number | string;

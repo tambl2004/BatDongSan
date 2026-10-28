@@ -34,12 +34,14 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-      {/* 4 Clean Minimal KPI Metric Cards (No nested box slop) */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem', width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflowX: 'hidden' }}>
+      {/* 4 Clean Minimal KPI Metric Cards (Anti Overflow) */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
-        gap: '1.25rem'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))',
+        gap: '1.25rem',
+        width: '100%',
+        boxSizing: 'border-box'
       }}>
         {/* Metric 1 */}
         <div style={{
@@ -135,15 +137,23 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
         </div>
       </div>
 
-      {/* 2 Clean Divided Lists (Flat design - NO BOX-INSIDE-BOX SLOP) */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 1fr', gap: '1.5rem' }}>
+      {/* 2 Clean Divided Lists (Flat design - Anti Overflow) */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 420px), 1fr))',
+        gap: '1.5rem',
+        width: '100%',
+        boxSizing: 'border-box'
+      }}>
         {/* Left: Khách Hẹn Mới Nhất (Clean Divider List) */}
         <div style={{
           backgroundColor: '#ffffff',
           borderRadius: '12px',
           border: '1px solid #e2e8f0',
           padding: '1.5rem 1.75rem',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+          boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
+          minWidth: 0,
+          overflow: 'hidden'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #f1f5f9' }}>
             <div>
@@ -264,7 +274,9 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
           borderRadius: '12px',
           border: '1px solid #e2e8f0',
           padding: '1.5rem 1.75rem',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+          boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
+          minWidth: 0,
+          overflow: 'hidden'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #f1f5f9' }}>
             <div>

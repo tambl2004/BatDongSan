@@ -3,6 +3,7 @@ import propertyRoutes from './property.routes';
 import inquiryRoutes from './inquiry.routes';
 import authRoutes from './auth.routes';
 import userRoutes from './user.routes';
+import adminRoutes from './admin.routes';
 import { VIETNAM_LOCATIONS } from '../models/location.model';
 
 const router = Router();
@@ -11,6 +12,7 @@ router.use('/auth', authRoutes);
 router.use('/properties', propertyRoutes);
 router.use('/inquiries', inquiryRoutes);
 router.use('/users', userRoutes);
+router.use('/admin', adminRoutes);
 
 // Location endpoint phục vụ bộ lọc tìm kiếm
 router.get('/locations', (_req, res) => {

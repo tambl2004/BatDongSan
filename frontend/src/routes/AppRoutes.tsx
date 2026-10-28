@@ -67,6 +67,7 @@ export const AppRoutes: React.FC<AppRoutesProps> = ({
   if (route.view === 'admin') {
     return (
       <Admin
+        currentTab={route.adminTab}
         properties={properties}
         onBackToUserView={() => navigate('/')}
         onSelectProperty={onSelectProperty}

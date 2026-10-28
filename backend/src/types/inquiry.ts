@@ -1,3 +1,7 @@
+export type InquiryStatus = 'new' | 'contacted' | 'scheduled' | 'completed' | 'cancelled';
+
+export type InquiryType = 'viewing' | 'consultation' | 'price_offer' | 'valuation' | 'loan';
+
 export interface PropertyInquiry {
   id: string;
   propertyId: string;
@@ -6,6 +10,8 @@ export interface PropertyInquiry {
   phone: string;
   email: string;
   message: string;
-  inquiryType: 'viewing' | 'consultation' | 'price_offer';
+  inquiryType: InquiryType;
+  status: InquiryStatus;
+  notes?: string;
   createdAt: string;
 }

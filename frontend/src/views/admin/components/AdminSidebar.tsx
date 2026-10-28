@@ -13,6 +13,7 @@ import {
 import { AdminTab } from '../types';
 import { useAuth } from '../../../context/AuthContext';
 import { navigate } from '../../../router/router';
+import { notify } from '../../../utils/toast';
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -33,6 +34,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
   const handleLogout = () => {
     logout();
+    notify.info('Đã đăng xuất khỏi cổng Quản trị viên');
     navigate('/login');
   };
 

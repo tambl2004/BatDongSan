@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { Property } from '../types/property';
 import { submitInquiry } from '../services/api';
+import { notify } from '../utils/toast';
 import { PropertyCard } from './PropertyCard';
 
 interface PropertyDetailPageProps {
@@ -82,7 +83,7 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName || !phone) {
-      alert('Vui lòng nhập họ tên và số điện thoại');
+      notify.warning('Vui lòng nhập họ tên và số điện thoại');
       return;
     }
 
@@ -100,8 +101,9 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
 
     if (res.success) {
       setSubmitSuccess(true);
+      notify.success(`Gửi yêu cầu thành công! Chuyên viên ${property.agent.name} sẽ liên hệ lại với bạn trong 15 phút.`);
     } else {
-      alert(res.message);
+      notify.error(res.message || 'Không thể gửi yêu cầu, vui lòng thử lại sau.');
     }
   };
 
@@ -114,7 +116,7 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
       }).catch(() => {});
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert('Đã sao chép liên kết bất động sản vào bộ nhớ tạm!');
+      notify.success('Đã sao chép liên kết bất động sản vào bộ nhớ tạm!');
     }
   };
 

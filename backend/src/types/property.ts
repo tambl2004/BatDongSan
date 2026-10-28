@@ -2,7 +2,7 @@ export type PropertyType = 'apartment' | 'house' | 'villa' | 'land' | 'commercia
 
 export type ListingType = 'sale' | 'rent';
 
-export type PropertyStatus = 'available' | 'sold' | 'pending';
+export type PropertyStatus = 'available' | 'sold' | 'pending' | 'rejected';
 
 export interface PropertyAgent {
   name: string;

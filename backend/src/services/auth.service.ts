@@ -127,6 +127,78 @@ export class AuthService {
     const { password: _, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }
+
+  public getAllUsers(filters?: { search?: string; role?: string; status?: string }): Omit<User, 'password'>[] {
+    let result = [...this.users];
+
+    if (filters?.role && filters.role !== 'all') {
+      result = result.filter(u => u.role === filters.role);
+    }
+
+    if (filters?.status && filters.status !== 'all') {
+      result = result.filter(u => u.status === filters.status);
+    }
+
+    if (filters?.search) {
+      const q = filters.search.toLowerCase().trim();
+      result = result.filter(u =>
+        u.fullName.toLowerCase().includes(q) ||
+        u.email.toLowerCase().includes(q) ||
+        (u.phone && u.phone.includes(q))
+      );
+    }
+
+    return result.map(({ password: _, ...rest }) => rest);
+  }
+
+  public createUserByAdmin(data: {
+    fullName: string;
+    email: string;
+    phone?: string;
+    password?: string;
+    role: 'admin' | 'agent' | 'user';
+    status?: 'active' | 'suspended';
+  }): Omit<User, 'password'> {
+    const existing = this.users.find(u => u.email.toLowerCase() === data.email.toLowerCase().trim());
+    if (existing) {
+      throw new Error('Email này đã được sử dụng');
+    }
+
+    const newUser: User = {
+      id: Date.now(),
+      fullName: data.fullName,
+      email: data.email.toLowerCase().trim(),
+      phone: data.phone || '',
+      password: data.password || '123456Password@',
+      role: data.role as any,
+      status: (data.status as any) || 'active',
+      avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(data.fullName)}`,
+      createdAt: new Date().toISOString()
+    };
+
+    this.users.unshift(newUser);
+    const { password: _, ...userWithoutPassword } = newUser;
+    return userWithoutPassword;
+  }
+
+  public updateUserByAdmin(id: number | string, data: Partial<User> & { password?: string }): Omit<User, 'password'> | null {
+    const index = this.users.findIndex(u => String(u.id) === String(id));
+    if (index === -1) return null;
+
+    this.users[index] = {
+      ...this.users[index],
+      ...data
+    };
+
+    const { password: _, ...userWithoutPassword } = this.users[index];
+    return userWithoutPassword;
+  }
+
+  public deleteUserByAdmin(id: number | string): boolean {
+    const initialLength = this.users.length;
+    this.users = this.users.filter(u => String(u.id) !== String(id));
+    return this.users.length < initialLength;
+  }
 }
 
 export const authService = new AuthService();

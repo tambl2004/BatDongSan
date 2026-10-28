@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, CheckCircle2 } from 'lucide-react';
 import { submitInquiry } from '../../services/api';
+import { notify } from '../../utils/toast';
 
 interface ServiceConsultModalProps {
   isOpen: boolean;
@@ -25,7 +26,7 @@ export const ServiceConsultModal: React.FC<ServiceConsultModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName || !phone) {
-      alert('Vui lòng nhập họ tên và số điện thoại liên hệ');
+      notify.warning('Vui lòng nhập họ tên và số điện thoại liên hệ');
       return;
     }
 
@@ -43,8 +44,9 @@ export const ServiceConsultModal: React.FC<ServiceConsultModalProps> = ({
 
     if (res.success) {
       setSuccess(true);
+      notify.success('Gửi yêu cầu dịch vụ thành công! Chuyên viên sẽ liên hệ với bạn trong 15 phút.');
     } else {
-      alert(res.message);
+      notify.error(res.message || 'Không thể gửi yêu cầu, vui lòng thử lại sau.');
     }
   };
 

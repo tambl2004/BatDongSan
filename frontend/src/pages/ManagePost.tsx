@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   AlertCircle
 } from 'lucide-react';
+import { notify } from '../utils/toast';
 
 export const ManagePost: React.FC = () => {
   const { user, isAuthenticated } = useAuth();
@@ -50,6 +51,7 @@ export const ManagePost: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+    notify.success('Đăng tin bất động sản thành công! Tin đang chờ ban quản trị phê duyệt.');
   };
 
   return (

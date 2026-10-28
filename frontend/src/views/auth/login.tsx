@@ -14,6 +14,8 @@ import {
   ArrowRight
 } from 'lucide-react';
 
+import { notify } from '../../utils/toast';
+
 interface LoginViewProps {
   redirectPath?: string;
 }
@@ -41,6 +43,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
     try {
       const res = await login(email.trim(), password);
       if (res.success) {
+        notify.success(res.message || 'Đăng nhập thành công!');
         setSuccessMsg(res.message);
         setTimeout(() => {
           if (email.toLowerCase().includes('admin')) {
@@ -50,9 +53,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
           }
         }, 500);
       } else {
+        notify.error(res.message || 'Email hoặc mật khẩu không chính xác');
         setErrorMsg(res.message);
       }
     } catch (err: any) {
+      notify.error(err.message || 'Lỗi đăng nhập. Vui lòng thử lại.');
       setErrorMsg(err.message || 'Lỗi đăng nhập. Vui lòng thử lại.');
     } finally {
       setLoading(false);
@@ -65,14 +70,17 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
     try {
       const res = await socialLogin(provider);
       if (res.success) {
+        notify.success(res.message || `Đăng nhập qua ${provider} thành công!`);
         setSuccessMsg(res.message);
         setTimeout(() => {
           navigate(redirectPath || '/');
         }, 500);
       } else {
+        notify.error(res.message || 'Lỗi đăng nhập mạng xã hội');
         setErrorMsg(res.message);
       }
     } catch (err: any) {
+      notify.error(err.message || 'Lỗi đăng nhập mạng xã hội');
       setErrorMsg(err.message || 'Lỗi đăng nhập mạng xã hội');
     } finally {
       setLoading(false);

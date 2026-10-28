@@ -123,6 +123,37 @@ export class PropertyService {
     this.properties.unshift(newProperty);
     return newProperty;
   }
+
+  public updateProperty(id: string, updateData: Partial<Property>): Property | undefined {
+    const index = this.properties.findIndex(p => p.id === id);
+    if (index === -1) return undefined;
+
+    this.properties[index] = {
+      ...this.properties[index],
+      ...updateData
+    };
+    return this.properties[index];
+  }
+
+  public deleteProperty(id: string): boolean {
+    const initialLength = this.properties.length;
+    this.properties = this.properties.filter(p => p.id !== id);
+    return this.properties.length < initialLength;
+  }
+
+  public updatePropertyStatus(id: string, status: any): Property | undefined {
+    return this.updateProperty(id, { status });
+  }
+
+  public togglePropertyFeatured(id: string): Property | undefined {
+    const property = this.properties.find(p => p.id === id);
+    if (!property) return undefined;
+    return this.updateProperty(id, { featured: !property.featured });
+  }
+
+  public getAllPropertiesRaw(): Property[] {
+    return this.properties;
+  }
 }
 
 export const propertyService = new PropertyService();

@@ -1,3 +1,5 @@
+import { AdminTab } from '../views/admin/types';
+
 export type RouteView =
   | 'home'
   | 'sale'
@@ -17,6 +19,7 @@ export type RouteView =
 export interface CurrentRoute {
   pathname: string;
   view: RouteView;
+  adminTab?: AdminTab;
   postId?: string;
   propertyId?: string;
   redirect?: string;
@@ -95,8 +98,21 @@ export const parseCurrentRoute = (): CurrentRoute => {
     return { pathname, view: 'manage-post' };
   }
 
-  if (pathname === '/admin') {
-    return { pathname: '/admin', view: 'admin' };
+  // Admin Portal Sub-routes
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
+    const sub = pathname.replace('/admin', '').replace(/^\//, '').split('/')[0].trim();
+    let adminTab: AdminTab = 'dashboard';
+    if (sub === 'properties') adminTab = 'properties';
+    else if (sub === 'inquiries') adminTab = 'inquiries';
+    else if (sub === 'users') adminTab = 'users';
+    else if (sub === 'settings') adminTab = 'settings';
+    else if (sub === 'dashboard') adminTab = 'dashboard';
+
+    return {
+      pathname,
+      view: 'admin',
+      adminTab
+    };
   }
 
   return { pathname: '/', view: 'home' };

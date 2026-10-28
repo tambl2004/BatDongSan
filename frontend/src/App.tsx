@@ -5,6 +5,9 @@ import { Property, PropertyFilterParams, ListingType } from './types/property';
 import { fetchProperties } from './services/api';
 import { parseCurrentRoute, navigate, CurrentRoute } from './routes/router';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { notify } from './utils/toast';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -49,9 +52,16 @@ const AppContent: React.FC = () => {
   }, [favorites]);
 
   const toggleFavorite = (id: string) => {
-    setFavorites(prev =>
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
-    );
+    setFavorites(prev => {
+      const isFav = prev.includes(id);
+      if (isFav) {
+        notify.info('Đã xóa khỏi danh sách yêu thích');
+        return prev.filter(item => item !== id);
+      } else {
+        notify.success('Đã lưu bất động sản vào danh sách yêu thích!');
+        return [...prev, id];
+      }
+    });
   };
 
   const activeListingType = route.view === 'sale' ? 'sale' : route.view === 'rent' ? 'rent' : undefined;
@@ -251,8 +261,14 @@ const AppContent: React.FC = () => {
         selectedProperty={selectedProperty}
         onToggleFavorite={toggleFavorite}
         onSelectProperty={handleSelectProperty}
-        onChangeFilters={(newFilters) => setFilters(prev => ({ ...prev, ...newFilters }))}
-        onResetFilters={() => setFilters({ sort: 'newest' })}
+        onChangeFilters={(newFilters) => {
+          setFilters(prev => ({ ...prev, ...newFilters }));
+          notify.info('Đã cập nhật tiêu chí lọc BĐS');
+        }}
+        onResetFilters={() => {
+          setFilters({ sort: 'newest' });
+          notify.info('Đã đặt lại toàn bộ bộ lọc tìm kiếm');
+        }}
         onHeroSearch={handleHeroSearch}
         onNavigateToListing={handleNavigateToListing}
       />
@@ -295,8 +311,14 @@ const AppContent: React.FC = () => {
           selectedProperty={selectedProperty}
           onToggleFavorite={toggleFavorite}
           onSelectProperty={handleSelectProperty}
-          onChangeFilters={(newFilters) => setFilters(prev => ({ ...prev, ...newFilters }))}
-          onResetFilters={() => setFilters({ sort: 'newest' })}
+          onChangeFilters={(newFilters) => {
+            setFilters(prev => ({ ...prev, ...newFilters }));
+            notify.info('Đã cập nhật tiêu chí lọc BĐS');
+          }}
+          onResetFilters={() => {
+            setFilters({ sort: 'newest' });
+            notify.info('Đã đặt lại toàn bộ bộ lọc tìm kiếm');
+          }}
           onHeroSearch={handleHeroSearch}
           onNavigateToListing={handleNavigateToListing}
         />
@@ -312,6 +334,18 @@ export const App: React.FC = () => {
   return (
     <AuthProvider>
       <AppContent />
+      <ToastContainer
+        position="top-right"
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </AuthProvider>
   );
 };
