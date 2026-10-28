@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Property } from '../types/property';
-import { PropertyCard } from '../components/property/PropertyCard';
-import { Heart, User, Mail, Shield, Phone, FileText, ArrowLeft } from 'lucide-react';
+import { PropertyCard } from '../components/PropertyCard';
+import { Heart, User, Mail, Shield, Phone, FileText, ArrowLeft, Home } from 'lucide-react';
 import { navigate } from '../router/router';
 
 export interface ProfileProps {
@@ -16,38 +16,84 @@ export const Profile: React.FC<ProfileProps> = ({
   favoriteProperties = [],
   favorites = [],
   onToggleFavorite = () => {},
-  onSelectProperty = (prop) => navigate(`/property/${prop.id}`),
+  onSelectProperty = (prop) => navigate(`/chi-tiet-bds?id=${prop.id}`),
 }) => {
   const { user, isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState<'favorites' | 'info'>('favorites');
 
   return (
-    <main className="min-h-[80vh] bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <main style={{ minHeight: '80vh', backgroundColor: '#f8fafc', padding: '2rem 0 4rem 0' }}>
+      <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        
         {/* Profile Card Header */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white text-2xl font-bold shadow-md shadow-emerald-500/20">
-              {user?.fullName?.charAt(0) || <User className="w-10 h-10" />}
+        <div style={{
+          backgroundColor: '#ffffff',
+          borderRadius: '12px',
+          border: '1px solid #e2e8f0',
+          padding: '1.75rem',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1.25rem'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+            <div style={{
+              width: '64px',
+              height: '64px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #059669 0%, #0d9488 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#ffffff',
+              fontSize: '1.75rem',
+              fontWeight: 800,
+              boxShadow: '0 4px 10px rgba(5, 150, 105, 0.25)'
+            }}>
+              {user?.fullName?.charAt(0).toUpperCase() || <User size={30} />}
             </div>
-            <div className="text-center sm:text-left">
-              <h1 className="text-2xl font-bold text-slate-800 tracking-tight">
-                {user?.fullName || (isAuthenticated ? 'Thành viên BĐS' : 'Khách vãng lai')}
+
+            <div>
+              <h1 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>
+                {user?.fullName || (isAuthenticated ? 'Thành viên BatDongSan.vn' : 'Khách vãng lai')}
               </h1>
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 mt-2 text-sm text-slate-500">
-                <span className="flex items-center gap-1.5">
-                  <Mail className="w-4 h-4 text-slate-400" />
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '1rem',
+                marginTop: '0.4rem',
+                fontSize: '0.825rem',
+                color: '#64748b'
+              }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                  <Mail size={15} color="#94a3b8" />
                   {user?.email || 'Chưa đăng nhập'}
                 </span>
+
                 {user?.phone && (
-                  <span className="flex items-center gap-1.5">
-                    <Phone className="w-4 h-4 text-slate-400" />
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                    <Phone size={15} color="#94a3b8" />
                     {user.phone}
                   </span>
                 )}
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                  <Shield className="w-3 h-3" />
-                  {user?.role === 'admin' ? 'Quản trị viên' : 'Thành viên'}
+
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '2px 8px',
+                  borderRadius: '9999px',
+                  fontSize: '0.725rem',
+                  fontWeight: 700,
+                  backgroundColor: '#ecfdf5',
+                  color: '#065f46',
+                  border: '1px solid #a7f3d0'
+                }}>
+                  <Shield size={12} />
+                  <span>{user?.role === 'admin' ? 'Quản trị viên' : 'Thành viên'}</span>
                 </span>
               </div>
             </div>
@@ -55,35 +101,71 @@ export const Profile: React.FC<ProfileProps> = ({
 
           <button
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 16px',
+              borderRadius: '8px',
+              border: '1px solid #cbd5e1',
+              backgroundColor: '#ffffff',
+              color: '#475569',
+              fontSize: '0.825rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.15s ease'
+            }}
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft size={16} />
             <span>Về trang chủ</span>
           </button>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-2 border-b border-slate-200">
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          borderBottom: '2px solid #e2e8f0',
+          paddingBottom: '2px'
+        }}>
           <button
             onClick={() => setActiveTab('favorites')}
-            className={`flex items-center gap-2 pb-3 px-4 text-sm font-semibold transition-colors border-b-2 ${
-              activeTab === 'favorites'
-                ? 'border-emerald-600 text-emerald-700'
-                : 'border-transparent text-slate-500 hover:text-slate-700'
-            }`}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 18px',
+              fontSize: '0.9rem',
+              fontWeight: activeTab === 'favorites' ? 800 : 600,
+              color: activeTab === 'favorites' ? '#059669' : '#64748b',
+              borderBottom: activeTab === 'favorites' ? '3px solid #059669' : '3px solid transparent',
+              marginBottom: '-2px',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease'
+            }}
           >
-            <Heart className="w-4 h-4" />
+            <Heart size={16} fill={activeTab === 'favorites' ? '#059669' : 'none'} />
             <span>Tin đã lưu ({favoriteProperties.length})</span>
           </button>
+
           <button
             onClick={() => setActiveTab('info')}
-            className={`flex items-center gap-2 pb-3 px-4 text-sm font-semibold transition-colors border-b-2 ${
-              activeTab === 'info'
-                ? 'border-emerald-600 text-emerald-700'
-                : 'border-transparent text-slate-500 hover:text-slate-700'
-            }`}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 18px',
+              fontSize: '0.9rem',
+              fontWeight: activeTab === 'info' ? 800 : 600,
+              color: activeTab === 'info' ? '#059669' : '#64748b',
+              borderBottom: activeTab === 'info' ? '3px solid #059669' : '3px solid transparent',
+              marginBottom: '-2px',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease'
+            }}
           >
-            <FileText className="w-4 h-4" />
+            <FileText size={16} />
             <span>Thông tin cá nhân</span>
           </button>
         </div>
@@ -91,21 +173,63 @@ export const Profile: React.FC<ProfileProps> = ({
         {/* Tab Content */}
         {activeTab === 'favorites' ? (
           favoriteProperties.length === 0 ? (
-            <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-12 text-center max-w-lg mx-auto">
-              <Heart className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-              <h3 className="text-base font-bold text-slate-800 mb-1">Chưa có bất động sản nào được lưu</h3>
-              <p className="text-sm text-slate-500 mb-4">
-                Nhấn vào biểu tượng trái tim trên bất kỳ tin đăng nào để lưu và theo dõi tại đây.
+            <div style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '12px',
+              border: '2px dashed #cbd5e1',
+              padding: '3.5rem 2rem',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.85rem'
+            }}>
+              <div style={{
+                width: '60px',
+                height: '60px',
+                borderRadius: '50%',
+                backgroundColor: '#fee2e2',
+                color: '#ef4444',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '0.5rem'
+              }}>
+                <Heart size={28} />
+              </div>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>
+                Chưa có bất động sản nào được lưu
+              </h3>
+              <p style={{ fontSize: '0.85rem', color: '#64748b', maxWidth: '420px', margin: 0 }}>
+                Nhấn vào biểu tượng trái tim trên bất kỳ tin đăng nhà đất nào để lưu lại danh sách so sánh và theo dõi biến động giá.
               </p>
               <button
-                onClick={() => navigate('/properties')}
-                className="px-5 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition shadow-sm"
+                onClick={() => navigate('/nha-dat-ban')}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '9px 20px',
+                  borderRadius: '8px',
+                  backgroundColor: '#059669',
+                  color: '#ffffff',
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  marginTop: '0.75rem',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 6px rgba(5, 150, 105, 0.25)'
+                }}
               >
-                Khám phá nhà đất
+                <Home size={15} />
+                <span>Khám phá nhà đất ngay</span>
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+              gap: '1.5rem'
+            }}>
               {favoriteProperties.map((prop) => (
                 <PropertyCard
                   key={prop.id}
@@ -118,20 +242,48 @@ export const Profile: React.FC<ProfileProps> = ({
             </div>
           )
         ) : (
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 max-w-xl space-y-4">
-            <h3 className="text-base font-bold text-slate-800">Chi tiết tài khoản</h3>
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div className="text-slate-500">Họ và tên:</div>
-              <div className="font-semibold text-slate-800">{user?.fullName || '---'}</div>
-              <div className="text-slate-500">Email:</div>
-              <div className="font-semibold text-slate-800">{user?.email || '---'}</div>
-              <div className="text-slate-500">Số điện thoại:</div>
-              <div className="font-semibold text-slate-800">{user?.phone || '---'}</div>
-              <div className="text-slate-500">Vai trò:</div>
-              <div className="font-semibold text-emerald-700 uppercase">{user?.role || 'User'}</div>
+          <div style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '12px',
+            border: '1px solid #e2e8f0',
+            padding: '1.75rem',
+            maxWidth: '640px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1.25rem'
+          }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', margin: 0, paddingBottom: '0.75rem', borderBottom: '1px solid #f1f5f9' }}>
+              Chi tiết tài khoản thành viên
+            </h3>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', rowGap: '1rem', columnGap: '1rem', fontSize: '0.875rem' }}>
+              <div style={{ color: '#64748b', fontWeight: 600 }}>Họ và tên:</div>
+              <div style={{ color: '#0f172a', fontWeight: 700 }}>{user?.fullName || '---'}</div>
+
+              <div style={{ color: '#64748b', fontWeight: 600 }}>Email đăng nhập:</div>
+              <div style={{ color: '#0f172a', fontWeight: 700 }}>{user?.email || '---'}</div>
+
+              <div style={{ color: '#64748b', fontWeight: 600 }}>Số điện thoại:</div>
+              <div style={{ color: '#0f172a', fontWeight: 700 }}>{user?.phone || 'Chưa cập nhật'}</div>
+
+              <div style={{ color: '#64748b', fontWeight: 600 }}>Phân quyền:</div>
+              <div>
+                <span style={{
+                  padding: '3px 8px',
+                  borderRadius: '4px',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  backgroundColor: '#ecfdf5',
+                  color: '#065f46',
+                  textTransform: 'uppercase'
+                }}>
+                  {user?.role || 'Khách hàng'}
+                </span>
+              </div>
             </div>
           </div>
         )}
+
       </div>
     </main>
   );

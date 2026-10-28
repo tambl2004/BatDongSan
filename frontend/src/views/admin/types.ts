@@ -57,12 +57,57 @@ export interface SystemStats {
 }
 
 export interface SystemSettings {
+  // 1. General & Contact
   siteName: string;
+  slogan?: string;
   hotline: string;
   supportEmail: string;
   officeAddress: string;
+  workingHours?: string;
+  maintenanceMode: boolean;
+  maintenanceNotice?: string;
+
+  // 2. Pricing & VietQR Payments
   autoApprovePost: boolean;
   maxFreePostDays: number;
-  featuredPostFeePerDay: number;
-  maintenanceMode: boolean;
+  regularPostFeePerDay: number;
+  vipSilverFeePerDay: number;
+  vipGoldFeePerDay: number;
+  vipDiamondFeePerDay: number;
+  refreshPostFee: number;
+  bankName: string;
+  bankAccount: string;
+  bankAccountName: string;
+  qrTransferSyntax: string;
+
+  // 3. Notifications & Telegram
+  notifyLeadTelegram: boolean;
+  telegramBotToken?: string;
+  telegramChatId?: string;
+  notifyLeadEmail: boolean;
+  adminNotificationEmail?: string;
+  smtpHost?: string;
+  smtpPort?: number;
+  smtpUser?: string;
+
+  // 4. SEO & Marketing
+  metaTitle: string;
+  metaDescription: string;
+  metaKeywords: string;
+  googleAnalyticsId?: string;
+  facebookPixelId?: string;
+  ogImageUrl?: string;
+  facebookUrl?: string;
+  zaloUrl?: string;
+  youtubeUrl?: string;
+  tiktokUrl?: string;
+
+  // 5. Moderation & Anti-Spam
+  maxDailyPostsPerUser: number;
+  bannedKeywords: string;
+  requirePhoneVerification: boolean;
+  requireKycAgent: boolean;
+
+  // Backwards compatibility
+  featuredPostFeePerDay?: number;
 }

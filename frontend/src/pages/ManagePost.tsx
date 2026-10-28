@@ -9,7 +9,8 @@ import {
   DollarSign,
   Maximize2,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Home
 } from 'lucide-react';
 import { notify } from '../utils/toast';
 
@@ -28,23 +29,78 @@ export const ManagePost: React.FC = () => {
   const [description, setDescription] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
+  const labelStyle: React.CSSProperties = {
+    display: 'block',
+    fontSize: '0.8rem',
+    fontWeight: 700,
+    color: '#334155',
+    marginBottom: '0.4rem'
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%',
+    padding: '10px 14px',
+    borderRadius: '8px',
+    border: '1px solid #cbd5e1',
+    fontSize: '0.875rem',
+    outline: 'none',
+    boxSizing: 'border-box',
+    backgroundColor: '#ffffff',
+    color: '#0f172a',
+    transition: 'border-color 0.15s ease'
+  };
+
   if (!isAuthenticated) {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white rounded-2xl border border-slate-200 p-8 text-center shadow-sm">
-          <AlertCircle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-slate-800 mb-2">Yêu cầu đăng nhập</h2>
-          <p className="text-sm text-slate-600 mb-6">
-            Bạn cần đăng nhập tài khoản để thực hiện đăng tin bất động sản chính chủ.
+      <main style={{ minHeight: '75vh', backgroundColor: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+        <div style={{
+          maxWidth: '460px',
+          width: '100%',
+          backgroundColor: '#ffffff',
+          borderRadius: '12px',
+          border: '1px solid #e2e8f0',
+          padding: '2.5rem 2rem',
+          textAlign: 'center',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
+        }}>
+          <div style={{
+            width: '56px',
+            height: '56px',
+            borderRadius: '50%',
+            backgroundColor: '#fef3c7',
+            color: '#d97706',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 1.25rem auto'
+          }}>
+            <AlertCircle size={30} />
+          </div>
+          <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.5rem' }}>
+            Yêu cầu đăng nhập tài khoản
+          </h2>
+          <p style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '1.75rem', lineHeight: 1.5 }}>
+            Bạn cần đăng nhập tài khoản để thực hiện đăng tin bất động sản chính chủ và quản lý tin đăng trên sàn.
           </p>
           <button
             onClick={() => navigate('/login?redirect=/dang-tin')}
-            className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition shadow-md shadow-emerald-600/20"
+            style={{
+              width: '100%',
+              padding: '11px',
+              backgroundColor: '#059669',
+              color: '#ffffff',
+              fontWeight: 700,
+              fontSize: '0.9rem',
+              borderRadius: '8px',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 2px 6px rgba(5, 150, 105, 0.25)'
+            }}
           >
             Đăng nhập ngay
           </button>
         </div>
-      </div>
+      </main>
     );
   }
 
@@ -55,71 +111,156 @@ export const ManagePost: React.FC = () => {
   };
 
   return (
-    <main className="min-h-[85vh] bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <div className="flex items-center gap-2 text-emerald-600 text-sm font-bold uppercase tracking-wider mb-1">
-            <Building2 className="w-4 h-4" />
-            <span>Cổng đăng tin chính chủ</span>
+    <main style={{ minHeight: '85vh', backgroundColor: '#f8fafc', padding: '2.5rem 0 4rem 0' }}>
+      <div className="container" style={{ maxWidth: '860px', margin: '0 auto' }}>
+        
+        {/* Header */}
+        <div style={{ marginBottom: '2rem' }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            color: '#059669',
+            fontSize: '0.75rem',
+            fontWeight: 800,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            marginBottom: '0.35rem'
+          }}>
+            <Building2 size={16} />
+            <span>CỔNG ĐĂNG TIN CHÍNH CHỦ</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.35rem 0' }}>
             Đăng tin Bất Động Sản Mới
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
-            Đăng bởi: <span className="font-semibold text-slate-700">{user?.fullName || 'Chính chủ'}</span> • Tiếp cận hàng triệu khách hàng tiềm năng trên hệ thống BatDongSan.vn
+
+          <p style={{ fontSize: '0.875rem', color: '#64748b', margin: 0 }}>
+            Người đăng: <strong style={{ color: '#0f172a' }}>{user?.fullName || 'Chính chủ'}</strong> • Tiếp cận hàng triệu khách hàng tiềm năng toàn quốc trên hệ thống BatDongSan.vn
           </p>
         </div>
 
         {submitted ? (
-          <div className="bg-white rounded-2xl border border-emerald-100 p-8 sm:p-12 text-center shadow-sm">
-            <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600">
-              <CheckCircle2 className="w-10 h-10" />
+          <div style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '12px',
+            border: '1px solid #a7f3d0',
+            padding: '3rem 2rem',
+            textAlign: 'center',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.03)'
+          }}>
+            <div style={{
+              width: '64px',
+              height: '64px',
+              borderRadius: '50%',
+              backgroundColor: '#ecfdf5',
+              color: '#059669',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 1rem auto'
+            }}>
+              <CheckCircle2 size={36} />
             </div>
-            <h2 className="text-2xl font-bold text-slate-800 mb-2">Đăng tin thành công!</h2>
-            <p className="text-slate-600 max-w-md mx-auto mb-6 text-sm">
-              Tin đăng của bạn đã được tiếp nhận và gửi tới ban quản trị để thẩm định pháp lý trước khi hiển thị công khai.
+
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.5rem' }}>
+              Đăng tin thành công!
+            </h2>
+
+            <p style={{ fontSize: '0.875rem', color: '#64748b', maxWidth: '480px', margin: '0 auto 1.75rem auto', lineHeight: 1.6 }}>
+              Tin đăng của bạn đã được chuyển tới bộ phận kiểm duyệt để thẩm định thông tin pháp lý. Tin sẽ được hiển thị công khai ngay sau khi được phê duyệt.
             </p>
-            <div className="flex justify-center gap-4">
+
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
               <button
                 onClick={() => setSubmitted(false)}
-                className="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 text-sm font-semibold hover:bg-slate-50 transition"
+                style={{
+                  padding: '9px 18px',
+                  borderRadius: '8px',
+                  border: '1px solid #cbd5e1',
+                  backgroundColor: '#ffffff',
+                  color: '#475569',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  cursor: 'pointer'
+                }}
               >
                 Đăng thêm tin khác
               </button>
+
               <button
-                onClick={() => navigate('/properties')}
-                className="px-5 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition shadow-sm"
+                onClick={() => navigate('/nha-dat-ban')}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '9px 20px',
+                  borderRadius: '8px',
+                  backgroundColor: '#059669',
+                  color: '#ffffff',
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  border: 'none',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 6px rgba(5, 150, 105, 0.25)'
+                }}
               >
-                Xem danh sách tin
+                <Home size={15} />
+                <span>Xem danh sách tin</span>
               </button>
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '12px',
+              border: '1px solid #e2e8f0',
+              padding: '2rem',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1.5rem'
+            }}
+          >
             {/* Hình thức & Loại BĐS */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Hình thức giao dịch</label>
-                <div className="grid grid-cols-2 gap-3">
+                <label style={labelStyle}>Hình thức giao dịch</label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                   <button
                     type="button"
                     onClick={() => setListingType('sale')}
-                    className={`py-2.5 px-4 rounded-xl text-sm font-semibold border transition ${
-                      listingType === 'sale'
-                        ? 'border-emerald-600 bg-emerald-50 text-emerald-700'
-                        : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-                    }`}
+                    style={{
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      fontSize: '0.85rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      border: listingType === 'sale' ? '2px solid #059669' : '1px solid #cbd5e1',
+                      backgroundColor: listingType === 'sale' ? '#ecfdf5' : '#ffffff',
+                      color: listingType === 'sale' ? '#065f46' : '#475569',
+                      transition: 'all 0.15s ease'
+                    }}
                   >
                     Bán nhà đất
                   </button>
+
                   <button
                     type="button"
                     onClick={() => setListingType('rent')}
-                    className={`py-2.5 px-4 rounded-xl text-sm font-semibold border transition ${
-                      listingType === 'rent'
-                        ? 'border-emerald-600 bg-emerald-50 text-emerald-700'
-                        : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-                    }`}
+                    style={{
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      fontSize: '0.85rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      border: listingType === 'rent' ? '2px solid #059669' : '1px solid #cbd5e1',
+                      backgroundColor: listingType === 'rent' ? '#ecfdf5' : '#ffffff',
+                      color: listingType === 'rent' ? '#065f46' : '#475569',
+                      transition: 'all 0.15s ease'
+                    }}
                   >
                     Cho thuê
                   </button>
@@ -127,11 +268,11 @@ export const ManagePost: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Loại hình bất động sản</label>
+                <label style={labelStyle}>Loại hình bất động sản</label>
                 <select
                   value={propertyType}
                   onChange={(e) => setPropertyType(e.target.value)}
-                  className="w-full py-2.5 px-3.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
+                  style={inputStyle}
                 >
                   <option value="apartment">Căn hộ / Chung cư</option>
                   <option value="house">Nhà riêng / Nhà phố</option>
@@ -141,29 +282,29 @@ export const ManagePost: React.FC = () => {
               </div>
             </div>
 
-            {/* Tiêu đề */}
+            {/* Tiêu đề tin đăng */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                Tiêu đề tin đăng <span className="text-rose-500">*</span>
+              <label style={labelStyle}>
+                Tiêu đề tin đăng <span style={{ color: '#ef4444' }}>*</span>
               </label>
               <input
                 required
                 type="text"
-                placeholder="VD: Bán căn hộ 2PN Vinhomes Grand Park view công viên 36ha..."
+                placeholder="VD: Bán căn hộ 2PN Masteri Thảo Điền view trọn sông Sài Gòn..."
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full py-2.5 px-3.5 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 placeholder-slate-400"
+                style={inputStyle}
               />
             </div>
 
-            {/* Vị trí */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Địa chỉ & Vị trí */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Tỉnh / Thành phố</label>
+                <label style={labelStyle}>Tỉnh / Thành phố</label>
                 <select
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="w-full py-2.5 px-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
+                  style={inputStyle}
                 >
                   <option value="Hồ Chí Minh">TP. Hồ Chí Minh</option>
                   <option value="Hà Nội">Hà Nội</option>
@@ -172,126 +313,175 @@ export const ManagePost: React.FC = () => {
                   <option value="Đồng Nai">Đồng Nai</option>
                 </select>
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Quận / Huyện</label>
+                <label style={labelStyle}>Quận / Huyện</label>
                 <input
                   required
                   type="text"
                   placeholder="VD: Quận 1, Quận 7, TP. Thủ Đức"
                   value={district}
                   onChange={(e) => setDistrict(e.target.value)}
-                  className="w-full py-2.5 px-3 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
+                  style={inputStyle}
                 />
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Địa chỉ chi tiết</label>
-                <div className="relative">
-                  <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <label style={labelStyle}>Địa chỉ chi tiết</label>
+                <div style={{ position: 'relative' }}>
                   <input
                     required
                     type="text"
                     placeholder="Số nhà, tên đường..."
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
+                    style={{ ...inputStyle, paddingLeft: '34px' }}
                   />
+                  <MapPin size={16} color="#94a3b8" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
                 </div>
               </div>
             </div>
 
-            {/* Thông số BĐS: Giá, Diện tích, PN, WC */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {/* Giá, Diện tích, Phòng ngủ, Phòng tắm */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Mức giá</label>
-                <div className="relative">
-                  <DollarSign className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <label style={labelStyle}>Mức giá (VNĐ)</label>
+                <div style={{ position: 'relative' }}>
                   <input
                     required
                     type="text"
                     placeholder="VD: 3.5 tỷ / 15 triệu"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
+                    style={{ ...inputStyle, paddingLeft: '34px' }}
                   />
+                  <DollarSign size={16} color="#94a3b8" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Diện tích (m²)</label>
-                <div className="relative">
-                  <Maximize2 className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <label style={labelStyle}>Diện tích (m²)</label>
+                <div style={{ position: 'relative' }}>
                   <input
                     required
                     type="number"
                     placeholder="VD: 85"
                     value={area}
                     onChange={(e) => setArea(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
+                    style={{ ...inputStyle, paddingLeft: '34px' }}
                   />
+                  <Maximize2 size={16} color="#94a3b8" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Số phòng ngủ</label>
+                <label style={labelStyle}>Số phòng ngủ</label>
                 <input
                   type="number"
                   min="0"
                   value={bedrooms}
                   onChange={(e) => setBedrooms(e.target.value)}
-                  className="w-full py-2.5 px-3 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
+                  style={inputStyle}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Số phòng tắm</label>
+                <label style={labelStyle}>Số phòng tắm / WC</label>
                 <input
                   type="number"
                   min="0"
                   value={bathrooms}
                   onChange={(e) => setBathrooms(e.target.value)}
-                  className="w-full py-2.5 px-3 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
+                  style={inputStyle}
                 />
               </div>
             </div>
 
             {/* Mô tả chi tiết */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Mô tả chi tiết</label>
+              <label style={labelStyle}>Mô tả chi tiết bất động sản</label>
               <textarea
                 rows={4}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Mô tả các tiện ích xung quanh, hướng nhà, tình trạng sổ đỏ, pháp lý..."
-                className="w-full p-3 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 placeholder-slate-400"
+                placeholder="Mô tả thông tin chi tiết: tiện ích nội khu, hướng ban công, tình trạng bàn giao nội thất, pháp lý sổ đỏ/sổ hồng công chứng ngay..."
+                style={{ ...inputStyle, resize: 'vertical' }}
               />
             </div>
 
             {/* Upload ảnh placeholder */}
-            <div className="border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center hover:border-emerald-500 transition-colors cursor-pointer bg-slate-50/50">
-              <Upload className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-              <p className="text-sm font-medium text-slate-700">Kéo thả ảnh hoặc bấm để chọn ảnh BĐS</p>
-              <p className="text-xs text-slate-400 mt-1">Định dạng JPG, PNG, WebP (Tối đa 10 ảnh, mỗi ảnh dưới 5MB)</p>
+            <div>
+              <label style={labelStyle}>Hình ảnh thực tế bất động sản</label>
+              <div style={{
+                border: '2px dashed #cbd5e1',
+                borderRadius: '10px',
+                padding: '2rem 1.5rem',
+                textAlign: 'center',
+                backgroundColor: '#f8fafc',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
+              }}>
+                <Upload size={32} color="#94a3b8" style={{ margin: '0 auto 0.5rem auto' }} />
+                <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#334155' }}>
+                  Kéo thả hình ảnh hoặc bấm để chọn tệp từ thiết bị
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '4px' }}>
+                  Hỗ trợ định dạng JPG, PNG, WebP (Tối đa 10 ảnh, mỗi ảnh dung lượng dưới 5MB)
+                </div>
+              </div>
             </div>
 
-            {/* Submit Button */}
-            <div className="pt-2 flex justify-end gap-3">
+            {/* Submit Bar */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '1rem',
+              paddingTop: '1rem',
+              borderTop: '1px solid #f1f5f9'
+            }}>
               <button
                 type="button"
                 onClick={() => navigate('/')}
-                className="px-5 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 transition"
+                style={{
+                  padding: '9px 20px',
+                  borderRadius: '8px',
+                  border: '1px solid #cbd5e1',
+                  backgroundColor: '#ffffff',
+                  color: '#475569',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  cursor: 'pointer'
+                }}
               >
-                Hủy
+                Hủy bỏ
               </button>
+
               <button
                 type="submit"
-                className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl transition shadow-md shadow-emerald-600/20 flex items-center gap-2"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '9px 24px',
+                  borderRadius: '8px',
+                  backgroundColor: '#059669',
+                  color: '#ffffff',
+                  fontSize: '0.875rem',
+                  fontWeight: 700,
+                  border: 'none',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 6px rgba(5, 150, 105, 0.25)',
+                  transition: 'all 0.15s ease'
+                }}
               >
-                <PlusCircle className="w-4 h-4" />
+                <PlusCircle size={16} />
                 <span>Đăng tin ngay</span>
               </button>
             </div>
           </form>
         )}
+
       </div>
     </main>
   );
