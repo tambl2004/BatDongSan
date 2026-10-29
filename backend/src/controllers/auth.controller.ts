@@ -116,6 +116,30 @@ export class AuthController {
       });
     }
   }
+
+  public async forgotPassword(req: Request, res: Response): Promise<void> {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        res.status(400).json({
+          success: false,
+          message: 'Vui lòng cung cấp địa chỉ email'
+        });
+        return;
+      }
+
+      const result = await authService.forgotPassword(email);
+      res.status(200).json({
+        success: true,
+        message: result.message
+      });
+    } catch (error: any) {
+      res.status(400).json({
+        success: false,
+        message: error.message || 'Yêu cầu khôi phục mật khẩu không thành công'
+      });
+    }
+  }
 }
 
 export const authController = new AuthController();

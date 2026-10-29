@@ -1,5 +1,5 @@
 import React from 'react';
-import { Building2, Phone, Mail, MapPin, ShieldCheck, CheckCircle2, Headphones } from 'lucide-react';
+import { Phone, Mail, MapPin, ShieldCheck, CheckCircle2, Headphones } from 'lucide-react';
 
 interface FooterProps {
   onNavigateToBlog?: () => void;
@@ -22,14 +22,20 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToBlog }) => {
         }}>
           {/* Brand Col */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-              <Building2 size={24} color="var(--green-primary)" />
-              <span style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)' }}>
-                batdongsan<span style={{ color: 'var(--green-primary)' }}>.vn</span>
-              </span>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.85rem' }}>
+              <img
+                src="/assets/images/logo/Logo_GreenNest.png"
+                alt="GreenNest"
+                style={{
+                  height: '40px',
+                  maxWidth: '200px',
+                  objectFit: 'contain',
+                  display: 'block'
+                }}
+              />
             </div>
             <p style={{ fontSize: '0.875rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
-              Cổng thông tin và sàn giao dịch bất động sản minh bạch hàng đầu Việt Nam. Kết nối trực tiếp giữa người mua và chủ sở hữu.
+              Cổng thông tin và sàn giao dịch bất động sản GreenNest minh bạch hàng đầu Việt Nam. Kết nối trực tiếp giữa người mua và chủ sở hữu.
             </p>
           </div>
 

@@ -113,10 +113,10 @@ export class AdminService {
     requireKycAgent: false
   };
 
-  public getSystemStats() {
+  public async getSystemStats() {
     const properties = propertyService.getAllPropertiesRaw();
     const inquiries = inquiryService.getInquiries();
-    const users = authService.getAllUsers();
+    const users = await authService.getAllUsers();
 
     // 1. Property Stats
     const totalProperties = properties.length;

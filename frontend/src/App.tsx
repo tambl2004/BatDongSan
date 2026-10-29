@@ -186,27 +186,27 @@ const AppContent: React.FC = () => {
   // Update Page Title based on Route
   useEffect(() => {
     if (route.view === 'login') {
-      document.title = 'Đăng Nhập Tài Khoản | batdongsan.vn';
+      document.title = 'Đăng Nhập Tài Khoản | GreenNest';
     } else if (route.view === 'register') {
-      document.title = 'Đăng Ký Tài Khoản Mới | batdongsan.vn';
+      document.title = 'Đăng Ký Tài Khoản Mới | GreenNest';
     } else if (route.view === 'forgot-password') {
-      document.title = 'Khôi Phục Mật Khẩu | batdongsan.vn';
+      document.title = 'Khôi Phục Mật Khẩu | GreenNest';
     } else if (route.view === 'blog') {
-      document.title = 'Blog & Cẩm Nang Bất Động Sản | batdongsan.vn';
+      document.title = 'Blog & Cẩm Nang Bất Động Sản | GreenNest';
     } else if (route.view === 'blog-detail') {
-      document.title = 'Chi Tiết Bài Viết | Blog batdongsan.vn';
+      document.title = 'Chi Tiết Bài Viết | Blog GreenNest';
     } else if (route.view === 'sale') {
-      document.title = 'Nhà Đất Bán Chính Chủ | batdongsan.vn';
+      document.title = 'Nhà Đất Bán Chính Chủ | GreenNest';
     } else if (route.view === 'rent') {
-      document.title = 'Nhà Đất Cho Thuê | batdongsan.vn';
+      document.title = 'Nhà Đất Cho Thuê | GreenNest';
     } else if (route.view === 'admin') {
-      document.title = 'Cổng Quản Trị Hệ Thống | batdongsan.vn';
+      document.title = 'Cổng Quản Trị Hệ Thống | GreenNest';
     } else if (route.view === 'favorites' || route.view === 'profile') {
-      document.title = 'Trang Cá Nhân & Bất Động Sản Đã Lưu | batdongsan.vn';
+      document.title = 'Trang Cá Nhân & Bất Động Sản Đã Lưu | GreenNest';
     } else if (route.view === 'manage-post') {
-      document.title = 'Cổng Đăng Tin BĐS Chính Chủ | batdongsan.vn';
+      document.title = 'Cổng Đăng Tin BĐS Chính Chủ | GreenNest';
     } else {
-      document.title = 'batdongsan.vn | Sàn Giao Dịch Bất Động Sản Cao Cấp';
+      document.title = 'GreenNest — Sàn Giao Dịch Bất Động Sản Cao Cấp';
     }
   }, [route.view]);
 

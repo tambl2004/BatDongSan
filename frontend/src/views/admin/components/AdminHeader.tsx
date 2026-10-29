@@ -3,7 +3,9 @@ import {
   Search,
   Bell,
   Plus,
-  RefreshCw
+  RefreshCw,
+  PanelLeftClose,
+  PanelLeftOpen
 } from 'lucide-react';
 import { AdminTab } from '../types';
 
@@ -13,6 +15,8 @@ interface AdminHeaderProps {
   setSearchQuery: (q: string) => void;
   onOpenCreateModal: () => void;
   onRefreshData?: () => void;
+  isSidebarCollapsed?: boolean;
+  onToggleSidebar?: () => void;
 }
 
 export const AdminHeader: React.FC<AdminHeaderProps> = ({
@@ -20,7 +24,9 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
   searchQuery,
   setSearchQuery,
   onOpenCreateModal,
-  onRefreshData
+  onRefreshData,
+  isSidebarCollapsed = false,
+  onToggleSidebar
 }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -64,18 +70,56 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
         userSelect: 'none'
       }}
     >
-      {/* LEFT: Breadcrumb & Title */}
-      <div style={{ minWidth: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', color: '#64748b', whiteSpace: 'nowrap' }}>
-          <span>Hệ thống Quản Trị</span>
-          <span>/</span>
-          <span style={{ color: '#059669', fontWeight: 700 }}>
-            {activeTab.toUpperCase()}
-          </span>
+      {/* LEFT: Sidebar Toggle Button + Breadcrumb & Title */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', minWidth: 0 }}>
+        {onToggleSidebar && (
+          <button
+            type="button"
+            onClick={onToggleSidebar}
+            title={isSidebarCollapsed ? 'Mở rộng menu điều hướng' : 'Thu gọn menu điều hướng'}
+            aria-label="Thu phóng menu"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '38px',
+              height: '38px',
+              borderRadius: '8px',
+              border: '1px solid #e2e8f0',
+              backgroundColor: '#f8fafc',
+              color: '#334155',
+              cursor: 'pointer',
+              flexShrink: 0,
+              transition: 'all 0.15s ease',
+              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#ecfdf5';
+              e.currentTarget.style.borderColor = '#a7f3d0';
+              e.currentTarget.style.color = '#059669';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#f8fafc';
+              e.currentTarget.style.borderColor = '#e2e8f0';
+              e.currentTarget.style.color = '#334155';
+            }}
+          >
+            {isSidebarCollapsed ? <PanelLeftOpen size={19} /> : <PanelLeftClose size={19} />}
+          </button>
+        )}
+
+        <div style={{ minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', color: '#64748b', whiteSpace: 'nowrap' }}>
+            <span>Hệ thống Quản Trị</span>
+            <span>/</span>
+            <span style={{ color: '#059669', fontWeight: 700 }}>
+              {activeTab.toUpperCase()}
+            </span>
+          </div>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.2, marginTop: '2px', whiteSpace: 'nowrap' }}>
+            {getBreadcrumbTitle()}
+          </h2>
         </div>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.2, marginTop: '2px', whiteSpace: 'nowrap' }}>
-          {getBreadcrumbTitle()}
-        </h2>
       </div>
 
       {/* RIGHT: Search, Action Buttons & Notifications */}

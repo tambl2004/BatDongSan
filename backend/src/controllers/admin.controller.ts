@@ -9,7 +9,7 @@ import { authService } from '../services/auth.service';
 export class AdminController {
   // 1. Thống kê tổng hợp hệ thống
   public static getStats = catchAsync(async (_req: Request, res: Response) => {
-    const stats = adminService.getSystemStats();
+    const stats = await adminService.getSystemStats();
     res.status(200).json({
       success: true,
       data: stats
@@ -162,7 +162,7 @@ export class AdminController {
   // 4. Quản lý Người dùng & Môi giới
   public static getUsers = catchAsync(async (req: Request, res: Response) => {
     const { role, status, search } = req.query;
-    const users = authService.getAllUsers({
+    const users = await authService.getAllUsers({
       role: role as string,
       status: status as string,
       search: search as string
@@ -180,7 +180,7 @@ export class AdminController {
       throw new AppError('Họ tên và email là bắt buộc', 400);
     }
 
-    const newUser = authService.createUserByAdmin({
+    const newUser = await authService.createUserByAdmin({
       fullName,
       email,
       phone,
@@ -198,7 +198,7 @@ export class AdminController {
 
   public static updateUser = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
-    const updated = authService.updateUserByAdmin(id, req.body);
+    const updated = await authService.updateUserByAdmin(id, req.body);
     if (!updated) {
       throw new AppError('Không tìm thấy người dùng', 404);
     }
@@ -212,7 +212,7 @@ export class AdminController {
 
   public static deleteUser = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
-    const success = authService.deleteUserByAdmin(id);
+    const success = await authService.deleteUserByAdmin(id);
     if (!success) {
       throw new AppError('Không tìm thấy người dùng để xóa', 404);
     }

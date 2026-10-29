@@ -6,14 +6,14 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; message: string }>;
+  login: (email: string, password: string) => Promise<{ success: boolean; message: string; user?: User }>;
   register: (userData: {
     fullName: string;
     email: string;
     password: string;
     phone?: string;
     role?: 'admin' | 'user';
-  }) => Promise<{ success: boolean; message: string }>;
+  }) => Promise<{ success: boolean; message: string; user?: User }>;
   socialLogin: (provider: 'google' | 'facebook') => Promise<{ success: boolean; message: string }>;
   logout: () => void;
 }
@@ -42,7 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const res = await loginUser(email, password);
     if (res.success && res.data?.user) {
       setUser(res.data.user);
-      return { success: true, message: res.message || 'Đăng nhập thành công' };
+      return { success: true, message: res.data.message || res.message || 'Đăng nhập thành công', user: res.data.user };
     }
     return { success: false, message: res.message || 'Email hoặc mật khẩu không chính xác' };
   };
@@ -57,7 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const res = await registerUser(userData);
     if (res.success && res.data?.user) {
       setUser(res.data.user);
-      return { success: true, message: res.message || 'Đăng ký thành công' };
+      return { success: true, message: res.data.message || res.message || 'Đăng ký thành công', user: res.data.user };
     }
     return { success: false, message: res.message || 'Đăng ký không thành công' };
   };

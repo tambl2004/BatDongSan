@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Heart, PhoneCall, Building2, LogOut, Shield, PlusCircle, LogIn } from 'lucide-react';
+import { Heart, PhoneCall, LogOut, Shield, PlusCircle, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { navigate } from '../router/router';
 import { notify } from '../utils/toast';
@@ -68,30 +68,27 @@ export const Navbar: React.FC<NavbarProps> = ({
       }}>
         {/* Brand */}
         <div
-          onClick={() => setActiveTab('home')}
+          onClick={() => {
+            setActiveTab('home');
+            navigate('/');
+          }}
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.6rem',
             cursor: 'pointer',
             userSelect: 'none'
           }}
         >
-          <div style={{
-            color: 'var(--green-primary)',
-            display: 'flex',
-            alignItems: 'center'
-          }}>
-            <Building2 size={24} strokeWidth={2.2} />
-          </div>
-          <span style={{
-            fontSize: '1.2rem',
-            fontWeight: 800,
-            letterSpacing: '-0.02em',
-            color: 'var(--text-main)'
-          }}>
-            batdongsan<span style={{ color: 'var(--green-primary)' }}>.vn</span>
-          </span>
+          <img
+            src="/assets/images/logo/Logo_GreenNest.png"
+            alt="GreenNest"
+            style={{
+              height: '42px',
+              maxWidth: '220px',
+              objectFit: 'contain',
+              display: 'block'
+            }}
+          />
         </div>
 
         {/* Minimal Nav Links */}

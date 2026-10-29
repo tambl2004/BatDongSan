@@ -3,13 +3,10 @@ import { navigate } from '../../router/router';
 import { requestPasswordReset } from '../../services/api';
 import { AuthBanner } from './AuthBanner';
 import {
-  Building2,
   Mail,
-  ArrowLeft,
   CheckCircle2,
   AlertCircle,
   ArrowRight,
-  KeyRound,
   RotateCcw
 } from 'lucide-react';
 
@@ -57,93 +54,63 @@ export const ForgotPasswordView: React.FC = () => {
       display: 'flex',
       backgroundColor: '#ffffff'
     }}>
-      {/* LEFT: Forgot Password Form Container */}
+      {/* LEFT: Banner */}
+      <AuthBanner image="/assets/images/forgot-password.png" />
+
+      {/* RIGHT: Forgot Password Form Container */}
       <div style={{
         flex: '1 1 50%',
-        maxWidth: '680px',
+        maxWidth: '590px',
         padding: '2.5rem 3.5rem',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
         margin: '0 auto'
       }}>
-        {/* Top Back Link & Logo */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: '2.5rem'
-        }}>
-          <button
-            type="button"
-            onClick={() => navigate('/login')}
+        {/* Logo centered & enlarged */}
+        <div
+          onClick={() => navigate('/')}
+          title="Về trang chủ GreenNest"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '8.75rem',
+            cursor: 'pointer'
+          }}
+        >
+          <img
+            src="/assets/images/logo/Logo_GreenNest.png"
+            alt="GreenNest"
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              fontSize: '0.875rem',
-              fontWeight: 600,
-              color: 'var(--text-secondary)',
-              transition: 'all 0.15s ease'
+              height: '90px',
+              maxWidth: '280px',
+              objectFit: 'contain',
+              display: 'block'
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = 'var(--green-primary)';
-              e.currentTarget.style.transform = 'translateX(-3px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = 'var(--text-secondary)';
-              e.currentTarget.style.transform = 'translateX(0)';
-            }}
-          >
-            <ArrowLeft size={16} />
-            <span>Quay lại Đăng nhập</span>
-          </button>
-
-          <div
-            onClick={() => navigate('/')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-              cursor: 'pointer'
-            }}
-          >
-            <Building2 size={24} color="var(--green-primary)" />
-            <span style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.02em' }}>
-              batdongsan<span style={{ color: 'var(--green-primary)' }}>.vn</span>
-            </span>
-          </div>
+          />
         </div>
 
-        {/* Lock Key Icon Badge */}
-        <div style={{
-          width: '52px',
-          height: '52px',
-          borderRadius: '14px',
-          backgroundColor: 'var(--green-light)',
-          border: '1px solid var(--green-border)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: '1.25rem',
-          color: 'var(--green-primary)'
-        }}>
-          <KeyRound size={26} />
-        </div>
 
         {/* Heading */}
-        <div style={{ marginBottom: '1.75rem' }}>
+        <div style={{ marginBottom: '1.75rem', textAlign: 'center' }}>
           <h1 style={{
-            fontSize: '2rem',
+            fontSize: '2.1rem',
             fontWeight: 800,
-            color: 'var(--text-main)',
-            letterSpacing: '-0.025em',
-            marginBottom: '0.4rem'
+            letterSpacing: '-0.03em',
+            marginBottom: '0.35rem',
+            background: 'linear-gradient(135deg, #064e3b 0%, #059669 55%, #10b981 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            display: 'inline-block'
           }}>
             Quên mật khẩu?
           </h1>
-          <p style={{ fontSize: '0.925rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-            Đừng lo lắng! Hãy nhập địa chỉ email đã đăng ký. Chúng tôi sẽ gửi hướng dẫn kèm liên kết an toàn để đặt lại mật khẩu của bạn.
+          <p style={{
+            fontSize: '0.85rem',
+            color: '#64748b',
+            fontWeight: 500
+          }}>
+            Nhập email để nhận liên kết xác thực đặt lại mật khẩu của bạn
           </p>
         </div>
 
@@ -328,9 +295,6 @@ export const ForgotPasswordView: React.FC = () => {
           </button>
         </div>
       </div>
-
-      {/* RIGHT: Banner Slider */}
-      <AuthBanner />
     </div>
   );
 };

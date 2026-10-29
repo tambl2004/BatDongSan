@@ -42,6 +42,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
   const [propertiesList, setPropertiesList] = useState<Property[]>(initialProperties);
   const [inquiries, setInquiries] = useState<AdminInquiry[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   // Sync route param with activeTab
   useEffect(() => {
@@ -297,6 +298,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
         propertyCount={propertiesList.length}
         inquiryCount={inquiries.length}
         onBackToUserView={onBackToUserView}
+        isCollapsed={isSidebarCollapsed}
       />
 
       {/* 2. RIGHT: Admin Header & Dynamic Content */}
@@ -305,12 +307,13 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
         display: 'flex',
         flexDirection: 'column',
         minWidth: 0,
-        maxWidth: 'calc(100vw - 270px)',
+        maxWidth: isSidebarCollapsed ? 'calc(100vw - 76px)' : 'calc(100vw - 270px)',
         height: '100vh',
         overflowY: 'auto',
         overflowX: 'hidden',
         backgroundColor: '#f8fafc',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        transition: 'max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1)'
       }}>
         {/* Admin Header */}
         <AdminHeader
@@ -319,6 +322,8 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
           setSearchQuery={setSearchQuery}
           onOpenCreateModal={() => setIsCreateModalOpen(true)}
           onRefreshData={loadInquiriesData}
+          isSidebarCollapsed={isSidebarCollapsed}
+          onToggleSidebar={() => setIsSidebarCollapsed((prev) => !prev)}
         />
 
         {/* Admin Main Body */}

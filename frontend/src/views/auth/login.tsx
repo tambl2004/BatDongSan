@@ -3,14 +3,10 @@ import { useAuth } from '../../context/AuthContext';
 import { navigate } from '../../router/router';
 import { AuthBanner } from './AuthBanner';
 import {
-  Building2,
   Mail,
   Lock,
   Eye,
   EyeOff,
-  ArrowLeft,
-  CheckCircle2,
-  AlertCircle,
   ArrowRight
 } from 'lucide-react';
 
@@ -31,22 +27,17 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
 
   // Status states
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMsg(null);
-    setSuccessMsg(null);
     setLoading(true);
 
     try {
       const res = await login(email.trim(), password);
-      if (res.success) {
+      if (res.success && res.user) {
         notify.success(res.message || 'Đăng nhập thành công!');
-        setSuccessMsg(res.message);
         setTimeout(() => {
-          if (email.toLowerCase().includes('admin')) {
+          if (res.user?.role === 'admin') {
             navigate('/admin');
           } else {
             navigate(redirectPath || '/');
@@ -54,11 +45,9 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
         }, 500);
       } else {
         notify.error(res.message || 'Email hoặc mật khẩu không chính xác');
-        setErrorMsg(res.message);
       }
     } catch (err: any) {
       notify.error(err.message || 'Lỗi đăng nhập. Vui lòng thử lại.');
-      setErrorMsg(err.message || 'Lỗi đăng nhập. Vui lòng thử lại.');
     } finally {
       setLoading(false);
     }
@@ -66,22 +55,18 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
 
   const handleSocialSignIn = async (provider: 'google' | 'facebook') => {
     setLoading(true);
-    setErrorMsg(null);
     try {
       const res = await socialLogin(provider);
       if (res.success) {
         notify.success(res.message || `Đăng nhập qua ${provider} thành công!`);
-        setSuccessMsg(res.message);
         setTimeout(() => {
           navigate(redirectPath || '/');
         }, 500);
       } else {
         notify.error(res.message || 'Lỗi đăng nhập mạng xã hội');
-        setErrorMsg(res.message);
       }
     } catch (err: any) {
       notify.error(err.message || 'Lỗi đăng nhập mạng xã hội');
-      setErrorMsg(err.message || 'Lỗi đăng nhập mạng xã hội');
     } finally {
       setLoading(false);
     }
@@ -93,117 +78,66 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
       display: 'flex',
       backgroundColor: '#ffffff'
     }}>
-      {/* LEFT: Auth Form Container */}
+      {/* LEFT: Banner */}
+      <AuthBanner />
+
+      {/* RIGHT: Auth Form Container */}
       <div style={{
         flex: '1 1 50%',
-        maxWidth: '680px',
+        maxWidth: '590px',
         padding: '2.5rem 3.5rem',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
         margin: '0 auto',
         overflowY: 'auto'
       }}>
-        {/* Top Back Link & Logo */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: '2rem'
-        }}>
-          <button
-            type="button"
-            onClick={() => navigate('/')}
+        {/* Logo centered & enlarged */}
+        <div
+          onClick={() => navigate('/')}
+          title="Về trang chủ GreenNest"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '2.75rem',
+            cursor: 'pointer'
+          }}
+        >
+          <img
+            src="/assets/images/logo/Logo_GreenNest.png"
+            alt="GreenNest"
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              fontSize: '0.875rem',
-              fontWeight: 600,
-              color: 'var(--text-secondary)',
-              transition: 'all 0.15s ease'
+              height: '90px',
+              maxWidth: '280px',
+              objectFit: 'contain',
+              display: 'block'
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = 'var(--green-primary)';
-              e.currentTarget.style.transform = 'translateX(-3px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = 'var(--text-secondary)';
-              e.currentTarget.style.transform = 'translateX(0)';
-            }}
-          >
-            <ArrowLeft size={16} />
-            <span>Về trang chủ</span>
-          </button>
-
-          <div
-            onClick={() => navigate('/')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-              cursor: 'pointer'
-            }}
-          >
-            <Building2 size={24} color="var(--green-primary)" />
-            <span style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.02em' }}>
-              batdongsan<span style={{ color: 'var(--green-primary)' }}>.vn</span>
-            </span>
-          </div>
+          />
         </div>
 
         {/* Heading */}
-        <div style={{ marginBottom: '2rem' }}>
+        <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
           <h1 style={{
-            fontSize: '2.1rem',
+            fontSize: '2.2rem',
             fontWeight: 800,
-            color: 'var(--text-main)',
-            letterSpacing: '-0.025em',
-            marginBottom: '0.4rem'
+            letterSpacing: '-0.03em',
+            marginBottom: '0.45rem',
+            background: 'linear-gradient(135deg, #064e3b 0%, #059669 55%, #10b981 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            display: 'inline-block'
           }}>
             Chào mừng bạn trở lại
           </h1>
-          <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-            Đăng nhập để đăng tin, theo dõi bất động sản yêu thích và nhận hỗ trợ độc quyền 24/7.
+          <p style={{
+            fontSize: '0.875rem',
+            color: '#64748b',
+            fontWeight: 500
+          }}>
+            Đăng nhập để tiếp tục khám phá không gian sống lý tưởng
           </p>
         </div>
 
-        {/* Alerts */}
-        {errorMsg && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.6rem',
-            backgroundColor: '#fef2f2',
-            border: '1px solid #fecdd3',
-            color: '#b91c1c',
-            padding: '0.85rem 1.1rem',
-            borderRadius: 'var(--radius-md)',
-            fontSize: '0.875rem',
-            marginBottom: '1.5rem'
-          }}>
-            <AlertCircle size={18} style={{ flexShrink: 0 }} />
-            <span>{errorMsg}</span>
-          </div>
-        )}
-
-        {successMsg && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.6rem',
-            backgroundColor: 'var(--green-light)',
-            border: '1px solid var(--green-border)',
-            color: 'var(--green-dark)',
-            padding: '0.85rem 1.1rem',
-            borderRadius: 'var(--radius-md)',
-            fontSize: '0.875rem',
-            marginBottom: '1.5rem'
-          }}>
-            <CheckCircle2 size={18} color="var(--green-primary)" style={{ flexShrink: 0 }} />
-            <span>{successMsg}</span>
-          </div>
-        )}
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
@@ -413,10 +347,10 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
             }}
           >
             <svg width="18" height="18" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.15z"/>
-              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.24v3.15C3.26 21.36 7.33 24 12 24z"/>
-              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.24C.45 8.15 0 9.99 0 12s.45 3.85 1.24 5.42l4.04-3.15z"/>
-              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.24 6.58l4.04 3.15c.95-2.83 3.6-4.93 6.72-4.93z"/>
+              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.15z" />
+              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.24v3.15C3.26 21.36 7.33 24 12 24z" />
+              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.24C.45 8.15 0 9.99 0 12s.45 3.85 1.24 5.42l4.04-3.15z" />
+              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.24 6.58l4.04 3.15c.95-2.83 3.6-4.93 6.72-4.93z" />
             </svg>
             <span>Google</span>
           </button>
@@ -453,7 +387,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
             }}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
             </svg>
             <span>Facebook</span>
           </button>
@@ -481,21 +415,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
           </button>
         </div>
 
-        {/* Footer legal info */}
-        <p style={{
-          textAlign: 'center',
-          fontSize: '0.78rem',
-          color: 'var(--text-muted)',
-          marginTop: '2.5rem'
-        }}>
-          Bằng việc đăng nhập, bạn đồng ý với{' '}
-          <span style={{ color: 'var(--green-primary)', cursor: 'pointer' }}>Điều khoản dịch vụ</span> &{' '}
-          <span style={{ color: 'var(--green-primary)', cursor: 'pointer' }}>Chính sách bảo mật</span> của batdongsan.vn
-        </p>
-      </div>
 
-      {/* RIGHT: High-End Aesthetic Banner Slider */}
-      <AuthBanner />
+      </div>
     </div>
   );
 };

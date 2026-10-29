@@ -3,14 +3,12 @@ import { useAuth } from '../../context/AuthContext';
 import { navigate } from '../../router/router';
 import { AuthBanner } from './AuthBanner';
 import {
-  Building2,
   Mail,
   Lock,
   User as UserIcon,
   Phone,
   Eye,
   EyeOff,
-  ArrowLeft,
   CheckCircle2,
   AlertCircle,
   ArrowRight,
@@ -24,7 +22,7 @@ interface RegisterViewProps {
 }
 
 export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }) => {
-  const { register, socialLogin } = useAuth();
+  const { register } = useAuth();
 
   // Form states
   const [fullName, setFullName] = useState('');
@@ -87,38 +85,19 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }
         notify.success(res.message || 'Đăng ký tài khoản thành công! Bạn có thể bắt đầu đăng tin ngay.');
         setSuccessMsg(res.message);
         setTimeout(() => {
-          navigate(redirectPath || '/');
+          if (res.user?.role === 'admin') {
+            navigate('/admin');
+          } else {
+            navigate(redirectPath || '/');
+          }
         }, 800);
       } else {
         notify.error(res.message || 'Đăng ký không thành công');
-        setErrorMsg(res.message);
+        setErrorMsg(res.message || 'Đăng ký không thành công');
       }
     } catch (err: any) {
       notify.error(err.message || 'Đã có lỗi xảy ra trong quá trình đăng ký');
       setErrorMsg(err.message || 'Đã có lỗi xảy ra trong quá trình đăng ký');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSocialSignIn = async (provider: 'google' | 'facebook') => {
-    setLoading(true);
-    setErrorMsg(null);
-    try {
-      const res = await socialLogin(provider);
-      if (res.success) {
-        notify.success(res.message || `Đăng nhập qua ${provider} thành công!`);
-        setSuccessMsg(res.message);
-        setTimeout(() => {
-          navigate(redirectPath || '/');
-        }, 600);
-      } else {
-        notify.error(res.message || 'Lỗi đăng nhập mạng xã hội');
-        setErrorMsg(res.message);
-      }
-    } catch (err: any) {
-      notify.error(err.message || 'Lỗi đăng nhập mạng xã hội');
-      setErrorMsg(err.message || 'Lỗi đăng nhập mạng xã hội');
     } finally {
       setLoading(false);
     }
@@ -130,78 +109,63 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }
       display: 'flex',
       backgroundColor: '#ffffff'
     }}>
-      {/* LEFT: Register Form Container */}
+      {/* LEFT: Banner */}
+      <AuthBanner image="/assets/images/register.png" />
+
+      {/* RIGHT: Register Form Container */}
       <div style={{
         flex: '1 1 50%',
-        maxWidth: '680px',
+        maxWidth: '590px',
         padding: '2.5rem 3.5rem',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
         margin: '0 auto',
         overflowY: 'auto'
       }}>
-        {/* Top Back Link & Logo */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: '1.75rem'
-        }}>
-          <button
-            type="button"
-            onClick={() => navigate('/')}
+        {/* Logo centered & enlarged */}
+        <div
+          onClick={() => navigate('/')}
+          title="Về trang chủ GreenNest"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '1.5rem',
+            cursor: 'pointer'
+          }}
+        >
+          <img
+            src="/assets/images/logo/Logo_GreenNest.png"
+            alt="GreenNest"
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              fontSize: '0.875rem',
-              fontWeight: 600,
-              color: 'var(--text-secondary)',
-              transition: 'all 0.15s ease'
+              height: '90px',
+              maxWidth: '280px',
+              objectFit: 'contain',
+              display: 'block'
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = 'var(--green-primary)';
-              e.currentTarget.style.transform = 'translateX(-3px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = 'var(--text-secondary)';
-              e.currentTarget.style.transform = 'translateX(0)';
-            }}
-          >
-            <ArrowLeft size={16} />
-            <span>Về trang chủ</span>
-          </button>
-
-          <div
-            onClick={() => navigate('/')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-              cursor: 'pointer'
-            }}
-          >
-            <Building2 size={24} color="var(--green-primary)" />
-            <span style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.02em' }}>
-              batdongsan<span style={{ color: 'var(--green-primary)' }}>.vn</span>
-            </span>
-          </div>
+          />
         </div>
 
         {/* Heading */}
-        <div style={{ marginBottom: '1.5rem' }}>
+        <div style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
           <h1 style={{
-            fontSize: '2rem',
+            fontSize: '2.1rem',
             fontWeight: 800,
-            color: 'var(--text-main)',
-            letterSpacing: '-0.025em',
-            marginBottom: '0.35rem'
+            letterSpacing: '-0.03em',
+            marginBottom: '0.35rem',
+            background: 'linear-gradient(135deg, #064e3b 0%, #059669 55%, #10b981 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            display: 'inline-block'
           }}>
             Tạo tài khoản mới
           </h1>
-          <p style={{ fontSize: '0.925rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-            Gia nhập nền tảng giao dịch bất động sản cao cấp, minh bạch hàng đầu Việt Nam.
+          <p style={{
+            fontSize: '0.85rem',
+            color: '#64748b',
+            fontWeight: 500
+          }}>
+            Gia nhập cộng đồng giao dịch bất động sản uy tín GreenNest
           </p>
         </div>
 
@@ -569,104 +533,12 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }
           </button>
         </form>
 
-        {/* SECTION: Đăng ký / Đăng nhập bằng phương thức khác (Nằm dưới nút đăng ký/mật khẩu) */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '1rem',
-          margin: '1.5rem 0 1.25rem 0'
-        }}>
-          <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border)' }} />
-          <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-            hoặc đăng ký bằng phương thức khác
-          </span>
-          <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border)' }} />
-        </div>
-
-        {/* Social Buttons */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.75rem' }}>
-          <button
-            type="button"
-            onClick={() => handleSocialSignIn('google')}
-            disabled={loading}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.6rem',
-              padding: '0.7rem 1rem',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--border)',
-              backgroundColor: '#ffffff',
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              color: 'var(--text-main)',
-              transition: 'all 0.15s ease',
-              boxShadow: '0 1px 2px rgba(0,0,0,0.04)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--bg-subtle)';
-              e.currentTarget.style.borderColor = 'var(--border-hover)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#ffffff';
-              e.currentTarget.style.borderColor = 'var(--border)';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.15z"/>
-              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.24v3.15C3.26 21.36 7.33 24 12 24z"/>
-              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.24C.45 8.15 0 9.99 0 12s.45 3.85 1.24 5.42l4.04-3.15z"/>
-              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.24 6.58l4.04 3.15c.95-2.83 3.6-4.93 6.72-4.93z"/>
-            </svg>
-            <span>Đăng ký qua Google</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleSocialSignIn('facebook')}
-            disabled={loading}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.6rem',
-              padding: '0.7rem 1rem',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--border)',
-              backgroundColor: '#ffffff',
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              color: 'var(--text-main)',
-              transition: 'all 0.15s ease',
-              boxShadow: '0 1px 2px rgba(0,0,0,0.04)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--bg-subtle)';
-              e.currentTarget.style.borderColor = 'var(--border-hover)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#ffffff';
-              e.currentTarget.style.borderColor = 'var(--border)';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-            </svg>
-            <span>Đăng ký qua Facebook</span>
-          </button>
-        </div>
-
         {/* Switch to Login Link */}
         <div style={{
           textAlign: 'center',
           fontSize: '0.88rem',
           color: 'var(--text-secondary)',
-          paddingTop: '0.5rem'
+          paddingTop: '1rem',
         }}>
           Bạn đã có tài khoản?{' '}
           <button
@@ -684,9 +556,6 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }
           </button>
         </div>
       </div>
-
-      {/* RIGHT: High-End Aesthetic Banner Slider */}
-      <AuthBanner />
     </div>
   );
 };
