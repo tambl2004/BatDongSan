@@ -1,7 +1,7 @@
 import { Property } from '../../types/property';
 import { UserRole } from '../../types/user';
 
-export type AdminTab = 'dashboard' | 'properties' | 'inquiries' | 'users' | 'settings';
+export type AdminTab = 'dashboard' | 'properties' | 'moderation' | 'blog' | 'inquiries' | 'users' | 'settings';
 
 export type InquiryStatus = 'new' | 'contacted' | 'scheduled' | 'completed' | 'cancelled';
 

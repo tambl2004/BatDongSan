@@ -97,7 +97,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             { id: 'home', label: 'Trang chủ' },
             { id: 'sale', label: 'Nhà đất bán' },
             { id: 'rent', label: 'Nhà đất cho thuê' },
-            { id: 'blog', label: 'Blog' }
+            { id: 'blog', label: 'Tin tức' }
           ].map((item) => {
             const isActive = activeTab === item.id && !isAdminView;
             return (
@@ -267,15 +267,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                       backgroundColor: user.role === 'admin' ? 'var(--green-light)' : 'var(--bg-subtle)',
                       color: user.role === 'admin' ? 'var(--green-dark)' : 'var(--text-secondary)'
                     }}>
-                      {user.role === 'admin' ? '👑 Quản Trị Viên' : '👤 Khách Hàng / Môi Giới'}
+                      {user.role === 'admin' ? 'Quản Trị Viên' : 'Khách Hàng / Môi Giới'}
                     </span>
                   </div>
 
-                  {user.role === 'admin' && (
+                  {/* Đối với thành viên thường (không phải admin): hiển thị mục Đăng tin trong menu */}
+                  {user.role !== 'admin' && (
                     <button
                       onClick={() => {
                         setShowUserMenu(false);
-                        navigate('/admin');
+                        handlePostListingClick();
                       }}
                       style={{
                         width: '100%',
@@ -290,32 +291,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                       onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-subtle)')}
                       onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                     >
-                      <Shield size={14} color="var(--green-primary)" />
-                      <span>Cổng Quản Trị Hệ Thống</span>
+                      <PlusCircle size={14} color="var(--green-primary)" />
+                      <span>Đăng tin BĐS mới</span>
                     </button>
                   )}
-
-                  <button
-                    onClick={() => {
-                      setShowUserMenu(false);
-                      handlePostListingClick();
-                    }}
-                    style={{
-                      width: '100%',
-                      textAlign: 'left',
-                      padding: '0.6rem 1rem',
-                      fontSize: '0.825rem',
-                      color: 'var(--text-main)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem'
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-subtle)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-                  >
-                    <PlusCircle size={14} color="var(--green-primary)" />
-                    <span>Đăng tin BĐS mới</span>
-                  </button>
 
                   <div style={{ height: '1px', backgroundColor: 'var(--border-light)', margin: '4px 0' }} />
 

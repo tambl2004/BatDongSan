@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { notify } from './utils/toast';
+import { ScrollToTop } from './components/common';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -52,16 +53,14 @@ const AppContent: React.FC = () => {
   }, [favorites]);
 
   const toggleFavorite = (id: string) => {
-    setFavorites(prev => {
-      const isFav = prev.includes(id);
-      if (isFav) {
-        notify.info('Đã xóa khỏi danh sách yêu thích');
-        return prev.filter(item => item !== id);
-      } else {
-        notify.success('Đã lưu bất động sản vào danh sách yêu thích!');
-        return [...prev, id];
-      }
-    });
+    const isFav = favorites.includes(id);
+    if (isFav) {
+      setFavorites(prev => prev.filter(item => item !== id));
+      notify.info('Đã xóa khỏi danh sách yêu thích');
+    } else {
+      setFavorites(prev => [...prev, id]);
+      notify.success('Đã lưu bất động sản vào danh sách yêu thích!');
+    }
   };
 
   const activeListingType = route.view === 'sale' ? 'sale' : route.view === 'rent' ? 'rent' : undefined;
@@ -326,6 +325,9 @@ const AppContent: React.FC = () => {
 
       {/* Footer */}
       <Footer onNavigateToBlog={() => navigate('/blog')} />
+
+      {/* Nút cuộn lên đầu trang (hiển thị ở mọi trang user) */}
+      <ScrollToTop />
     </div>
   );
 };
@@ -345,6 +347,7 @@ export const App: React.FC = () => {
         draggable
         pauseOnHover
         theme="light"
+        limit={3}
       />
     </AuthProvider>
   );

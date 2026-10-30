@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BlogPost } from '../../../types/blog';
 import { Property } from '../../../types/property';
-import { BLOG_POSTS } from '../../../data/blogPosts';
+import { BlogService } from '../../../services/blogService';
 import { BlogListView } from './BlogListView';
 import { BlogDetailView } from './BlogDetailView';
 import { navigate } from '../../../router/router';
@@ -19,11 +19,21 @@ export const BlogView: React.FC<BlogViewProps> = ({
   isDetailView = false,
   selectedPostId
 }) => {
+  const [posts, setPosts] = useState<BlogPost[]>(() => BlogService.getAllPosts());
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setPosts(BlogService.getAllPosts());
+    };
+    window.addEventListener('bds-blog-updated', handleUpdate);
+    return () => window.removeEventListener('bds-blog-updated', handleUpdate);
+  }, []);
+
   // If in detail route or post id is specified
   const currentPost = isDetailView
     ? (selectedPostId
-        ? (BLOG_POSTS.find(p => p.id === selectedPostId || p.slug === selectedPostId) || BLOG_POSTS[0])
-        : BLOG_POSTS[0])
+        ? (posts.find(p => p.id === selectedPostId || p.slug === selectedPostId) || posts[0])
+        : posts[0])
     : null;
 
   const handleSelectPost = (post: BlogPost) => {
@@ -38,7 +48,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
     return (
       <BlogDetailView
         post={currentPost}
-        allPosts={BLOG_POSTS}
+        allPosts={posts}
         allProperties={properties}
         onBack={handleBackToList}
         onSelectPost={handleSelectPost}
@@ -49,7 +59,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
 
   return (
     <BlogListView
-      posts={BLOG_POSTS}
+      posts={posts}
       properties={properties}
       onSelectPost={handleSelectPost}
       onSelectProperty={onSelectProperty}

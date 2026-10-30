@@ -12,12 +12,12 @@ import {
   Sparkles
 } from 'lucide-react';
 import { Property } from '../../../types/property';
-import { AdminInquiry } from '../types';
+import { AdminInquiry, AdminTab } from '../types';
 
 interface AdminOverviewProps {
   properties: Property[];
   inquiries: AdminInquiry[];
-  onNavigateToTab: (tab: 'properties' | 'inquiries') => void;
+  onNavigateToTab: (tab: AdminTab) => void;
   onSelectProperty: (property: Property) => void;
 }
 
@@ -28,6 +28,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
   onSelectProperty
 }) => {
   const totalPortfolioValue = properties.reduce((acc, p) => acc + p.price, 0);
+  const pendingCount = properties.filter(p => p.status === 'pending').length;
 
   const formatPriceBillion = (val: number) => {
     return `${(val / 1000000000).toFixed(1)} tỷ`;
@@ -35,6 +36,65 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem', width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflowX: 'hidden' }}>
+      {/* Pending Moderation Alert Banner */}
+      {pendingCount > 0 && (
+        <div style={{
+          backgroundColor: '#fffbeb',
+          border: '1px solid #fde68a',
+          borderRadius: '12px',
+          padding: '1rem 1.25rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '10px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              backgroundColor: '#fef3c7',
+              color: '#d97706',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <ShieldCheck size={20} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 800, color: '#92400e' }}>
+                Có {pendingCount} tin đăng BĐS mới đang chờ thẩm định pháp lý & phê duyệt!
+              </div>
+              <div style={{ fontSize: '0.775rem', color: '#b45309' }}>
+                Các bài đăng từ cộng tác viên và khách hàng cần được phê duyệt hoặc phản hồi lý do.
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => onNavigateToTab('moderation')}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '7px 14px',
+              borderRadius: '8px',
+              backgroundColor: '#d97706',
+              color: '#ffffff',
+              fontSize: '0.8rem',
+              fontWeight: 700,
+              border: 'none',
+              cursor: 'pointer'
+            }}
+          >
+            <span>Duyệt tin ngay</span>
+            <ArrowRight size={14} />
+          </button>
+        </div>
+      )}
+
       {/* 4 Clean Minimal KPI Metric Cards (Anti Overflow) */}
       <div style={{
         display: 'grid',

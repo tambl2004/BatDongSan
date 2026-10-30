@@ -9,7 +9,8 @@ import {
   LogOut,
   ExternalLink,
   ShieldCheck,
-  Home
+  Home,
+  BookOpen
 } from 'lucide-react';
 import { AdminTab } from '../types';
 import { useAuth } from '../../../context/AuthContext';
@@ -21,6 +22,8 @@ interface AdminSidebarProps {
   setActiveTab: (tab: AdminTab) => void;
   propertyCount: number;
   inquiryCount: number;
+  pendingModerationCount?: number;
+  blogCount?: number;
   onBackToUserView: () => void;
   isCollapsed?: boolean;
 }
@@ -30,6 +33,8 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
   setActiveTab,
   propertyCount,
   inquiryCount,
+  pendingModerationCount = 0,
+  blogCount = 0,
   onBackToUserView,
   isCollapsed = false
 }) => {
@@ -53,6 +58,20 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
       label: 'Quản lý Bất động sản',
       icon: Building2,
       badge: propertyCount > 0 ? `${propertyCount}` : undefined
+    },
+    {
+      id: 'moderation' as AdminTab,
+      label: 'Duyệt tin & Phản hồi',
+      icon: ShieldCheck,
+      badge: pendingModerationCount > 0 ? `${pendingModerationCount}` : undefined,
+      badgeColor: '#d97706'
+    },
+    {
+      id: 'blog' as AdminTab,
+      label: 'Tin tức & Pháp luật',
+      icon: BookOpen,
+      badge: blogCount > 0 ? `${blogCount}` : undefined,
+      badgeColor: '#6d28d9'
     },
     {
       id: 'inquiries' as AdminTab,

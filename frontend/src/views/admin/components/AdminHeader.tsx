@@ -37,6 +37,10 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
         return 'Tổng quan & Báo cáo số liệu';
       case 'properties':
         return 'Quản lý Danh mục Bất động sản';
+      case 'moderation':
+        return 'Kiểm duyệt Tin đăng & Phản hồi';
+      case 'blog':
+        return 'Quản lý Tin tức & Pháp luật BĐS';
       case 'inquiries':
         return 'Danh sách Khách hàng hẹn xem & Tư vấn';
       case 'users':

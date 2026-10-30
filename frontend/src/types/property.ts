@@ -55,6 +55,18 @@ export interface Property {
   direction?: string;
   legalDocument?: string;
   createdAt: string;
+  // Trường dành cho kiểm duyệt & gắn nhãn admin
+  rejectionReason?: string;
+  moderationNotes?: string;
+  isNewListing?: boolean;
+  hidden?: boolean;
+  submittedBy?: {
+    name: string;
+    phone: string;
+    email?: string;
+    role: 'client' | 'collaborator' | 'agent';
+    submittedAt: string;
+  };
 }
 
 export interface PropertyFilterParams {

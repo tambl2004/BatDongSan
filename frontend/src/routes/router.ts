@@ -103,6 +103,8 @@ export const parseCurrentRoute = (): CurrentRoute => {
     const sub = pathname.replace('/admin', '').replace(/^\//, '').split('/')[0].trim();
     let adminTab: AdminTab = 'dashboard';
     if (sub === 'properties') adminTab = 'properties';
+    else if (sub === 'moderation') adminTab = 'moderation';
+    else if (sub === 'blog') adminTab = 'blog';
     else if (sub === 'inquiries') adminTab = 'inquiries';
     else if (sub === 'users') adminTab = 'users';
     else if (sub === 'settings') adminTab = 'settings';

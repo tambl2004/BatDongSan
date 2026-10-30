@@ -106,6 +106,63 @@ export const ManagePost: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const numPrice = Number(price) || 0;
+    const formattedPrice = listingType === 'sale'
+      ? (numPrice >= 1000000000 ? `${(numPrice / 1000000000).toFixed(1)} tỷ` : `${(numPrice / 1000000).toFixed(0)} triệu`)
+      : `${(numPrice / 1000000).toFixed(0)} triệu/tháng`;
+
+    const newSubmission = {
+      id: `bds-post-${Date.now().toString().slice(-4)}`,
+      title: title || 'Bất động sản chính chủ mới đăng',
+      description: description || 'Thông tin chi tiết đang được chủ nhà cập nhật bổ sung.',
+      price: numPrice,
+      priceFormatted: formattedPrice,
+      area: Number(area) || 60,
+      bedrooms: Number(bedrooms) || 2,
+      bathrooms: Number(bathrooms) || 2,
+      propertyType,
+      listingType,
+      status: 'pending',
+      isNewListing: true,
+      address: address || `${district}, ${city}`,
+      ward: district || 'Phường Bến Nghé',
+      district: district || 'Quận 1',
+      city: city || 'Hồ Chí Minh',
+      coordinates: { lat: 10.7769, lng: 106.7009 },
+      images: [
+        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'
+      ],
+      features: ['Sổ hồng chính chủ', 'Vị trí giao thông thuận tiện'],
+      legalStatus: 'Sổ hồng riêng chính chủ, công chứng ngay',
+      agent: {
+        name: user?.fullName || 'Khách hàng',
+        phone: user?.phone || '0900 123 456',
+        email: user?.email || '',
+        avatar: user?.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
+        role: 'Khách hàng chính chủ'
+      },
+      submittedBy: {
+        name: user?.fullName || 'Khách hàng chính chủ',
+        phone: user?.phone || '0900 123 456',
+        email: user?.email,
+        role: 'client' as const,
+        submittedAt: new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+      },
+      featured: false,
+      createdAt: new Date().toISOString()
+    };
+
+    try {
+      const existing = localStorage.getItem('bds_user_submissions');
+      const list = existing ? JSON.parse(existing) : [];
+      list.unshift(newSubmission);
+      localStorage.setItem('bds_user_submissions', JSON.stringify(list));
+    } catch (e) {
+      console.warn('Lỗi lưu submission:', e);
+    }
+
     setSubmitted(true);
     notify.success('Đăng tin bất động sản thành công! Tin đang chờ ban quản trị phê duyệt.');
   };
