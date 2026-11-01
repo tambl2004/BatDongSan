@@ -864,7 +864,7 @@ export const AdminModeration: React.FC<AdminModerationProps> = ({
               }}>
                 <div>
                   <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1e293b', margin: '0 0 6px 0' }}>
-                    👤 Thông tin người đăng bài:
+                    Thông tin người đăng bài:
                   </h4>
                   <div style={{ fontSize: '0.825rem', color: '#334155', lineHeight: 1.6 }}>
                     <div>Họ và tên: <strong>{previewProperty.submittedBy?.name || previewProperty.agent?.name}</strong></div>
@@ -876,7 +876,7 @@ export const AdminModeration: React.FC<AdminModerationProps> = ({
 
                 <div>
                   <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1e293b', margin: '0 0 6px 0' }}>
-                    📜 Pháp lý & Hồ sơ:
+                    Pháp lý & Hồ sơ:
                   </h4>
                   <div style={{ fontSize: '0.825rem', color: '#334155', lineHeight: 1.6 }}>
                     <div>Tình trạng: <strong style={{ color: '#059669' }}>{previewProperty.legalStatus || 'Sổ hồng riêng chính chủ'}</strong></div>
@@ -890,7 +890,7 @@ export const AdminModeration: React.FC<AdminModerationProps> = ({
               {/* Description */}
               <div>
                 <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1e293b', margin: '0 0 6px 0' }}>
-                  📝 Nội dung mô tả chi tiết:
+                  Nội dung mô tả chi tiết:
                 </h4>
                 <p style={{ fontSize: '0.85rem', color: '#475569', lineHeight: 1.6, whiteSpace: 'pre-line', margin: 0 }}>
                   {previewProperty.description}

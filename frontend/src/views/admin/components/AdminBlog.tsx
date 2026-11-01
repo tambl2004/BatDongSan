@@ -110,15 +110,15 @@ export const AdminBlog: React.FC<AdminBlogProps> = ({ searchQuery: globalSearch 
   const getCategoryBadge = (category: BlogCategory) => {
     switch (category) {
       case 'tai-chinh':
-        return { label: '⚖️ Pháp luật & Tài chính', bg: '#f5f3ff', color: '#6d28d9', border: '#ddd6fe' };
+        return { label: 'Pháp luật & Tài chính', bg: '#f5f3ff', color: '#6d28d9', border: '#ddd6fe' };
       case 'thi-truong':
-        return { label: '📈 Tin thị trường', bg: '#ecfdf5', color: '#047857', border: '#a7f3d0' };
+        return { label: 'Tin thị trường', bg: '#ecfdf5', color: '#047857', border: '#a7f3d0' };
       case 'du-an':
-        return { label: '🏗️ Tiến độ dự án', bg: '#eff6ff', color: '#1d4ed8', border: '#bfdbfe' };
+        return { label: 'Tiến độ dự án', bg: '#eff6ff', color: '#1d4ed8', border: '#bfdbfe' };
       case 'phong-thuy':
-        return { label: '🏡 Phong thủy & Mẹo', bg: '#fffbeb', color: '#b45309', border: '#fde68a' };
+        return { label: 'Phong thủy & Mẹo', bg: '#fffbeb', color: '#b45309', border: '#fde68a' };
       case 'cau-chuyen':
-        return { label: '💡 Kinh nghiệm mua bán', bg: '#fdf2f8', color: '#be185d', border: '#fbcfe8' };
+        return { label: 'Kinh nghiệm mua bán', bg: '#fdf2f8', color: '#be185d', border: '#fbcfe8' };
       default:
         return { label: 'Bất động sản', bg: '#f1f5f9', color: '#334155', border: '#cbd5e1' };
     }

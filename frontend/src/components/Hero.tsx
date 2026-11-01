@@ -217,11 +217,11 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
             }}>
               <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                 <CheckCircle2 size={15} color="var(--green-primary)" />
-                <span>100% Sổ đỏ, Sổ hồng chính chủ</span>
+                <span>Sổ đỏ, sổ hồng chính chủ</span>
               </span>
               <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                 <CheckCircle2 size={15} color="var(--green-primary)" />
-                <span>Thẩm định quy hoạch 2026</span>
+                <span>Hình ảnh thực tế & thông tin minh bạch</span>
               </span>
             </div>
           </div>
@@ -249,6 +249,7 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
               }}
               src="/assets/video/banner_city.mp4"
             />
+
             {/* Subtle Gradient Overlay */}
             <div style={{
               position: 'absolute',
@@ -256,7 +257,7 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
               left: 0,
               right: 0,
               padding: '1.5rem',
-              background: 'linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%)',
+              background: 'linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 100%)',
               color: '#ffffff'
             }}>
               <div style={{ fontSize: '1.1rem', fontWeight: 700 }}>
