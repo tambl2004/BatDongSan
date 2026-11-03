@@ -299,7 +299,7 @@ const AppContent: React.FC = () => {
       />
 
       {/* Main Dynamic View via Centralized AppRoutes */}
-      <div className="flex-1">
+      <div className="flex-1" style={{ paddingTop: activeNavbarTab === 'home' ? 0 : '70px' }}>
         <AppRoutes
           route={route}
           properties={properties}

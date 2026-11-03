@@ -25,7 +25,7 @@ export const GreenNestLocationSection: React.FC = () => {
 
   return (
     <section style={{
-      padding: '4rem 0 5rem 0',
+      padding: '2rem 0 2rem 0',
       backgroundColor: '#ffffff',
       position: 'relative',
       overflow: 'hidden'

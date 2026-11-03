@@ -3,7 +3,6 @@ import React from 'react';
 export const GreenNestOverviewSection: React.FC = () => {
   return (
     <section style={{
-      padding: '4.5rem 0',
       backgroundColor: '#ffffff',
       position: 'relative',
       overflow: 'hidden'

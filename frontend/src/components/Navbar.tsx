@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Heart, PhoneCall, LogOut, Shield, PlusCircle, LogIn } from 'lucide-react';
+import { Heart, LogOut, Shield, PlusCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { navigate } from '../router/router';
 import { notify } from '../utils/toast';
@@ -25,7 +25,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
+
+  // Scroll detection to switch from transparent to white background
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 30);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -52,13 +63,19 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
+  const isTransparent = activeTab === 'home' && !isAdminView && !isScrolled;
+
   return (
     <header style={{
-      position: 'sticky',
+      position: 'fixed',
       top: 0,
+      left: 0,
+      right: 0,
       zIndex: 100,
-      backgroundColor: '#ffffff',
-      borderBottom: '1px solid var(--border)'
+      backgroundColor: isTransparent ? 'transparent' : 'rgba(255, 255, 255, 0.96)',
+      backdropFilter: isTransparent ? 'none' : 'blur(12px)',
+      boxShadow: isTransparent ? 'none' : '0 4px 20px rgba(0, 0, 0, 0.06)',
+      transition: 'all 0.3s cubic-bezier(0.32, 0.72, 0, 1)'
     }}>
       <div className="container" style={{
         display: 'flex',
@@ -86,7 +103,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               height: '42px',
               maxWidth: '220px',
               objectFit: 'contain',
-              display: 'block'
+              display: 'block',
+              transition: 'filter 0.3s ease'
             }}
           />
         </div>
@@ -105,12 +123,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                 key={item.id}
                 onClick={() => setActiveTab(item.id as any)}
                 style={{
-                  fontSize: '0.925rem',
+                  fontSize: '1rem',
                   fontWeight: isActive ? 700 : 500,
-                  color: isActive ? 'var(--green-primary)' : 'var(--text-secondary)',
-                  borderBottom: isActive ? '2px solid var(--green-primary)' : '2px solid transparent',
+                  color: isActive
+                    ? (isTransparent ? '#ffffff' : 'var(--green-primary)')
+                    : (isTransparent ? 'rgba(255, 255, 255, 0.9)' : 'var(--text-secondary)'),
+                  borderBottom: isActive
+                    ? (isTransparent ? '2px solid #ffffff' : '2px solid var(--green-primary)')
+                    : '2px solid transparent',
                   padding: '6px 0',
-                  transition: 'color 0.15s ease'
+                  transition: 'color 0.15s ease',
+                  textShadow: isTransparent ? '0 1px 4px rgba(0, 0, 0, 0.5)' : 'none'
                 }}
               >
                 {item.label}
@@ -120,7 +143,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </nav>
 
         {/* Right Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           {/* Admin Portal Toggle - Only visible to Admin accounts */}
           {isAdmin && onToggleAdminView && (
             <button
@@ -130,9 +153,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 fontWeight: 700,
                 padding: '4px 10px',
                 borderRadius: 'var(--radius-sm)',
-                border: isAdminView ? '1px solid var(--green-primary)' : '1px solid var(--border)',
-                backgroundColor: isAdminView ? 'var(--green-light)' : 'var(--bg-subtle)',
-                color: isAdminView ? 'var(--green-dark)' : 'var(--text-secondary)',
+                border: isAdminView ? '1px solid var(--green-primary)' : '1px solid rgba(255,255,255,0.3)',
+                backgroundColor: isAdminView
+                  ? 'var(--green-light)'
+                  : (isTransparent ? 'rgba(255, 255, 255, 0.2)' : 'var(--bg-subtle)'),
+                color: isAdminView
+                  ? 'var(--green-dark)'
+                  : (isTransparent ? '#ffffff' : 'var(--text-secondary)'),
                 transition: 'all 0.15s ease',
                 display: 'flex',
                 alignItems: 'center',
@@ -140,7 +167,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               }}
               title="Chuyển sang giao diện quản trị"
             >
-              <Shield size={13} color="var(--green-primary)" />
+              <Shield size={13} color={isTransparent ? '#ffffff' : 'var(--green-primary)'} />
               <span>{isAdminView ? 'Quản trị viên ✓' : 'Quản trị'}</span>
             </button>
           )}
@@ -154,7 +181,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               alignItems: 'center',
               justifyContent: 'center',
               padding: '6px',
-              color: favoriteCount > 0 ? '#ef4444' : 'var(--text-secondary)'
+              color: favoriteCount > 0
+                ? '#ef4444'
+                : (isTransparent ? '#ffffff' : 'var(--text-secondary)'),
+              filter: isTransparent && favoriteCount === 0 ? 'drop-shadow(0 1px 3px rgba(0,0,0,0.5))' : 'none',
+              transition: 'color 0.2s ease',
+              cursor: 'pointer'
             }}
             title="Bất động sản đã lưu"
           >
@@ -180,24 +212,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </button>
 
-          {/* Hotline */}
-          <a
-            href="tel:19006868"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              fontSize: '0.875rem',
-              fontWeight: 600,
-              color: 'var(--text-secondary)'
-            }}
-          >
-            <PhoneCall size={16} color="var(--green-primary)" />
-            <span>1900 6868</span>
-          </a>
-
-          {/* User Auth Section */}
-          {isAuthenticated && user ? (
+          {/* User Auth Section (Only displays avatar if logged in, separate login button removed) */}
+          {isAuthenticated && user && (
             <div ref={userMenuRef} style={{ position: 'relative' }}>
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
@@ -207,9 +223,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   gap: '0.5rem',
                   padding: '4px 8px',
                   borderRadius: 'var(--radius-pill)',
-                  border: '1px solid var(--border)',
-                  backgroundColor: 'var(--bg-subtle)',
-                  cursor: 'pointer'
+                  border: isTransparent ? '1px solid rgba(255,255,255,0.4)' : '1px solid var(--border)',
+                  backgroundColor: isTransparent ? 'rgba(255,255,255,0.2)' : 'var(--bg-subtle)',
+                  cursor: 'pointer',
+                  backdropFilter: isTransparent ? 'blur(8px)' : 'none'
                 }}
               >
                 <img
@@ -223,13 +240,20 @@ export const Navbar: React.FC<NavbarProps> = ({
                   }}
                 />
                 <div style={{ textAlign: 'left', lineHeight: 1.2 }}>
-                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-main)' }}>
+                  <div style={{
+                    fontSize: '0.8rem',
+                    fontWeight: 700,
+                    color: isTransparent ? '#ffffff' : 'var(--text-main)',
+                    textShadow: isTransparent ? '0 1px 2px rgba(0,0,0,0.5)' : 'none'
+                  }}>
                     {user.fullName.split(' ').slice(-1)[0]}
                   </div>
                   <div style={{
                     fontSize: '0.65rem',
                     fontWeight: 700,
-                    color: user.role === 'admin' ? 'var(--green-primary)' : 'var(--text-muted)'
+                    color: user.role === 'admin'
+                      ? (isTransparent ? '#86efac' : 'var(--green-primary)')
+                      : (isTransparent ? '#e2e8f0' : 'var(--text-muted)')
                   }}>
                     {user.role === 'admin' ? 'Admin' : 'Thành viên'}
                   </div>
@@ -271,7 +295,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </span>
                   </div>
 
-                  {/* Đối với thành viên thường (không phải admin): hiển thị mục Đăng tin trong menu */}
                   {user.role !== 'admin' && (
                     <button
                       onClick={() => {
@@ -324,41 +347,20 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </div>
               )}
             </div>
-          ) : (
-            <button
-              onClick={() => navigate('/login')}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                fontSize: '0.85rem',
-                fontWeight: 600,
-                color: 'var(--text-main)',
-                padding: '6px 12px',
-                borderRadius: 'var(--radius-md)',
-                border: '1px solid var(--border)',
-                backgroundColor: '#ffffff',
-                transition: 'all 0.15s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--green-primary)';
-                e.currentTarget.style.color = 'var(--green-primary)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--border)';
-                e.currentTarget.style.color = 'var(--text-main)';
-              }}
-            >
-              <LogIn size={15} color="var(--green-primary)" />
-              <span>Đăng nhập</span>
-            </button>
           )}
 
           {/* Clean Green CTA: Đăng tin */}
           <button
             onClick={handlePostListingClick}
             className="btn-primary"
-            style={{ padding: '0.55rem 1rem', fontSize: '0.875rem' }}
+            style={{
+              padding: '0.6rem 1.35rem',
+              fontSize: '0.875rem',
+              fontWeight: 700,
+              borderRadius: '9999px',
+              boxShadow: isTransparent ? '0 4px 16px rgba(5, 150, 105, 0.45)' : 'none',
+              cursor: 'pointer'
+            }}
           >
             Đăng tin
           </button>
