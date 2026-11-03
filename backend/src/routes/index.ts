@@ -5,6 +5,7 @@ import authRoutes from './auth.routes';
 import userRoutes from './user.routes';
 import adminRoutes from './admin.routes';
 import { VIETNAM_LOCATIONS } from '../models/location.model';
+import { dbConnection, getPool } from '../config/db';
 
 const router = Router();
 
@@ -22,10 +23,24 @@ router.get('/locations', (_req, res) => {
   });
 });
 
-router.get('/health', (_req, res) => {
-  res.json({
-    status: 'ok',
+router.get('/health', async (_req, res) => {
+  let dbStatus = 'disconnected';
+  try {
+    if (dbConnection.isConnected) {
+      const conn = await getPool().getConnection();
+      await conn.ping();
+      conn.release();
+      dbStatus = 'connected';
+    }
+  } catch {
+    dbStatus = 'error';
+  }
+
+  const isHealthy = dbStatus === 'connected';
+  res.status(isHealthy ? 200 : 503).json({
+    status: isHealthy ? 'ok' : 'unhealthy',
     service: 'Batdongsan API',
+    database: dbStatus,
     timestamp: new Date().toISOString()
   });
 });

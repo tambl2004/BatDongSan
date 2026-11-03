@@ -2,15 +2,21 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import apiRoutes from './routes';
 import { errorMiddleware } from './middlewares/error.middleware';
+import { env } from './config/environment';
 
 export function createApp(): Application {
   const app = express();
 
-  // Middleware CORS & Body Parser
+  // CORS: production chỉ cho phép origin cụ thể, dev cho phép tất cả
+  const allowedOrigins = env.NODE_ENV === 'production'
+    ? env.CLIENT_URL.split(',').map(o => o.trim())
+    : '*';
+
   app.use(cors({
-    origin: '*',
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: env.NODE_ENV === 'production'
   }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));

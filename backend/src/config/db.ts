@@ -40,7 +40,9 @@ export async function connectDB(): Promise<void> {
     dbConnection.isConnected = true;
     console.log(`✅ Kết nối MySQL Database (${env.DB_NAME}) thành công!`);
   } catch (error) {
-    console.error(`❌ Lỗi kết nối cơ sở dữ liệu MySQL (${env.DB_NAME}):`, error);
     dbConnection.isConnected = false;
+    console.error(`❌ Lỗi kết nối cơ sở dữ liệu MySQL (${env.DB_NAME}):`, error);
+    // Dừng server nếu không kết nối được DB — tránh container chạy mà không có database
+    process.exit(1);
   }
 }
