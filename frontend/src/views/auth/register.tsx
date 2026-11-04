@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   AlertCircle,
   ArrowRight,
+  ArrowLeft,
   ShieldCheck
 } from 'lucide-react';
 
@@ -104,67 +105,41 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      backgroundColor: '#ffffff'
-    }}>
-      {/* LEFT: Banner */}
+    <div className="auth-page-container">
+      {/* LEFT: Banner (Desktop only) */}
       <AuthBanner image="/assets/images/register.jpg" />
 
       {/* RIGHT: Register Form Container */}
-      <div style={{
-        flex: '1 1 50%',
-        maxWidth: '590px',
-        padding: '2.5rem 3.5rem',
-        display: 'flex',
-        flexDirection: 'column',
-        margin: '0 auto',
-        overflowY: 'auto'
-      }}>
-        {/* Logo centered & enlarged */}
+      <div className="auth-form-container">
+        {/* Mobile-only Back to Home Button */}
+        <button
+          type="button"
+          onClick={() => navigate('/')}
+          className="auth-mobile-back-btn"
+        >
+          <ArrowLeft size={16} />
+          <span>Về trang chủ</span>
+        </button>
+
+        {/* Logo centered & responsive */}
         <div
           onClick={() => navigate('/')}
           title="Về trang chủ GreenNest"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: '1.5rem',
-            cursor: 'pointer'
-          }}
+          className="auth-logo-box"
         >
           <img
             src="/assets/images/logo/Logo_GreenNest.png"
             alt="GreenNest"
-            style={{
-              height: '90px',
-              maxWidth: '280px',
-              objectFit: 'contain',
-              display: 'block'
-            }}
+            className="auth-logo-img"
           />
         </div>
 
         {/* Heading */}
-        <div style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
-          <h1 style={{
-            fontSize: '2.1rem',
-            fontWeight: 800,
-            letterSpacing: '-0.03em',
-            marginBottom: '0.35rem',
-            background: 'linear-gradient(135deg, #064e3b 0%, #059669 55%, #10b981 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            display: 'inline-block'
-          }}>
+        <div style={{ marginBottom: '1.25rem', textAlign: 'center' }}>
+          <h1 className="auth-heading-title">
             Tạo tài khoản mới
           </h1>
-          <p style={{
-            fontSize: '0.85rem',
-            color: '#64748b',
-            fontWeight: 500
-          }}>
+          <p className="auth-subheading-text">
             Gia nhập cộng đồng giao dịch bất động sản uy tín GreenNest
           </p>
         </div>
@@ -244,7 +219,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }
           </div>
 
           {/* Email & Phone in 2 Columns */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <div className="auth-grid-2col">
             <div>
               <label style={{ display: 'block', fontSize: '0.825rem', fontWeight: 600, marginBottom: '0.35rem' }}>
                 Địa chỉ Email *
@@ -315,7 +290,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }
           </div>
 
           {/* Password & Confirm Password in 2 Columns */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <div className="auth-grid-2col">
             <div>
               <label style={{ display: 'block', fontSize: '0.825rem', fontWeight: 600, marginBottom: '0.35rem' }}>
                 Mật khẩu *
@@ -416,7 +391,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }
             <label style={{ display: 'block', fontSize: '0.825rem', fontWeight: 600, marginBottom: '0.4rem' }}>
               Vai trò tài khoản:
             </label>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div className="auth-grid-2col">
               <label
                 onClick={() => setRole('user')}
                 style={{

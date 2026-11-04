@@ -7,7 +7,8 @@ import {
   Lock,
   Eye,
   EyeOff,
-  ArrowRight
+  ArrowRight,
+  ArrowLeft
 } from 'lucide-react';
 
 import { notify } from '../../utils/toast';
@@ -73,67 +74,41 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      backgroundColor: '#ffffff'
-    }}>
-      {/* LEFT: Banner */}
+    <div className="auth-page-container">
+      {/* LEFT: Banner (Desktop only) */}
       <AuthBanner />
 
       {/* RIGHT: Auth Form Container */}
-      <div style={{
-        flex: '1 1 50%',
-        maxWidth: '590px',
-        padding: '2.5rem 3.5rem',
-        display: 'flex',
-        flexDirection: 'column',
-        margin: '0 auto',
-        overflowY: 'auto'
-      }}>
-        {/* Logo centered & enlarged */}
+      <div className="auth-form-container">
+        {/* Mobile-only Back to Home Button */}
+        <button
+          type="button"
+          onClick={() => navigate('/')}
+          className="auth-mobile-back-btn"
+        >
+          <ArrowLeft size={16} />
+          <span>Về trang chủ</span>
+        </button>
+
+        {/* Logo centered & responsive */}
         <div
           onClick={() => navigate('/')}
           title="Về trang chủ GreenNest"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: '2.75rem',
-            cursor: 'pointer'
-          }}
+          className="auth-logo-box"
         >
           <img
             src="/assets/images/logo/Logo_GreenNest.png"
             alt="GreenNest"
-            style={{
-              height: '90px',
-              maxWidth: '280px',
-              objectFit: 'contain',
-              display: 'block'
-            }}
+            className="auth-logo-img"
           />
         </div>
 
         {/* Heading */}
-        <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
-          <h1 style={{
-            fontSize: '2.2rem',
-            fontWeight: 800,
-            letterSpacing: '-0.03em',
-            marginBottom: '0.45rem',
-            background: 'linear-gradient(135deg, #064e3b 0%, #059669 55%, #10b981 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            display: 'inline-block'
-          }}>
+        <div style={{ marginBottom: '1.75rem', textAlign: 'center' }}>
+          <h1 className="auth-heading-title">
             Chào mừng bạn trở lại
           </h1>
-          <p style={{
-            fontSize: '0.875rem',
-            color: '#64748b',
-            fontWeight: 500
-          }}>
+          <p className="auth-subheading-text">
             Đăng nhập để tiếp tục khám phá không gian sống lý tưởng
           </p>
         </div>
@@ -318,7 +293,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
         </div>
 
         {/* Social Login Options */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '2rem' }}>
+        <div className="auth-social-grid" style={{ marginBottom: '1.75rem' }}>
           {/* Google Button */}
           <button
             type="button"

@@ -127,7 +127,7 @@ export const BlogListView: React.FC<BlogListViewProps> = ({
             </div>
 
             <h1 style={{
-              fontSize: '2.5rem',
+              fontSize: 'clamp(1.6rem, 5vw, 2.5rem)',
               fontWeight: 800,
               lineHeight: 1.25,
               color: 'var(--text-main)',
@@ -186,17 +186,7 @@ export const BlogListView: React.FC<BlogListViewProps> = ({
 
             <div
               onClick={() => onSelectPost(featuredPost)}
-              style={{
-                backgroundColor: '#ffffff',
-                border: '1px solid var(--border)',
-                borderRadius: 'var(--radius-lg)',
-                overflow: 'hidden',
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                cursor: 'pointer',
-                boxShadow: 'var(--shadow-md)',
-                transition: 'all 0.2s ease'
-              }}
+              className="blog-spotlight-grid"
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = 'var(--green-primary)';
                 e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
@@ -207,7 +197,7 @@ export const BlogListView: React.FC<BlogListViewProps> = ({
               }}
             >
               {/* Cover Image */}
-              <div style={{ minHeight: '340px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ minHeight: 'clamp(220px, 40vw, 340px)', position: 'relative', overflow: 'hidden' }}>
                 <img
                   src={featuredPost.coverImage}
                   alt={featuredPost.imageAlt}
@@ -230,7 +220,7 @@ export const BlogListView: React.FC<BlogListViewProps> = ({
 
               {/* Content Box */}
               <div style={{
-                padding: '2.25rem',
+                padding: 'clamp(1.25rem, 4vw, 2.25rem)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center'
@@ -387,9 +377,9 @@ export const BlogListView: React.FC<BlogListViewProps> = ({
             </div>
 
             {/* Search Input & Sort Dropdown */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', flex: '1 1 auto' }}>
               {/* Search Bar */}
-              <div style={{ position: 'relative', minWidth: '220px' }}>
+              <div style={{ position: 'relative', flex: '1 1 200px', minWidth: '180px' }}>
                 <Search size={15} color="var(--text-muted)" style={{ position: 'absolute', left: '10px', top: '10px' }} />
                 <input
                   type="text"
@@ -475,12 +465,7 @@ export const BlogListView: React.FC<BlogListViewProps> = ({
 
       {/* Main Content 2-Column: Grid + Sidebar */}
       <div className="container" style={{ paddingTop: '2rem' }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1fr) 320px',
-          gap: '2.5rem',
-          alignItems: 'start'
-        }}>
+        <div className="blog-list-main-grid">
           {/* Main Articles Grid */}
           <div>
             {filteredPosts.length === 0 ? (
@@ -511,11 +496,7 @@ export const BlogListView: React.FC<BlogListViewProps> = ({
                 </button>
               </div>
             ) : (
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))',
-                gap: '1.75rem'
-              }}>
+              <div className="blog-articles-grid">
                 {filteredPosts.map((post) => (
                   <BlogCard key={post.id} post={post} onSelectPost={onSelectPost} />
                 ))}

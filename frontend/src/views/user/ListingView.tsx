@@ -87,11 +87,7 @@ export const ListingView: React.FC<ListingViewProps> = ({
             </button>
           </div>
         ) : (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-            gap: '1.25rem'
-          }}>
+          <div className="listing-property-grid">
             {properties.map((property) => (
               <PropertyCard
                 key={property.id}

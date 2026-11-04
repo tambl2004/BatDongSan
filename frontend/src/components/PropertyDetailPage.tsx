@@ -137,7 +137,7 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
           flexWrap: 'wrap',
           gap: '0.75rem'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', flexWrap: 'wrap' }}>
             <button
               onClick={onBack}
               style={{
@@ -219,10 +219,10 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
           </div>
 
           <h1 style={{
-            fontSize: 'clamp(1.5rem, 2.4vw, 2.1rem)',
+            fontSize: 'clamp(1.25rem, 4vw, 2.1rem)',
             fontWeight: 800,
             color: 'var(--text-main)',
-            lineHeight: 1.25,
+            lineHeight: 1.3,
             marginBottom: '0.4rem'
           }}>
             {property.title}
@@ -235,16 +235,8 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
         </div>
 
         {/* 3.1. Luxury Bento Photo Gallery (5 Unique Angles) */}
-        <div style={{
-          position: 'relative',
-          display: 'grid',
-          gridTemplateColumns: property.images.length > 1 ? '1.5fr 1fr' : '1fr',
-          gap: '0.65rem',
-          height: '450px',
-          borderRadius: 'var(--radius-lg)',
-          overflow: 'hidden',
-          marginBottom: '1rem',
-          backgroundColor: '#0f172a'
+        <div className="property-gallery-grid" style={{
+          gridTemplateColumns: property.images.length > 1 ? '1.5fr 1fr' : '1fr'
         }}>
           {/* Main Large Image (Left) */}
           <div
@@ -284,17 +276,31 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
               <Sparkles size={13} color="#10b981" />
               <span>Ảnh thực tế 100%</span>
             </div>
+
+            {/* Photo counter badge */}
+            <div style={{
+              position: 'absolute',
+              bottom: '12px',
+              right: '12px',
+              backgroundColor: 'rgba(0, 0, 0, 0.75)',
+              backdropFilter: 'blur(4px)',
+              color: '#ffffff',
+              padding: '4px 10px',
+              borderRadius: 'var(--radius-pill)',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}>
+              <Maximize2 size={12} />
+              <span>{activeImageIndex + 1}/{property.images.length} ảnh</span>
+            </div>
           </div>
 
           {/* 4 Supporting Angle Images (Right 2x2 Grid) */}
           {property.images.length > 1 && (
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gridTemplateRows: '1fr 1fr',
-              gap: '0.65rem',
-              height: '100%'
-            }}>
+            <div className="property-gallery-support">
               {property.images.slice(1, 5).map((img, idx) => {
                 const actualIndex = idx + 1;
                 const isLast = idx === 3;
@@ -393,33 +399,17 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
         </div>
 
         {/* 2-Column Main Layout: Comprehensive Specs (Left) & Sticky Contact / Booking (Right) */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 360px',
-          gap: '2rem',
-          alignItems: 'start'
-        }}>
+        <div className="property-detail-main-grid">
           {/* LEFT COLUMN: Exhaustive Real Estate Details */}
           <div>
             {/* Price, Unit Price & Primary Stats Card */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '1.25rem 1.5rem',
-              backgroundColor: 'var(--bg-subtle)',
-              border: '1px solid var(--border)',
-              borderRadius: 'var(--radius-md)',
-              marginBottom: '1.75rem',
-              flexWrap: 'wrap',
-              gap: '1rem'
-            }}>
+            <div className="property-price-card">
               <div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase' }}>
                   MỨC GIÁ CHÍNH CHỦ NIÊM YẾT
                 </div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem' }}>
-                  <span style={{ fontSize: '2.1rem', fontWeight: 800, color: 'var(--green-primary)' }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 'clamp(1.75rem, 5vw, 2.2rem)', fontWeight: 800, color: 'var(--green-primary)' }}>
                     {property.priceFormatted}
                   </span>
                   {property.pricePerM2 && (
@@ -430,7 +420,7 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '2rem', textAlign: 'center' }}>
+              <div className="property-primary-stats">
                 <div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Diện tích</div>
                   <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>{property.area} m²</div>
@@ -462,14 +452,7 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
                 Đặc Điểm & Thông Số Kỹ Thuật Chi Tiết
               </h2>
 
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(2, 1fr)',
-                gap: '0.75rem',
-                border: '1px solid var(--border)',
-                borderRadius: 'var(--radius-md)',
-                padding: '1.25rem'
-              }}>
+              <div className="property-specs-grid">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.875rem' }}>
                   <Maximize2 size={16} color="var(--green-primary)" />
                   <span>Diện tích sử dụng: <strong>{property.area} m²</strong></span>
@@ -786,7 +769,7 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
           </div>
 
           {/* RIGHT COLUMN: Sticky Broker Card & Appointment Form */}
-          <div style={{ position: 'sticky', top: '85px' }}>
+          <div className="property-sticky-sidebar">
             {/* Broker Info Card */}
             <div style={{
               border: '1px solid var(--border)',
@@ -967,11 +950,7 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
             <h2 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '1rem' }}>
               Bất Động Sản Tương Tự Trong Khu Vực
             </h2>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-              gap: '1.25rem'
-            }}>
+            <div className="listing-property-grid">
               {relatedProperties.map((p) => (
                 <PropertyCard
                   key={p.id}

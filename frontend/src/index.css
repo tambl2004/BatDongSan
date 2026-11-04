@@ -442,4 +442,404 @@ a {
   }
 }
 
+/* ==========================================================================
+   Responsive Auth Layout System (Login, Register, Forgot Password)
+   ========================================================================== */
+
+/* Outer container */
+.auth-page-container {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  background-color: #ffffff;
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Left Half Banner: Hidden on mobile & tablet (<= 1024px) */
+.auth-banner-container {
+  flex: 1 1 50%;
+  position: relative;
+  min-height: 100%;
+  overflow: hidden;
+  background-color: #e2e8f0;
+  background: linear-gradient(135deg, #dbeafe 0%, #f1f5f9 50%, #e2e8f0 100%);
+}
+
+@media (max-width: 1024px) {
+  .auth-banner-container {
+    display: none !important;
+  }
+}
+
+/* Right Half Form Wrapper: 50% on desktop, 100% on tablet & mobile */
+.auth-form-container {
+  flex: 1 1 50%;
+  max-width: 590px;
+  padding: 2.5rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+  overflow-y: auto;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .auth-form-container {
+    flex: 1 1 100% !important;
+    max-width: 490px !important;
+    padding: clamp(1.5rem, 5vw, 2.75rem) clamp(1.25rem, 5vw, 2rem) !important;
+    min-height: 100vh;
+    min-height: 100dvh;
+    justify-content: center !important;
+  }
+}
+
+/* Top Back button on Mobile (hidden on desktop because banner already has it) */
+.auth-mobile-back-btn {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .auth-mobile-back-btn {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-start;
+    padding: 0.45rem 0.95rem;
+    font-size: 0.825rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 9999px;
+    cursor: pointer;
+    margin-bottom: clamp(0.75rem, 2.5vw, 1.25rem);
+    transition: all 0.2s ease;
+  }
+  .auth-mobile-back-btn:hover {
+    color: var(--green-primary);
+    border-color: var(--green-primary);
+    background-color: var(--green-light);
+  }
+}
+
+/* Responsive Logo container */
+.auth-logo-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2.25rem;
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .auth-logo-box {
+    margin-bottom: 1.25rem !important;
+  }
+}
+
+.auth-logo-img {
+  height: 90px;
+  max-width: 280px;
+  object-fit: contain;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .auth-logo-img {
+    height: 72px !important;
+    max-width: 220px !important;
+  }
+}
+
+/* Heading & Subtitle */
+.auth-heading-title {
+  font-size: clamp(1.6rem, 5vw, 2.2rem) !important;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.45rem;
+  background: linear-gradient(135deg, #064e3b 0%, #059669 55%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  line-height: 1.25;
+}
+
+.auth-subheading-text {
+  font-size: clamp(0.825rem, 2.5vw, 0.875rem);
+  color: #64748b;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Form Two-Column Grid on Desktop, Single Column on Mobile */
+.auth-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+@media (max-width: 580px) {
+  .auth-grid-2col {
+    grid-template-columns: 1fr !important;
+    gap: 0.85rem !important;
+  }
+}
+
+/* Social Buttons Grid */
+.auth-social-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+@media (max-width: 380px) {
+  .auth-social-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ==========================================================================
+   Responsive Property Detail View System
+   ========================================================================== */
+
+/* Bento Photo Gallery */
+.property-gallery-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 0.65rem;
+  height: 450px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background-color: #0f172a;
+}
+
+.property-gallery-support {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.65rem;
+  height: 100%;
+}
+
+@media (max-width: 992px) {
+  .property-gallery-grid {
+    grid-template-columns: 1fr !important;
+    height: auto !important;
+    aspect-ratio: 16 / 10;
+    max-height: 380px;
+  }
+  .property-gallery-support {
+    display: none !important;
+  }
+}
+
+/* 2-Column Main Layout: Specs (Left) & Sidebar (Right) */
+.property-detail-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.property-sticky-sidebar {
+  position: sticky;
+  top: 85px;
+}
+
+@media (max-width: 992px) {
+  .property-detail-main-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.75rem !important;
+  }
+  .property-sticky-sidebar {
+    position: static !important;
+    top: auto !important;
+  }
+}
+
+/* Price & Primary Stats Card */
+.property-price-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.property-primary-stats {
+  display: flex;
+  gap: 2rem;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .property-price-card {
+    padding: 1.15rem 1rem !important;
+  }
+  .property-primary-stats {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0.5rem !important;
+    border-top: 1px solid var(--border-light);
+    padding-top: 0.85rem;
+    margin-top: 0.25rem;
+  }
+  .property-primary-stats > div > div:last-child {
+    font-size: 1.05rem !important;
+  }
+}
+
+/* Detailed Technical Specs 2-Column */
+.property-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+@media (max-width: 600px) {
+  .property-specs-grid {
+    grid-template-columns: 1fr !important;
+    padding: 1rem !important;
+  }
+  .property-specs-grid > div {
+    grid-column: span 1 !important;
+  }
+}
+
+/* ==========================================================================
+   Responsive Blog List & Detail System
+   ========================================================================== */
+
+/* Blog List 2-Column */
+.blog-list-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.blog-articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 1.75rem;
+}
+
+@media (max-width: 992px) {
+  .blog-list-main-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+}
+
+/* Blog Spotlight Card */
+.blog-spotlight-grid {
+  background-color: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s ease;
+}
+
+/* Blog Detail 2-Column Layout */
+.blog-detail-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.blog-seo-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .blog-seo-badge {
+    display: none !important;
+  }
+}
+
+.blog-detail-sidebar {
+  position: sticky;
+  top: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.blog-detail-sidebar-toc {
+  background-color: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 1024px) {
+  .blog-detail-main-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  .blog-detail-sidebar {
+    position: static !important;
+    top: auto !important;
+  }
+  /* On mobile, sidebar TOC is redundant since there is already an inline TOC at top */
+  .blog-detail-sidebar-toc {
+    display: none !important;
+  }
+}
+
+/* Internal Linking Card in Blog Detail */
+.blog-related-property-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 580px) {
+  .blog-related-property-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .blog-related-property-card > div:first-child {
+    width: 100% !important;
+    height: 180px !important;
+  }
+  .blog-related-property-card > button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* Listing View Grid */
+.listing-property-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 1.25rem;
+}
+
+
+
 

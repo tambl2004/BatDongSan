@@ -127,10 +127,7 @@ export const BlogDetailView: React.FC<BlogDetailViewProps> = ({
           </div>
 
           {/* SEO Indicators Badge */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
+          <div className="blog-seo-badge" style={{
             backgroundColor: '#ffffff',
             padding: '3px 10px',
             borderRadius: 'var(--radius-pill)',
@@ -194,7 +191,7 @@ export const BlogDetailView: React.FC<BlogDetailViewProps> = ({
 
             {/* H1 SEO Title */}
             <h1 style={{
-              fontSize: '2.25rem',
+              fontSize: 'clamp(1.5rem, 5vw, 2.25rem)',
               fontWeight: 800,
               lineHeight: 1.3,
               color: 'var(--text-main)',
@@ -206,7 +203,7 @@ export const BlogDetailView: React.FC<BlogDetailViewProps> = ({
 
             {/* Excerpt */}
             <p style={{
-              fontSize: '1.1rem',
+              fontSize: 'clamp(0.95rem, 2.5vw, 1.1rem)',
               lineHeight: 1.6,
               color: 'var(--text-secondary)',
               borderLeft: '3px solid var(--green-primary)',
@@ -309,7 +306,7 @@ export const BlogDetailView: React.FC<BlogDetailViewProps> = ({
               <img
                 src={post.coverImage}
                 alt={post.imageAlt}
-                style={{ width: '100%', maxHeight: '540px', objectFit: 'cover', display: 'block' }}
+                style={{ width: '100%', maxHeight: 'clamp(240px, 50vw, 540px)', objectFit: 'cover', display: 'block' }}
               />
             </div>
             <p style={{
@@ -324,12 +321,7 @@ export const BlogDetailView: React.FC<BlogDetailViewProps> = ({
           </div>
 
           {/* Main 2-Column Layout: TOC + Content */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(0, 1fr) 340px',
-            gap: '2.5rem',
-            alignItems: 'start'
-          }}>
+          <div className="blog-detail-main-grid">
             {/* Left / Article Body */}
             <div>
               {/* Mobile Table of Contents */}
@@ -564,16 +556,12 @@ export const BlogDetailView: React.FC<BlogDetailViewProps> = ({
                   </p>
 
                   {/* Property Mini Preview Card */}
-                  <div style={{
+                  <div className="blog-related-property-card" style={{
                     backgroundColor: '#ffffff',
                     border: '1px solid var(--border)',
                     borderRadius: 'var(--radius-md)',
                     padding: '1rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    flexWrap: 'wrap',
-                    gap: '1rem'
+                    justifyContent: 'space-between'
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <img
@@ -689,15 +677,9 @@ export const BlogDetailView: React.FC<BlogDetailViewProps> = ({
             </div>
 
             {/* Right Sidebar: Sticky CTA and Newsletter */}
-            <aside style={{ position: 'sticky', top: '90px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              {/* Sticky TOC */}
-              <div style={{
-                backgroundColor: '#ffffff',
-                border: '1px solid var(--border)',
-                borderRadius: 'var(--radius-md)',
-                padding: '1.25rem',
-                boxShadow: 'var(--shadow-sm)'
-              }}>
+            <aside className="blog-detail-sidebar">
+              {/* Sticky TOC (Desktop only, mobile has inline TOC) */}
+              <div className="blog-detail-sidebar-toc">
                 <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '0.75rem' }}>
                   Điều hướng bài viết
                 </div>

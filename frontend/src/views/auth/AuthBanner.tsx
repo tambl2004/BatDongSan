@@ -57,6 +57,7 @@ export const AuthBanner: React.FC<AuthBannerProps> = ({
 
   return (
     <div
+      className="auth-banner-container"
       style={{
         flex: '1 1 50%',
         position: 'relative',
