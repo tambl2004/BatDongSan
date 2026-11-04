@@ -191,7 +191,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
                   fontWeight: 600,
                   cursor: 'pointer'
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.textDecoration = 'underline';
+                  const img = new Image();
+                  img.src = '/assets/images/forgot-password.jpg';
+                }}
                 onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
               >
                 Quên mật khẩu?
@@ -408,7 +412,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ redirectPath = '/' }) => {
               fontWeight: 700,
               cursor: 'pointer'
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.textDecoration = 'underline';
+              const img = new Image();
+              img.src = '/assets/images/register.jpg';
+            }}
             onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
           >
             Đăng ký tài khoản mới

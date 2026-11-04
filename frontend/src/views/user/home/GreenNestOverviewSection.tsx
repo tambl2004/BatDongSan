@@ -1,31 +1,39 @@
 import React from 'react';
+import { ScrollReveal } from '../../../components/common/ScrollReveal';
 
 export const GreenNestOverviewSection: React.FC = () => {
   return (
     <section style={{
       backgroundColor: '#ffffff',
       position: 'relative',
+      padding: 'clamp(2.5rem, 6vw, 4.5rem) 0',
       overflow: 'hidden'
     }}>
       <div className="container">
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(320px, 1.1fr) minmax(320px, 1fr)',
-          gap: '3.5rem',
-          alignItems: 'center'
-        }}>
+        <div className="grid-responsive-2col">
           {/* Left Column: Landscape Image with Flowing Musical Stave Lines */}
-          <div style={{ position: 'relative', paddingLeft: '2rem' }}>
+          <ScrollReveal
+            direction="left"
+            distance={36}
+            duration={0.75}
+            style={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: '560px',
+              margin: '0 auto'
+            }}
+          >
             {/* Authentic Musical Stave SVG with Notes wrapping around image */}
             <svg
               style={{
                 position: 'absolute',
                 top: '-20px',
-                left: '-40px',
-                width: '180px',
-                height: '380px',
+                left: '-15px',
+                width: '140px',
+                height: '300px',
                 pointerEvents: 'none',
-                zIndex: 0
+                zIndex: 0,
+                opacity: 0.8
               }}
               viewBox="0 0 160 340"
               fill="none"
@@ -49,38 +57,34 @@ export const GreenNestOverviewSection: React.FC = () => {
             <svg
               style={{
                 position: 'absolute',
-                bottom: '-45px',
-                left: '-35px',
-                width: '260px',
-                height: '160px',
+                bottom: '-35px',
+                left: '-15px',
+                width: '200px',
+                height: '130px',
                 pointerEvents: 'none',
-                zIndex: 0
+                zIndex: 0,
+                opacity: 0.8
               }}
               viewBox="0 0 240 140"
               fill="none"
               stroke="#4a5568"
               strokeWidth="0.85"
             >
-              {/* 5-line Musical Stave sweeping below bottom-left */}
               <path d="M 0 140 C 20 80, 50 50, 110 90 S 170 120, 240 100" />
               <path d="M 0 132 C 20 72, 50 42, 110 82 S 170 112, 240 92" />
               <path d="M 0 124 C 20 64, 50 34, 110 74 S 170 104, 240 84" />
               <path d="M 0 116 C 20 56, 50 26, 110 66 S 170 96, 240 76" />
               <path d="M 0 108 C 20 48, 50 18, 110 58 S 170 88, 240 68" />
-
-              {/* Musical Note 2 */}
               <ellipse cx="85" cy="85" rx="5" ry="3.5" transform="rotate(-20 85 85)" fill="#2d3748" />
               <line x1="89" y1="83" x2="89" y2="52" stroke="#2d3748" strokeWidth="1.2" />
-
-              {/* Flat sign symbol ♭ */}
               <text x="35" y="125" fill="#2d3748" fontSize="22" fontFamily="serif" fontWeight="bold">♭</text>
             </svg>
 
-            {/* Clean Image Container - No clunky badges, no rounded bubble borders */}
+            {/* Image Container */}
             <div style={{
               position: 'relative',
               zIndex: 1,
-              borderRadius: '4px',
+              borderRadius: '8px',
               overflow: 'hidden',
               boxShadow: '0 12px 32px -6px rgba(0, 0, 0, 0.12)'
             }}>
@@ -99,15 +103,21 @@ export const GreenNestOverviewSection: React.FC = () => {
                 }}
               />
             </div>
-          </div>
+          </ScrollReveal>
 
-          {/* Right Column: Editorial Typography matching Image 2 */}
-          <div style={{ paddingRight: '1rem' }}>
-            {/* Elegant Calligraphic Script Subtitle */}
+          {/* Right Column: Editorial Typography */}
+          <ScrollReveal
+            direction="right"
+            distance={36}
+            duration={0.75}
+            delay={0.15}
+            style={{ maxWidth: '600px' }}
+          >
+            {/* Calligraphic Script Subtitle */}
             <div
               className="font-script"
               style={{
-                fontSize: '2.5rem',
+                fontSize: 'clamp(1.8rem, 5.5vw, 2.5rem)',
                 lineHeight: 1.2,
                 color: '#4a5568',
                 marginBottom: '0.2rem',
@@ -119,29 +129,29 @@ export const GreenNestOverviewSection: React.FC = () => {
 
             {/* Green Brand Title */}
             <h2 style={{
-              fontSize: '2.4rem',
-              fontWeight: 700,
+              fontSize: 'clamp(1.8rem, 6vw, 2.4rem)',
+              fontWeight: 800,
               lineHeight: 1.15,
               color: '#23734b',
               letterSpacing: '0.04em',
               textTransform: 'uppercase',
-              marginBottom: '1.5rem',
+              marginBottom: '1.25rem',
               fontFamily: 'var(--font-main)'
             }}>
               GREENNEST
             </h2>
 
-            {/* Narrative Paragraph matching sample tone & layout */}
+            {/* Narrative Paragraph */}
             <p style={{
-              fontSize: '0.975rem',
-              lineHeight: 1.85,
+              fontSize: '0.95rem',
+              lineHeight: 1.8,
               color: '#4a5568',
               textAlign: 'justify',
               margin: 0
             }}>
               Tiếp nối và thừa kế thành công từ các dự án sinh thái tiêu biểu, vẫn giữ nguyên cảm xúc lắng đọng trước sự mộc mạc của thiên nhiên, GreenNest ra đời và một lần nữa khẳng định giá trị thiên nhiên ban tặng cho cuộc sống, không chỉ là nơi ở đơn thuần mà còn là nghệ thuật sống tận hưởng, chạm đến từng giá trị tinh thần, giá trị vật chất bền vững và dài lâu, hứa hẹn là điểm đến lý tưởng cho những ai muốn hưởng thụ bầu không khí trong lành cùng cảnh quan hùng vĩ giữa tiết trời se lạnh.
             </p>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>

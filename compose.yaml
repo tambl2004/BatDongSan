@@ -50,7 +50,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:?Required}
       DB_NAME: batdongsan
       JWT_SECRET: ${JWT_SECRET:?Required}
-      CLIENT_URL: http://localhost:5173
+      CLIENT_URL: "https://batdongsan.my.id,https://www.batdongsan.my.id,http://localhost:5173"
 
     depends_on:
       mysql:

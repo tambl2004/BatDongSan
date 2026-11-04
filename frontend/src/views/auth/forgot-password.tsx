@@ -55,7 +55,7 @@ export const ForgotPasswordView: React.FC = () => {
       backgroundColor: '#ffffff'
     }}>
       {/* LEFT: Banner */}
-      <AuthBanner image="/assets/images/forgot-password.png" />
+      <AuthBanner image="/assets/images/forgot-password.jpg" />
 
       {/* RIGHT: Forgot Password Form Container */}
       <div style={{
@@ -288,7 +288,11 @@ export const ForgotPasswordView: React.FC = () => {
               fontWeight: 700,
               cursor: 'pointer'
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.textDecoration = 'underline';
+              const img = new Image();
+              img.src = '/assets/images/login.jpg';
+            }}
             onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
           >
             Đăng nhập ngay

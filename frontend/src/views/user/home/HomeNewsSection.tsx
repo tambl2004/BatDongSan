@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sparkles, ArrowRight, Clock } from 'lucide-react';
 import { navigate } from '../../../routes/router';
+import { ScrollReveal } from '../../../components/common/ScrollReveal';
 
 export const HomeNewsSection: React.FC = () => {
   const newsItems = [
@@ -38,23 +39,24 @@ export const HomeNewsSection: React.FC = () => {
 
   return (
     <section style={{
-      padding: '2rem 0',
+      padding: 'clamp(2.5rem, 5vw, 4rem) 0',
       backgroundColor: '#f8fafc',
-      borderTop: '1px solid #f1f5f9'
+      borderTop: '1px solid #f1f5f9',
+      overflow: 'hidden'
     }}>
       <div className="container">
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+        <ScrollReveal direction="up" duration={0.65} style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 4vw, 3rem)' }}>
           <p className="font-script" style={{
-            fontSize: '2rem',
+            fontSize: 'clamp(1.6rem, 5vw, 2rem)',
             color: '#c5a880',
             margin: 0,
-            lineHeight: 1
+            lineHeight: 1.1
           }}>
             Góc nhìn chuyên gia
           </p>
           <h2 style={{
-            fontSize: '2.2rem',
+            fontSize: 'clamp(1.5rem, 5vw, 2.2rem)',
             fontWeight: 900,
             color: 'var(--green-primary)',
             letterSpacing: '0.04em',
@@ -70,7 +72,7 @@ export const HomeNewsSection: React.FC = () => {
             justifyContent: 'center',
             gap: '12px',
             marginTop: '0.5rem',
-            marginBottom: '1rem'
+            marginBottom: '0.85rem'
           }}>
             <div style={{ width: '48px', height: '1px', backgroundColor: '#c5a880' }} />
             <Sparkles size={16} color="#c5a880" />
@@ -86,22 +88,22 @@ export const HomeNewsSection: React.FC = () => {
           }}>
             Cập nhật những diễn biến mới nhất về quy hoạch hạ tầng, xu hướng định giá bất động sản và các sự kiện mở bán phân khu tiêu biểu trên toàn quốc.
           </p>
-        </div>
+        </ScrollReveal>
 
-        {/* 3 News Cards Grid matching Sample Image 5 */}
+        {/* 3 News Cards Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '2rem',
-          marginBottom: '3rem'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: 'clamp(1.25rem, 3vw, 2rem)',
+          marginBottom: 'clamp(2rem, 4vw, 3rem)'
         }}>
-          {newsItems.map((item) => (
-            <article
-              key={item.id}
-              onClick={() => navigate('/blog')}
-              style={{
-                backgroundColor: '#ffffff',
-                borderRadius: '16px',
+          {newsItems.map((item, idx) => (
+            <ScrollReveal key={item.id} direction="up" delay={idx * 0.12} duration={0.65}>
+              <article
+                onClick={() => navigate('/blog')}
+                style={{
+                  backgroundColor: '#ffffff',
+                  borderRadius: '16px',
                 border: '1px solid #e2e8f0',
                 overflow: 'hidden',
                 cursor: 'pointer',
@@ -219,11 +221,12 @@ export const HomeNewsSection: React.FC = () => {
                 </div>
               </div>
             </article>
+          </ScrollReveal>
           ))}
         </div>
 
         {/* Center Button (Chuẩn như Ảnh 5) */}
-        <div style={{ textAlign: 'center' }}>
+        <ScrollReveal direction="up" delay={0.25} duration={0.6} style={{ textAlign: 'center' }}>
           <button
             onClick={() => navigate('/blog')}
             className="btn-primary"
@@ -244,7 +247,7 @@ export const HomeNewsSection: React.FC = () => {
             <span>XEM THÊM TIN TỨC</span>
             <ArrowRight size={15} />
           </button>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

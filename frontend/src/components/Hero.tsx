@@ -32,31 +32,31 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '120px 1.5rem 5rem 1.5rem',
+      padding: 'clamp(90px, 14vh, 130px) 1rem 4rem 1rem',
       background: 'linear-gradient(to bottom, rgba(15, 23, 42, 3%) 0%, rgba(0, 0, 0, 24%) 40%, rgba(15, 23, 42, 0.2) 100%), url("/assets/images/banner_batdongsan.png") center center / cover no-repeat',
       overflow: 'hidden'
     }}>
       <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: '860px' }}>
         {/* Subtle Calligraphy Eyebrow */}
         <p className="font-script" style={{
-          fontSize: 'clamp(1.8rem, 3vw, 2.4rem)',
+          fontSize: 'clamp(1.5rem, 5.5vw, 2.4rem)',
           color: '#fcd34d',
           margin: 0,
-          lineHeight: 1.1,
+          lineHeight: 1.15,
           textShadow: '0 2px 10px rgba(0, 0, 0, 0.9)'
         }}>
           Khởi nguồn an cư thịnh vượng
         </p>
 
-        {/* Refined Headline - Elegant, Natural, Uncluttered */}
+        {/* Refined Headline */}
         <h1 style={{
-          fontSize: 'clamp(2rem, 3.8vw, 3rem)',
+          fontSize: 'clamp(1.8rem, 6.5vw, 3rem)',
           fontWeight: 800,
           color: '#ffffff',
           letterSpacing: '-0.01em',
           lineHeight: 1.25,
-          marginTop: '0.35rem',
-          marginBottom: '2rem',
+          marginTop: '0.4rem',
+          marginBottom: '1.75rem',
           textShadow: '0 2px 10px rgba(0, 0, 0, 0.9), 0 4px 24px rgba(0, 0, 0, 0.7)'
         }}>
           Khám Phá Không Gian Sống Thượng Lưu
@@ -72,17 +72,18 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
             alignItems: 'center',
             backgroundColor: 'rgba(255, 255, 255, 0.96)',
             backdropFilter: 'blur(12px)',
-            padding: '6px 8px 6px 20px',
+            WebkitBackdropFilter: 'blur(12px)',
+            padding: '5px 6px 5px 16px',
             borderRadius: '9999px',
             boxShadow: '0 20px 45px -10px rgba(0, 0, 0, 0.35)',
             border: '1px solid rgba(255, 255, 255, 0.3)',
             transition: 'all 0.25s ease'
           }}
         >
-          <Search size={20} color="var(--green-primary)" style={{ flexShrink: 0, marginRight: '10px' }} />
+          <Search size={18} color="var(--green-primary)" style={{ flexShrink: 0, marginRight: '8px' }} />
           <input
             type="text"
-            placeholder="Nhập tên dự án, đường, quận hoặc khu vực..."
+            placeholder="Tìm dự án, đường, quận hoặc khu vực..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{
@@ -90,9 +91,10 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
               background: 'transparent',
               outline: 'none',
               width: '100%',
-              fontSize: '0.95rem',
+              fontSize: '0.9rem',
               color: 'var(--text-main)',
-              fontWeight: 500
+              fontWeight: 500,
+              minWidth: 0
             }}
           />
           <button
@@ -100,8 +102,8 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
             className="btn-primary"
             style={{
               flexShrink: 0,
-              padding: '0.7rem 1.6rem',
-              fontSize: '0.9rem',
+              padding: '0.65rem 1.35rem',
+              fontSize: '0.875rem',
               fontWeight: 700,
               borderRadius: '9999px',
               boxShadow: '0 4px 14px rgba(5, 150, 105, 0.4)',
@@ -117,10 +119,10 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '8px',
+          gap: '6px',
           flexWrap: 'wrap',
           marginTop: '1.25rem',
-          fontSize: '0.825rem'
+          fontSize: '0.8rem'
         }}>
           <span style={{ color: '#ffffff', fontWeight: 600, marginRight: '2px', textShadow: '0 1px 4px rgba(0, 0, 0, 0.8)' }}>
             Tìm nhanh:
@@ -139,11 +141,12 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
               style={{
                 background: 'rgba(15, 23, 42, 0.45)',
                 backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
                 border: '1px solid rgba(255, 255, 255, 0.35)',
                 color: '#ffffff',
-                padding: '5px 13px',
+                padding: '4px 11px',
                 borderRadius: '9999px',
-                fontSize: '0.775rem',
+                fontSize: '0.75rem',
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',

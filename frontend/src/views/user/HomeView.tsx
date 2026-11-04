@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Hero } from '../../components/Hero';
+import { ScrollReveal } from '../../components/common';
 import { ListingType } from '../../types/property';
 import { ProjectDetailModal, ProjectData } from '../../components/modals/ProjectDetailModal';
 import { ServiceConsultModal } from '../../components/modals/ServiceConsultModal';
@@ -95,24 +96,26 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSearch }) => {
         backgroundColor: '#ffffff',
         overflow: 'hidden'
       }}>
-        <div className="container" style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
-          <p className="font-script" style={{ fontSize: '1.75rem', color: '#c5a880', margin: 0, lineHeight: 1 }}>
-            Mạng lưới liên kết
-          </p>
-          <h3 style={{
-            fontSize: '1.15rem',
-            fontWeight: 800,
-            color: 'var(--text-main)',
-            letterSpacing: '0.04em',
-            textTransform: 'uppercase',
-            marginTop: '3px'
-          }}>
-            Đối Tác Phát Triển & Bảo Trợ Tài Chính
-          </h3>
-          <p style={{ fontSize: '0.825rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
-            Hợp tác chiến lược cùng các tập đoàn bất động sản hàng đầu và hệ thống ngân hàng uy tín
-          </p>
-        </div>
+        <ScrollReveal direction="up" duration={0.65}>
+          <div className="container" style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
+            <p className="font-script" style={{ fontSize: '1.75rem', color: '#c5a880', margin: 0, lineHeight: 1 }}>
+              Mạng lưới liên kết
+            </p>
+            <h3 style={{
+              fontSize: '1.15rem',
+              fontWeight: 800,
+              color: 'var(--text-main)',
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+              marginTop: '3px'
+            }}>
+              Đối Tác Phát Triển & Bảo Trợ Tài Chính
+            </h3>
+            <p style={{ fontSize: '0.825rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+              Hợp tác chiến lược cùng các tập đoàn bất động sản hàng đầu và hệ thống ngân hàng uy tín
+            </p>
+          </div>
+        </ScrollReveal>
 
         <div className="marquee-container" style={{ padding: '0.85rem 0' }}>
           <div className="marquee-content" style={{ display: 'flex', alignItems: 'center', gap: '3.5rem' }}>
@@ -166,17 +169,18 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSearch }) => {
 
       {/* 3. Comprehensive Real Estate Services - Minimalist Editorial (Không box card, ảnh minh họa thực tế) */}
       <section style={{
-        padding: '2rem 0',
+        padding: 'clamp(2.5rem, 5vw, 3.5rem) 0',
         backgroundColor: '#ffffff',
-        borderBottom: '1px solid #f1f5f9'
+        borderBottom: '1px solid #f1f5f9',
+        overflow: 'hidden'
       }}>
         <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <p className="font-script" style={{ fontSize: '2rem', color: '#c5a880', margin: 0, lineHeight: 1 }}>
+          <ScrollReveal direction="up" duration={0.65} style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 4vw, 3rem)' }}>
+            <p className="font-script" style={{ fontSize: 'clamp(1.6rem, 5vw, 2rem)', color: '#c5a880', margin: 0, lineHeight: 1.1 }}>
               Đặc quyền dịch vụ
             </p>
             <h2 style={{
-              fontSize: '2.2rem',
+              fontSize: 'clamp(1.5rem, 5vw, 2.2rem)',
               fontWeight: 900,
               color: 'var(--green-primary)',
               letterSpacing: '0.04em',
@@ -194,16 +198,16 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSearch }) => {
             }}>
               Đồng hành toàn trình từ khảo sát thực địa, thẩm định giá trị đến hỗ trợ thủ tục pháp lý và tài chính trọn gói.
             </p>
-          </div>
+          </ScrollReveal>
 
           {/* 4 Minimalist Service Items with Real Architectural Imagery */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: '2.5rem'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: 'clamp(1.5rem, 3vw, 2.5rem)'
           }}>
             {/* Service 1 */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <ScrollReveal direction="up" delay={0} duration={0.65} style={{ display: 'flex', flexDirection: 'column' }}>
               <div style={{
                 height: '190px',
                 borderRadius: '8px',
@@ -250,10 +254,10 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSearch }) => {
                   <ArrowRight size={14} />
                 </button>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Service 2 */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <ScrollReveal direction="up" delay={0.1} duration={0.65} style={{ display: 'flex', flexDirection: 'column' }}>
               <div style={{
                 height: '190px',
                 borderRadius: '8px',
@@ -300,10 +304,10 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSearch }) => {
                   <ArrowRight size={14} />
                 </button>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Service 3 */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <ScrollReveal direction="up" delay={0.2} duration={0.65} style={{ display: 'flex', flexDirection: 'column' }}>
               <div style={{
                 height: '190px',
                 borderRadius: '8px',
@@ -350,10 +354,10 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSearch }) => {
                   <ArrowRight size={14} />
                 </button>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Service 4 */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <ScrollReveal direction="up" delay={0.3} duration={0.65} style={{ display: 'flex', flexDirection: 'column' }}>
               <div style={{
                 height: '190px',
                 borderRadius: '8px',
@@ -400,7 +404,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSearch }) => {
                   <ArrowRight size={14} />
                 </button>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -420,25 +424,21 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSearch }) => {
 
       {/* 6.5 Impact Metrics / Real Proof Section - Redesigned Asymmetric 2-Column (Ảnh mẫu 2) */}
       <section style={{
-        padding: '4rem 0',
+        padding: 'clamp(2.5rem, 5vw, 4rem) 0',
         backgroundColor: '#ffffff',
         borderTop: '1px solid #f1f5f9',
-        borderBottom: '1px solid #f1f5f9'
+        borderBottom: '1px solid #f1f5f9',
+        overflow: 'hidden'
       }}>
         <div className="container">
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: '3.5rem',
-            alignItems: 'center'
-          }}>
+          <div className="grid-responsive-2col">
             {/* Left Column: Heading & Mission Narrative (Ảnh mẫu 2) */}
-            <div>
-              <p className="font-script" style={{ fontSize: '1.9rem', color: '#c5a880', margin: 0, lineHeight: 1 }}>
+            <ScrollReveal direction="left" distance={30} duration={0.7}>
+              <p className="font-script" style={{ fontSize: 'clamp(1.6rem, 5vw, 1.9rem)', color: '#c5a880', margin: 0, lineHeight: 1 }}>
                 Thành tựu ấn tượng
               </p>
               <h2 style={{
-                fontSize: '2.25rem',
+                fontSize: 'clamp(1.6rem, 5vw, 2.25rem)',
                 fontWeight: 900,
                 color: '#0f172a',
                 lineHeight: 1.25,
@@ -452,203 +452,208 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSearch }) => {
                 fontSize: '0.95rem',
                 color: '#64748b',
                 lineHeight: 1.7,
-                marginTop: '1rem',
+                marginTop: '0.75rem',
                 maxWidth: '460px'
               }}>
                 Khẳng định vị thế nền tảng giao dịch bất động sản minh bạch hàng đầu Việt Nam thông qua số liệu thực tế, giải pháp pháp lý an tâm và sự tin cậy của hàng chục ngàn khách hàng.
               </p>
-            </div>
+            </ScrollReveal>
 
             {/* Right Column: 2x2 Grid of Metrics with Icons (Ảnh mẫu 2) */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '2.5rem 2rem'
-            }}>
-              {/* Stat 1: Giao dịch */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                <div style={{
-                  width: '54px',
-                  height: '54px',
-                  borderRadius: '14px',
-                  backgroundColor: 'rgba(5, 150, 105, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0
-                }}>
-                  <Users size={28} color="var(--green-primary)" />
-                </div>
-                <div>
-                  <div style={{ fontSize: '2rem', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>
-                    15,000+
+            <ScrollReveal direction="right" distance={30} duration={0.7} delay={0.15}>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                gap: 'clamp(1.25rem, 3vw, 2rem)'
+              }}>
+                {/* Stat 1: Giao dịch */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '12px',
+                    backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <Users size={26} color="var(--green-primary)" />
                   </div>
-                  <div style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '4px', fontWeight: 500 }}>
-                    Bất động sản thanh khoản thành công
+                  <div>
+                    <div style={{ fontSize: 'clamp(1.6rem, 4vw, 2rem)', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>
+                      15,000+
+                    </div>
+                    <div style={{ fontSize: '0.825rem', color: '#64748b', marginTop: '4px', fontWeight: 500 }}>
+                      Bất động sản thanh khoản thành công
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Stat 2: Hài lòng */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                <div style={{
-                  width: '54px',
-                  height: '54px',
-                  borderRadius: '14px',
-                  backgroundColor: 'rgba(5, 150, 105, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0
-                }}>
-                  <Award size={28} color="var(--green-primary)" />
-                </div>
-                <div>
-                  <div style={{ fontSize: '2rem', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>
-                    99.5%
+                {/* Stat 2: Hài lòng */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '12px',
+                    backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <Award size={26} color="var(--green-primary)" />
                   </div>
-                  <div style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '4px', fontWeight: 500 }}>
-                    Khách hàng tin tưởng & hài lòng
+                  <div>
+                    <div style={{ fontSize: 'clamp(1.6rem, 4vw, 2rem)', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>
+                      99.5%
+                    </div>
+                    <div style={{ fontSize: '0.825rem', color: '#64748b', marginTop: '4px', fontWeight: 500 }}>
+                      Khách hàng tin tưởng & hài lòng
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Stat 3: Mạng lưới */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                <div style={{
-                  width: '54px',
-                  height: '54px',
-                  borderRadius: '14px',
-                  backgroundColor: 'rgba(5, 150, 105, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0
-                }}>
-                  <Building size={28} color="var(--green-primary)" />
-                </div>
-                <div>
-                  <div style={{ fontSize: '2rem', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>
-                    04
+                {/* Stat 3: Mạng lưới */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '12px',
+                    backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <Building size={26} color="var(--green-primary)" />
                   </div>
-                  <div style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '4px', fontWeight: 500 }}>
-                    Văn phòng đại diện toàn quốc
+                  <div>
+                    <div style={{ fontSize: 'clamp(1.6rem, 4vw, 2rem)', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>
+                      04
+                    </div>
+                    <div style={{ fontSize: '0.825rem', color: '#64748b', marginTop: '4px', fontWeight: 500 }}>
+                      Văn phòng đại diện toàn quốc
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Stat 4: Hỗ trợ 24/7 */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                <div style={{
-                  width: '54px',
-                  height: '54px',
-                  borderRadius: '14px',
-                  backgroundColor: 'rgba(5, 150, 105, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0
-                }}>
-                  <Clock size={28} color="var(--green-primary)" />
-                </div>
-                <div>
-                  <div style={{ fontSize: '2rem', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>
-                    24/7
+                {/* Stat 4: Hỗ trợ 24/7 */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '12px',
+                    backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <Clock size={26} color="var(--green-primary)" />
                   </div>
-                  <div style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '4px', fontWeight: 500 }}>
-                    Hỗ trợ xem nhà & công chứng miễn phí
+                  <div>
+                    <div style={{ fontSize: 'clamp(1.6rem, 4vw, 2rem)', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>
+                      24/7
+                    </div>
+                    <div style={{ fontSize: '0.825rem', color: '#64748b', marginTop: '4px', fontWeight: 500 }}>
+                      Hỗ trợ xem nhà & công chứng miễn phí
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
 
       {/* 7. GreenNest Partnership & Consignment CTA */}
       <section style={{
-        padding: '3.5rem 0 4rem 0',
-        backgroundColor: '#f8fafc'
+        padding: 'clamp(2.5rem, 5vw, 3.5rem) 0',
+        backgroundColor: '#f8fafc',
+        overflow: 'hidden'
       }}>
         <div className="container">
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '2.5rem',
-            paddingBottom: '1rem'
-          }}>
-            <div style={{ maxWidth: '640px' }}>
-              <p className="font-script" style={{ fontSize: '1.9rem', color: '#c5a880', margin: 0, lineHeight: 1 }}>
-                Hợp tác cùng GreenNest
-              </p>
-              <h3 style={{
-                fontSize: '2rem',
-                fontWeight: 900,
-                color: 'var(--text-main)',
-                marginTop: '0.4rem',
-                marginBottom: '0.6rem',
-                letterSpacing: '-0.02em',
-                lineHeight: 1.25
-              }}>
-                Bạn Đang Sở Hữu Bất Động Sản Cần Giao Dịch?
-              </h3>
-              <p style={{
-                fontSize: '0.95rem',
-                color: 'var(--text-secondary)',
-                lineHeight: 1.7,
-                margin: 0
-              }}>
-                GreenNest hỗ trợ định giá chuẩn xác, kiểm tra hồ sơ pháp lý và tiếp cận mạng lưới người mua thực tế nhanh chóng, minh bạch và bảo mật.
-              </p>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-              <button
-                onClick={() => openServiceConsult('Ký Gửi Nhà Đất Bán & Cho Thuê')}
-                className="btn-primary"
-                style={{
-                  padding: '0.9rem 2rem',
-                  fontSize: '0.95rem',
-                  fontWeight: 700,
-                  borderRadius: '9999px',
-                  boxShadow: '0 8px 20px rgba(5, 150, 105, 0.25)',
-                  cursor: 'pointer'
-                }}
-              >
-                Gửi yêu cầu ký gửi ngay
-              </button>
-              <a
-                href="tel:19006868"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.9rem 1.75rem',
-                  fontSize: '0.95rem',
-                  fontWeight: 700,
+          <ScrollReveal direction="up" distance={25} duration={0.65}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '1.75rem',
+              paddingBottom: '0.5rem'
+            }}>
+              <div style={{ maxWidth: '640px' }}>
+                <p className="font-script" style={{ fontSize: 'clamp(1.6rem, 5vw, 1.9rem)', color: '#c5a880', margin: 0, lineHeight: 1 }}>
+                  Hợp tác cùng GreenNest
+                </p>
+                <h3 style={{
+                  fontSize: 'clamp(1.5rem, 5vw, 2rem)',
+                  fontWeight: 900,
                   color: 'var(--text-main)',
-                  backgroundColor: '#ffffff',
-                  border: '1px solid #cbd5e1',
-                  borderRadius: '9999px',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s ease',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--green-primary)';
-                  e.currentTarget.style.color = 'var(--green-primary)';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.borderColor = '#cbd5e1';
-                  e.currentTarget.style.color = 'var(--text-main)';
-                }}
-              >
-                Hotline: 1900 6868 (Miễn phí)
-              </a>
+                  marginTop: '0.35rem',
+                  marginBottom: '0.5rem',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.25
+                }}>
+                  Bạn Đang Sở Hữu Bất Động Sản Cần Giao Dịch?
+                </h3>
+                <p style={{
+                  fontSize: '0.925rem',
+                  color: 'var(--text-secondary)',
+                  lineHeight: 1.7,
+                  margin: 0
+                }}>
+                  GreenNest hỗ trợ định giá chuẩn xác, kiểm tra hồ sơ pháp lý và tiếp cận mạng lưới người mua thực tế nhanh chóng, minh bạch và bảo mật.
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => openServiceConsult('Ký Gửi Nhà Đất Bán & Cho Thuê')}
+                  className="btn-primary"
+                  style={{
+                    padding: '0.8rem 1.75rem',
+                    fontSize: '0.9rem',
+                    fontWeight: 700,
+                    borderRadius: '9999px',
+                    boxShadow: '0 8px 20px rgba(5, 150, 105, 0.25)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Gửi yêu cầu ký gửi ngay
+                </button>
+                <a
+                  href="tel:19006868"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.8rem 1.5rem',
+                    fontSize: '0.9rem',
+                    fontWeight: 700,
+                    color: 'var(--text-main)',
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #cbd5e1',
+                    borderRadius: '9999px',
+                    textDecoration: 'none',
+                    transition: 'all 0.2s ease',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--green-primary)';
+                    e.currentTarget.style.color = 'var(--green-primary)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.borderColor = '#cbd5e1';
+                    e.currentTarget.style.color = 'var(--text-main)';
+                  }}
+                >
+                  Hotline: 1900 6868 (Miễn phí)
+                </a>
+              </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 

@@ -110,7 +110,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }
       backgroundColor: '#ffffff'
     }}>
       {/* LEFT: Banner */}
-      <AuthBanner image="/assets/images/register.png" />
+      <AuthBanner image="/assets/images/register.jpg" />
 
       {/* RIGHT: Register Form Container */}
       <div style={{
@@ -549,7 +549,11 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ redirectPath = '/' }
               fontWeight: 700,
               cursor: 'pointer'
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.textDecoration = 'underline';
+              const img = new Image();
+              img.src = '/assets/images/login.jpg';
+            }}
             onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
           >
             Đăng nhập ngay

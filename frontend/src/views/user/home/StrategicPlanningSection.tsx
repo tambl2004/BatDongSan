@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, MapPin, ArrowRight } from 'lucide-react';
+import { ScrollReveal } from '../../../components/common/ScrollReveal';
 
 interface StrategicPlanningSectionProps {
   onConsult: (serviceTitle: string) => void;
@@ -150,79 +151,81 @@ export const StrategicPlanningSection: React.FC<StrategicPlanningSectionProps> =
     >
       <div className="container" style={{ position: 'relative' }}>
         {/* Section Header đồng bộ nhận diện thương hiệu GreenNest & Toàn bộ Trang Home */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'space-between',
-          marginBottom: '2.5rem',
-          flexWrap: 'wrap',
-          gap: '1.25rem'
-        }}>
-          <div>
-            <p className="font-script" style={{
-              fontSize: '2rem',
-              color: '#c5a880',
-              margin: 0,
-              lineHeight: 1.1
-            }}>
-              Hạ tầng chiến lược
-            </p>
-            <h2 style={{
-              fontSize: '2.2rem',
-              fontWeight: 900,
-              color: 'var(--green-primary)',
-              letterSpacing: '0.04em',
-              marginTop: '0.25rem',
-              textTransform: 'uppercase'
-            }}>
-              KHU VỰC QUY HOẠCH TRỌNG ĐIỂM
-            </h2>
-            <p style={{
-              fontSize: '0.925rem',
-              color: 'var(--text-secondary)',
-              marginTop: '0.35rem',
-              maxWidth: '680px',
-              lineHeight: 1.6
-            }}>
-              Nắm bắt thông tin quy hoạch hạ tầng giao thông và đô thị mới nhất năm 2026 để đón đầu làn sóng gia tăng giá trị.
-            </p>
-          </div>
+        <ScrollReveal direction="up" distance={24} duration={0.65}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+            marginBottom: '2.5rem',
+            flexWrap: 'wrap',
+            gap: '1.25rem'
+          }}>
+            <div>
+              <p className="font-script" style={{
+                fontSize: 'clamp(1.6rem, 5vw, 2rem)',
+                color: '#c5a880',
+                margin: 0,
+                lineHeight: 1.1
+              }}>
+                Hạ tầng chiến lược
+              </p>
+              <h2 style={{
+                fontSize: 'clamp(1.5rem, 5vw, 2.2rem)',
+                fontWeight: 900,
+                color: 'var(--green-primary)',
+                letterSpacing: '0.04em',
+                marginTop: '0.25rem',
+                textTransform: 'uppercase'
+              }}>
+                KHU VỰC QUY HOẠCH TRỌNG ĐIỂM
+              </h2>
+              <p style={{
+                fontSize: '0.925rem',
+                color: 'var(--text-secondary)',
+                marginTop: '0.35rem',
+                maxWidth: '680px',
+                lineHeight: 1.6
+              }}>
+                Nắm bắt thông tin quy hoạch hạ tầng giao thông và đô thị mới nhất năm 2026 để đón đầu làn sóng gia tăng giá trị.
+              </p>
+            </div>
 
-          {/* Navigation Controls */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <span style={{
-              fontSize: '0.9rem',
-              fontWeight: 700,
-              color: '#64748b',
-              fontVariantNumeric: 'tabular-nums'
-            }}>
-              <strong style={{ color: 'var(--green-primary)', fontSize: '1.25rem' }}>
-                {projects[currentIndex].code}
-              </strong>
-              <span style={{ margin: '0 4px', color: '#cbd5e1' }}>/</span>
-              0{total}
-            </span>
+            {/* Navigation Controls */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <span style={{
+                fontSize: '0.9rem',
+                fontWeight: 700,
+                color: '#64748b',
+                fontVariantNumeric: 'tabular-nums'
+              }}>
+                <strong style={{ color: 'var(--green-primary)', fontSize: '1.25rem' }}>
+                  {projects[currentIndex].code}
+                </strong>
+                <span style={{ margin: '0 4px', color: '#cbd5e1' }}>/</span>
+                0{total}
+              </span>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <button
-                type="button"
-                onClick={handlePrev}
-                aria-label="Slide trước"
-                className="strategic-arrow-btn"
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                type="button"
-                onClick={handleNext}
-                aria-label="Slide tiếp theo"
-                className="strategic-arrow-btn"
-              >
-                <ChevronRight size={20} />
-              </button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  aria-label="Slide trước"
+                  className="strategic-arrow-btn"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  aria-label="Slide tiếp theo"
+                  className="strategic-arrow-btn"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* 3-Card Carousel Stage: To hơn, rộng hơn, không gian thoáng đãng */}
         <div
@@ -413,9 +416,9 @@ export const StrategicPlanningSection: React.FC<StrategicPlanningSectionProps> =
           cursor: pointer;
         }
 
-        /* SLIDE TRUNG TÂM: Mở rộng 68% chiều ngang, cao 510px */
+        /* SLIDE TRUNG TÂM: Rộng 62% chiều ngang, cao 510px */
         .card-center {
-          width: 68%;
+          width: 62%;
           height: 510px;
           transform: translate3d(0, 0, 0) scale(1);
           opacity: 1;
@@ -424,33 +427,33 @@ export const StrategicPlanningSection: React.FC<StrategicPlanningSectionProps> =
           box-shadow: 0 24px 50px -10px rgba(15, 23, 42, 0.35), 0 10px 20px -5px rgba(5, 150, 105, 0.15);
         }
 
-        /* 2 SLIDE PHỤ BÊN CẠNH: Rộng 26%, cao 410px */
+        /* 2 SLIDE PHỤ BÊN CẠNH: Giãn rộng ra 2 bên theo tỷ lệ 29%, lộ rõ diện mạo */
         .card-left {
-          width: 26%;
-          height: 410px;
-          transform: translate3d(-112%, 0, -60px) scale(0.93);
-          opacity: 0.85;
+          width: 29%;
+          height: 420px;
+          transform: translate3d(-125%, 0, -50px) scale(0.93);
+          opacity: 0.88;
           z-index: 10;
-          box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.25);
         }
 
         .card-left:hover {
           opacity: 0.98;
-          transform: translate3d(-112%, -3px, -40px) scale(0.95);
+          transform: translate3d(-125%, -4px, -35px) scale(0.95);
         }
 
         .card-right {
-          width: 26%;
-          height: 410px;
-          transform: translate3d(112%, 0, -60px) scale(0.93);
-          opacity: 0.85;
+          width: 29%;
+          height: 420px;
+          transform: translate3d(125%, 0, -50px) scale(0.93);
+          opacity: 0.88;
           z-index: 10;
-          box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.25);
         }
 
         .card-right:hover {
           opacity: 0.98;
-          transform: translate3d(112%, -3px, -40px) scale(0.95);
+          transform: translate3d(125%, -4px, -35px) scale(0.95);
         }
 
         /* Slide ẩn ngoài tầm nhìn */
@@ -511,9 +514,12 @@ export const StrategicPlanningSection: React.FC<StrategicPlanningSectionProps> =
           color: #ffffff;
         }
 
-        .card-left .card-content-overlay,
+        .card-left .card-content-overlay {
+          padding: 1.75rem 2.5rem 1.75rem 1.5rem;
+        }
+
         .card-right .card-content-overlay {
-          padding: 1.75rem 1.5rem;
+          padding: 1.75rem 1.5rem 1.75rem 2.5rem;
         }
 
         /* Tag quy mô gọn gàng */
@@ -616,12 +622,18 @@ export const StrategicPlanningSection: React.FC<StrategicPlanningSectionProps> =
         /* Responsive Breakpoints */
         @media (max-width: 1100px) {
           .card-center {
-            width: 78%;
+            width: 72%;
             height: 480px;
           }
           .card-left, .card-right {
-            width: 24%;
-            height: 380px;
+            width: 26%;
+            height: 390px;
+          }
+          .card-left {
+            transform: translate3d(-122%, 0, -50px) scale(0.92);
+          }
+          .card-right {
+            transform: translate3d(122%, 0, -50px) scale(0.92);
           }
           .card-title-center {
             font-size: 1.6rem;
@@ -646,6 +658,25 @@ export const StrategicPlanningSection: React.FC<StrategicPlanningSectionProps> =
           }
           .card-title-center {
             font-size: 1.45rem;
+          }
+        }
+
+        @media (max-width: 520px) {
+          .strategic-stage {
+            height: 380px;
+          }
+          .card-center {
+            height: 380px !important;
+          }
+          .card-content-overlay {
+            padding: 1.25rem 1rem;
+          }
+          .card-title-center {
+            font-size: 1.2rem;
+          }
+          .card-summary {
+            font-size: 0.825rem;
+            margin-bottom: 0.75rem;
           }
         }
       `}</style>

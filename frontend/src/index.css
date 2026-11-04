@@ -53,6 +53,8 @@ html, body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Container */
@@ -60,6 +62,13 @@ html, body {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 1.5rem;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
 }
 
 /* Button & Link Reset */
@@ -286,4 +295,151 @@ a {
 .marquee-container:hover .marquee-content {
   animation-play-state: paused;
 }
+
+/* ==========================================================================
+   RESPONSIVE UTILITIES FOR NAVBAR & HOME
+   ========================================================================== */
+
+/* Navbar responsive breakpoints */
+.nav-desktop-links {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.nav-mobile-toggle {
+  display: none;
+}
+
+.nav-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1024px) {
+  .nav-desktop-links {
+    display: none !important;
+  }
+  .nav-mobile-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-cta-desktop {
+    display: none !important;
+  }
+}
+
+/* Mobile Navigation Drawer */
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 998;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+}
+
+.mobile-nav-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobile-nav-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 82%;
+  max-width: 340px;
+  background: #ffffff;
+  z-index: 999;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.mobile-nav-drawer.open {
+  transform: translateX(0);
+}
+
+/* Responsive Grid 2-Column: 2 cols on desktop, 1 col on mobile */
+.grid-responsive-2col {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 3.5rem;
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  .grid-responsive-2col {
+    grid-template-columns: 1fr !important;
+    gap: 2.25rem !important;
+  }
+}
+
+/* Responsive Highlights / Key metrics */
+.grid-highlights-5col {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 992px) {
+  .grid-highlights-5col {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 1.25rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid-highlights-5col {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem !important;
+  }
+}
+
+/* Responsive Why Choose Section */
+.why-choose-desktop {
+  display: block;
+}
+
+.why-choose-mobile {
+  display: none;
+}
+
+@media (max-width: 992px) {
+  .why-choose-desktop {
+    display: none !important;
+  }
+  .why-choose-mobile {
+    display: block !important;
+  }
+}
+
+/* Responsive Landmarks Grid */
+.grid-landmarks-2col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 1.5rem;
+  row-gap: 1.15rem;
+}
+
+@media (max-width: 640px) {
+  .grid-landmarks-2col {
+    grid-template-columns: 1fr !important;
+    row-gap: 0.85rem !important;
+  }
+}
+
 

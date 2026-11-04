@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Sparkles, ZoomIn, X } from 'lucide-react';
+import { ScrollReveal } from '../../../components/common/ScrollReveal';
 
 export const ProjectGallerySection: React.FC = () => {
   const [selectedImg, setSelectedImg] = useState<{ url: string; title: string } | null>(null);
@@ -49,98 +50,107 @@ export const ProjectGallerySection: React.FC = () => {
 
   return (
     <section style={{
-      padding: '2rem 0',
+      padding: 'clamp(2.5rem, 5vw, 4rem) 0',
       backgroundColor: '#ffffff',
-      borderTop: '1px solid #f1f5f9'
+      borderTop: '1px solid #f1f5f9',
+      overflow: 'hidden'
     }}>
       <div className="container">
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <p className="font-script" style={{
-            fontSize: '2rem',
-            color: '#c5a880',
-            margin: 0,
-            lineHeight: 1
-          }}>
-            Bảo chứng thực tế
-          </p>
-          <h2 style={{
-            fontSize: '2.2rem',
-            fontWeight: 900,
-            color: 'var(--green-primary)',
-            letterSpacing: '0.04em',
-            marginTop: '0.4rem',
-            textTransform: 'uppercase'
-          }}>
-            HÌNH ẢNH THỰC TẾ DỰ ÁN & TIẾN ĐỘ THI CÔNG
-          </h2>
+        <ScrollReveal direction="up" distance={24} duration={0.65}>
+          <div style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 4vw, 2.75rem)' }}>
+            <p className="font-script" style={{
+              fontSize: 'clamp(1.6rem, 5vw, 2rem)',
+              color: '#c5a880',
+              margin: 0,
+              lineHeight: 1.1
+            }}>
+              Bảo chứng thực tế
+            </p>
+            <h2 style={{
+              fontSize: 'clamp(1.5rem, 5vw, 2.2rem)',
+              fontWeight: 900,
+              color: 'var(--green-primary)',
+              letterSpacing: '0.04em',
+              marginTop: '0.4rem',
+              textTransform: 'uppercase'
+            }}>
+              HÌNH ẢNH THỰC TẾ DỰ ÁN & TIẾN ĐỘ THI CÔNG
+            </h2>
 
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '12px',
-            marginTop: '0.5rem',
-            marginBottom: '1rem'
-          }}>
-            <div style={{ width: '48px', height: '1px', backgroundColor: '#c5a880' }} />
-            <Sparkles size={16} color="#c5a880" />
-            <div style={{ width: '48px', height: '1px', backgroundColor: '#c5a880' }} />
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              marginTop: '0.5rem',
+              marginBottom: '0.85rem'
+            }}>
+              <div style={{ width: '48px', height: '1px', backgroundColor: '#c5a880' }} />
+              <Sparkles size={16} color="#c5a880" />
+              <div style={{ width: '48px', height: '1px', backgroundColor: '#c5a880' }} />
+            </div>
+
+            <p style={{
+              fontSize: '0.95rem',
+              color: 'var(--text-secondary)',
+              maxWidth: '860px',
+              margin: '0 auto',
+              lineHeight: 1.7
+            }}>
+              Tổng thể dự án là một phức hợp các công trình nhà ở, thương mại dịch vụ và tiện ích đẳng cấp quốc tế. Hàng chục ngàn căn hộ và shophouse thương mại đã được bàn giao cho khách hàng về an cư và kinh doanh sầm uất, khẳng định cam kết tiến độ và chất lượng vượt trội.
+            </p>
           </div>
+        </ScrollReveal>
 
-          <p style={{
-            fontSize: '0.95rem',
-            color: 'var(--text-secondary)',
-            maxWidth: '860px',
-            margin: '0 auto',
-            lineHeight: 1.7
-          }}>
-            Tổng thể dự án là một phức hợp các công trình nhà ở, thương mại dịch vụ và tiện ích đẳng cấp quốc tế. Hàng chục ngàn căn hộ và shophouse thương mại đã được bàn giao cho khách hàng về an cư và kinh doanh sầm uất, khẳng định cam kết tiến độ và chất lượng vượt trội.
-          </p>
-        </div>
-
-        {/* 8 Images Grid (4 cols x 2 rows matching Sample Image 4) */}
+        {/* 8 Images Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: '1.25rem',
-          marginTop: '2rem'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+          gap: 'clamp(1rem, 2.5vw, 1.25rem)',
+          marginTop: '1.75rem'
         }}>
           {galleryItems.map((item, i) => (
-            <div
+            <ScrollReveal
               key={i}
-              onClick={() => setSelectedImg({ url: item.img, title: item.title })}
-              style={{
-                position: 'relative',
-                height: '210px',
-                borderRadius: '12px',
-                overflow: 'hidden',
-                backgroundColor: '#0f172a',
-                cursor: 'pointer',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
-                transition: 'all 0.3s cubic-bezier(0.32, 0.72, 0, 1)'
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.boxShadow = '0 12px 25px -6px rgba(0,0,0,0.15)';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'none';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.06)';
-              }}
+              direction="up"
+              distance={20}
+              duration={0.55}
+              delay={i * 0.05}
             >
-              <img
-                src={item.img}
-                alt={item.title}
+              <div
+                onClick={() => setSelectedImg({ url: item.img, title: item.title })}
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  transition: 'transform 0.4s ease'
+                  position: 'relative',
+                  height: '210px',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  backgroundColor: '#0f172a',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
+                  transition: 'all 0.3s cubic-bezier(0.32, 0.72, 0, 1)'
                 }}
-              />
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.boxShadow = '0 12px 25px -6px rgba(0,0,0,0.15)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = 'none';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.06)';
+                }}
+              >
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    transition: 'transform 0.4s ease'
+                  }}
+                />
 
-              {/* Category Pill Tag */}
+                {/* Category Pill Tag */}
               <div style={{
                 position: 'absolute',
                 top: '10px',
@@ -192,6 +202,7 @@ export const ProjectGallerySection: React.FC = () => {
                 </div>
               </div>
             </div>
+            </ScrollReveal>
           ))}
         </div>
 
